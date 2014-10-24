@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from gi.repository import Gtk
 
 import psycopg2
@@ -30,20 +32,15 @@ def buscar(texto):
 	conn_string = "host='localhost' dbname='marina' user='marina' password='mari'"
  
 	# print the connection string we will use to connect
-	print "Connecting to database\n	->%s" % (conn_string)
  
 	# get a connection, if a connect cannot be made an exception will be raised here
 	conn = psycopg2.connect(conn_string)
  
 	# conn.cursor will return a cursor object, you can use this cursor to perform queries
 	cursor = conn.cursor()
-	print "Connected!\n"
 	v=str(texto)
 	cursor.execute("SELECT * from pasajero where quien = " + v)
 	rows = cursor.fetchall()
-	for row in rows:
-		print "Nombre = ", row[0]
-		"\n"
 		
 main()
 Gtk.main()
