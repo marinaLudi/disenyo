@@ -1,1 +1,1 @@
-from objetos.pasajero import Pasajero
+from La_ribera_manager_app.objetos.pasajero import Pasajero
