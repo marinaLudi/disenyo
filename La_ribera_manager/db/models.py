@@ -1,0 +1,28 @@
+from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy.engime.url import URL
+from sqlalchemy.ext.declarative import declarative_base
+
+import settings
+
+DeclarativeBase = declarative_base()
+
+def db_connect():
+	return create_engine(URL(**settings.DATABASE))
+
+def create_pasajero_table(engine):
+	DeclarativeBase.metadata.create_all(engine)
+
+class Pasajero(DeclarativeBase):
+	__tablename__ = "pasajero"
+
+	id_pasajero = Column(Integer, primary_key=True)
+	nombre = Column('nombre', String, nullable=False)
+	apellido = Column('apellido', String, nullable=False)
+	cuit = Column('cuit', String, nullable=False)
+	email = Column('email', String, nullable=False)
+	fecha_de_nac = Column('fecha_de_nac', Date, nullable=False)
+	telefono = Column('telefono', String, nullable=False)
+
+	#foreign keys
+	codigo = Column('codigo', Integer, ForeignKey("documento.codigo"), nullable=False)
+	id_direccion = Column('id_direccion', Integer, ForeignKey("direccion."))
