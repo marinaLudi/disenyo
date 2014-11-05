@@ -1,7 +1,10 @@
 from gi.repository import Gtk
+from sqlalchemy import *
+import datetime
 
 class interfazPasajero:
 	def __init__(self):
+		
 		builder = Gtk.Builder()
 		builder.add_from_file("Cargar_Pasajero3.4.xml")
 		
@@ -9,10 +12,18 @@ class interfazPasajero:
 		self.bSiguiente = builder.get_object("bSiguiente")
 		self.eNombres = builder.get_object("eNombres")
 		self.eApellidos = builder.get_object("eApellidos")
-		self.cDocumento = builder.get_object("cDocumento")
 		self.cPais = builder.get_object("cPais")
+		self.cProvincia = builder.get_object("cProvincia")
+		self.cLocalidad = builder.get_object("cLocalidad")
+		self.cDocumento = builder.get_object("cDocumento")
+		self.cDia = builder.get_object("cDia")
+		self.cMes = builder.get_object("cMes")
+		self.cAnyo = builder.get_object("cAnyo")
+		self.cNacionalidad = builder.get_object("cNacionalidad")
+		self.cOcupacion = builder.get_object("cOcupacion")
 		
 		self.window1.set_border_width(25)
+		self.cargarCombos(self.cPais,self.cProvincia,self.cLocalidad,self.cDocumento,self.cDia,self.cMes,self.cAnyo,self.cNacionalidad,self.cOcupacion,)
 		
 		handlers = {
 		"on_bSiguiente_clicked": "",
@@ -26,8 +37,89 @@ class interfazPasajero:
 		"on_cDia_changed": "",
 		}
 		builder.connect_signals(handlers)
+		
 		self.window1.show_all()
+	
+	
+	def cargarCombos(self,cPais,cProvincia,cLocalidad,cDocumento,cDia,cMes,cAnyo,cNacionalidad,cOcupacion):
+		engine = create_engine('postgresql://marina:mari@localhost/marina')
+		metadata = MetaData(engine)
+		
+		i = 1
+		while i <= 31 :
+			cDia.append_text(str(i))
+			i = i+1
+		
+		meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
+		for mes in meses:
+			cMes.append_text(mes)
+			
+		ahora = datetime.datetime.now()
+		anyoActual = ahora.year
+		
+		anyo = 1900
+		while anyoActual >= anyo:
+			cAnyo.append_text(str(anyoActual))
+			anyoActual = anyoActual - 1
+			
+		pais = Table('pais',metadata,autoload=True)
+		s = pais.select()
+		rs = s.execute()
+		fila = rs.fetchone()
+		
+		cPais.append_text(fila.nombre)
+		for fila in rs:
+			cPais.append_text(fila.nombre)
+			
+		provincia = Table('provincia',metadata,autoload=True)
+		s = provincia.select()
+		rs = s.execute()
+		fila = rs.fetchone()
+		
+		cProvincia.append_text(fila.nombre)
+		for fila in rs:
+			cProvincia.append_text(fila.nombre)
+			
+		localidad = Table('localidad',metadata,autoload=True)
+		s = localidad.select()
+		rs = s.execute()
+		fila = rs.fetchone()
+		
+		cLocalidad.append_text(fila.nombre)
+		
+		for fila in rs:
+			cLocalidad.append_text(fila.nombre)	
+			
+		documento = Table('documento',metadata,autoload=True)
+		s = documento.select()
+		rs = s.execute()
+		fila = rs.fetchone()
+		
+		cDocumento.append_text(fila.tipo)
+		for fila in rs:
+			cDocumento.append_text(fila.tipo)
+			
+		nacionalidad = Table('nacionalidad',metadata,autoload=True)
+		s = nacionalidad.select()
+		rs = s.execute()
+		fila = rs.fetchone()
+		
+		cNacionalidad.append_text(fila.nombre)
+		for fila in rs:
+			cNacionalidad.append_text(fila.nombre)
+			
+		ocupacion = Table('ocupacion',metadata,autoload=True)
+		s = ocupacion.select()
+		rs = s.execute()
+		fila = rs.fetchone()
+		
+		cOcupacion.append_text(fila.descripcion)
+		for fila in rs:
+			cOcupacion.append_text(fila.descripcion)
+			 
+			 
+
 		
 		
-#interfazPasajero()
-#Gtk.main()
+interfazPasajero()
+Gtk.main()

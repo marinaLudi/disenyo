@@ -418,7 +418,8 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="spacing">10</property>
-                <property name="baseline_position">top</property>
+                <property name="homogeneous">True</property>
+                <property name="baseline_position">bottom</property>
                 <child>
                   <object class="GtkLabel" id="label15">
                     <property name="visible">True</property>
@@ -581,6 +582,19 @@
               </packing>
             </child>
             <child>
+              <object class="GtkComboBoxText" id="cDireccion">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <signal name="changed" handler="on_cDireccion_changed" swapped="no"/>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">7</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkComboBoxText" id="cLocalidad">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -615,18 +629,6 @@
               <packing>
                 <property name="left_attach">0</property>
                 <property name="top_attach">13</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkEntry" id="eDireccion">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">7</property>
                 <property name="width">1</property>
                 <property name="height">1</property>
               </packing>
