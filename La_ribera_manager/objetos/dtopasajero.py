@@ -1,5 +1,5 @@
 class DtoPasajero:
-	def __init__(self, nombre=None, apellido=None, cuit=None, email=None, fecha_de_nac=None, telefono=None, id_ocupacion=None, descripcion=None, nombrePais=None, id_nacionalidad=None, tipo=None, codigo=None, numero=None, calle=None, piso=None, dpto=None, nombreLocalidad=None, id_localidad=None, nombreProv=None, id_prov=None, id_pais=None):
+	def __init__(self, nombre=None, apellido=None, cuit=None, email=None, fecha_de_nac=None, telefono=None, id_ocupacion=None, ocupacion=None, nombrePais=None, id_nacionalidad=None,nacionalidad=None, tipo=None, codigo=None, numero=None, calle=None, piso=None, dpto=None, nombreLocalidad=None, id_localidad=None, nombreProv=None, id_prov=None, id_pais=None, cPostal=None,iva=None):
 		self.nombre = nombre
 		self.apellido = apellido
 		self.cuit = cuit
@@ -7,9 +7,10 @@ class DtoPasajero:
 		self.fecha_de_nac = fecha_de_nac
 		self.telefono = telefono
 		self.id_ocupacion = id_ocupacion
-		self.descripcion = descripcion
+		self.ocupacion = ocupacion
 		self.nombrePais = nombrePais
 		self.id_nacionalidad = id_nacionalidad
+		self.nacionalidad = nacionalidad
 		self.tipo = tipo
 		self.codigo = codigo
 		self.numero = numero
@@ -21,3 +22,5 @@ class DtoPasajero:
 		self.nombreProv = nombreProv
 		self.id_prov = id_prov
 		self.id_pais = id_pais
+		self.cPostal = cPostal
+		self.iva = iva

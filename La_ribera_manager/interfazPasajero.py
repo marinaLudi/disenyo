@@ -50,38 +50,60 @@ class interfazPasajero:
 		}
 		builder.connect_signals(handlers)
 		
+		self.pasajero = DtoPasajero()
+		self.fecha = datetime.date(0001,01,01)
+				
 		self.window1.show_all()
 		
 	def on_cDocumento_changed(self,combo):
-		print "sss"	
+		self.pasajero.codigo = combo.get_active_text()
+		
 		
 	def on_cOcupacion_changed(self,combo):
-		print "sss"
+		self.pasajero.ocupacion = combo.get_active_text()
+		print self.pasajero.ocupacion
 		
 	def on_cNacionalidad_changed(self,combo):
-		print "sss"	
+		self.pasajero.nacionalidad = combo.get_active_text()
 	
 	def on_cAnyo_changed(self,combo):
-		print "sss"	
+		self.fecha = self.fecha.replace(year=int(combo.get_active_text()))
+		print self.fecha	
 	
 	def on_cDia_changed(self,combo):
-		print "sss"	
-				
-	def on_cLocalidad_changed(self,combo):
-		print "sss"	
-	
+		self.fecha = self.fecha.replace(day=int(combo.get_active_text()))
+		print self.fecha	
+					
 	def on_cMes_changed(self,combo):
-		print "sss"	
+		self.fecha = self.fecha.replace(month=int(combo.get_active_text()))
+		print self.fecha
 		
-	def on_bSiguiente_clicked(self,boton):#ver!
-		pasajero = DtoPasajero(self.eNombres.get_text(),self.eApellidos.get_text(),self.eCUIT.get_text(),self.eCorreo.get_text(),None,self.eTelefono.get_text(),None,None,self.eDireccion.get_text(),self.eDepto.get_text(),self.ePiso.get_text(),self.ePostal.get_text(),self.eIVA.get_text())
-		print pasajero.nombre
+	def on_bSiguiente_clicked(self,boton):
+		
+		self.pasajero.nombre = self.eNombres.get_text()
+		self.pasajero.apellido = self.eApellidos.get_text()
+		self.pasajero.cuit = self.eCUIT.get_text()
+		self.pasajero.email = self.eCorreo.get_text()
+		self.pasajero.telefono = self.eTelefono.get_text()
+		self.pasajero.direccion = self.eDireccion.get_text()
+		self.pasajero.dpto = self.eDepto.get_text()
+		self.pasajero.piso = self.ePiso.get_text()
+		self.pasajero.cPostal = self.ePostal.get_text()
+		self.pasajero.iva = self.eIVA.get_text()
+		self.pasajero.fecha_de_nac = self.fecha
+		
+		print self.pasajero.fecha_de_nac
 		
 	def on_cPais_changed(self,combo):
-		print "pais"
+		self.pasajero.nombrePais = combo.get_active_text()
+
+		
 	def on_cProvincia_changed(self,combo):
-		print "provincia"
+		self.pasajero.nombreProvincia = combo.get_active_text()
+
 	
+	def on_cLocalidad_changed(self,combo):
+		self.pasajero.nombreLocalidad = combo.get_active_text()	
 	
 	def cargarCombos(self,cPais,cProvincia,cLocalidad,cDocumento,cDia,cMes,cAnyo,cNacionalidad,cOcupacion):
 		engine = create_engine('postgresql://marina:mari@localhost/marina')
@@ -92,10 +114,15 @@ class interfazPasajero:
 			cDia.append_text(str(i))
 			i = i+1
 		
-		meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
-		for mes in meses:
-			cMes.append_text(mes)
-			
+		#meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
+		#for mes in meses:
+		#	cMes.append_text(mes)
+		i = 1
+		while i <=12:
+			cMes.append_text(str(i))
+			i = i +1	
+		
+		
 		ahora = datetime.datetime.now()
 		anyoActual = ahora.year
 		
