@@ -4,7 +4,8 @@ import datetime
 from objetos.dtopasajero import DtoPasajero
 from gestores.gestorGestionarPasajeros import *
 from sqlalchemy.engine.url import URL
-from db import settings
+from db import settingsm
+from sqlalchemy.orm import sessionmaker
 
 
 
@@ -114,8 +115,9 @@ class interfazPasajero:
 		self.pasajero.nombreLocalidad = combo.get_active_text()	
 	
 	def cargarCombos(self,cPais,cProvincia,cLocalidad,cDocumento,cDia,cMes,cAnyo,cNacionalidad,cOcupacion):
-		engine = create_engine(URL(**settings.DATABASE))
+		engine = create_engine(URL(**settingsm.DATABASE))
 		metadata = MetaData(engine)
+
 		
 		i = 1
 		while i <= 31 :
@@ -147,6 +149,7 @@ class interfazPasajero:
 		cPais.append_text(fila.nombre)
 		for fila in rs:
 			cPais.append_text(fila.nombre)
+		
 			
 		provincia = Table('provincia',metadata,autoload=True)
 		s = provincia.select()

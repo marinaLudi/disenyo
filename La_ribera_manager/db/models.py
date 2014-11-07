@@ -2,12 +2,12 @@ from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.engine.url import URL
 from sqlalchemy.ext.declarative import declarative_base
 
-import settings
+import settingsm
 
 DeclarativeBase = declarative_base()
 
 def db_connect():
-	return create_engine(URL(**settings.DATABASE))
+	return create_engine(URL(**settingsm.DATABASE))
 
 def create_pasajero_table(engine):
 	DeclarativeBase.metadata.create_all(engine)
