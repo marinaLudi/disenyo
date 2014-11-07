@@ -1,6 +1,6 @@
 #### Gestor gestordb ####
 
-from pipeline import PasajeroPipe
+from pipeline import Pipe
 
 class GestorDB:
 	# Guardamos un pasajero en la base de datos
@@ -10,4 +10,4 @@ class GestorDB:
 
 	# Buscamos un pasajero en la base de datos
 	def buscarPasajero(nombre, apellido, tipoDocu, Documento):
-
+		print ""
