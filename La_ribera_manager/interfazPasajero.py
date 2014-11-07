@@ -2,6 +2,11 @@ from gi.repository import Gtk
 from sqlalchemy import *
 import datetime
 from objetos.dtopasajero import DtoPasajero
+from gestores.gestorGestionarPasajeros import *
+from sqlalchemy.engine.url import URL
+from db import settings
+
+
 
 class interfazPasajero:
 	def __init__(self):
@@ -33,7 +38,8 @@ class interfazPasajero:
 		self.cOcupacion = builder.get_object("cOcupacion")
 		
 		self.window1.set_border_width(25)
-		self.cargarCombos(self.cPais,self.cProvincia,self.cLocalidad,self.cDocumento,self.cDia,self.cMes,self.cAnyo,self.cNacionalidad,self.cOcupacion,)
+		self.window1.set_default_size(800,600)
+		self.cargarCombos(self.cPais,self.cProvincia,self.cLocalidad,self.cDocumento,self.cDia,self.cMes,self.cAnyo,self.cNacionalidad,self.cOcupacion)
 		
 		handlers = {
 		"on_bSiguiente_clicked": self.on_bSiguiente_clicked,
@@ -92,6 +98,9 @@ class interfazPasajero:
 		self.pasajero.iva = self.eIVA.get_text()
 		self.pasajero.fecha_de_nac = self.fecha
 		
+		gestor = GestorGestionarPasajeros()
+		gestor.crearPasajero(self.pasajero)
+		
 		print self.pasajero.fecha_de_nac
 		
 	def on_cPais_changed(self,combo):
@@ -106,7 +115,7 @@ class interfazPasajero:
 		self.pasajero.nombreLocalidad = combo.get_active_text()	
 	
 	def cargarCombos(self,cPais,cProvincia,cLocalidad,cDocumento,cDia,cMes,cAnyo,cNacionalidad,cOcupacion):
-		engine = create_engine('postgresql://marina:mari@localhost/marina')
+		engine = create_engine(URL(**settings.DATABASE))
 		metadata = MetaData(engine)
 		
 		i = 1
@@ -167,7 +176,7 @@ class interfazPasajero:
 		cDocumento.append_text(fila.tipo)
 		for fila in rs:
 			cDocumento.append_text(fila.tipo)
-			
+		
 		nacionalidad = Table('nacionalidad',metadata,autoload=True)
 		s = nacionalidad.select()
 		rs = s.execute()

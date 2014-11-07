@@ -20,15 +20,15 @@ class Pasajero(DeclarativeBase):
 	apellido = Column('apellido', String, nullable=False)
 	cuit = Column('cuit', String, nullable=False)
 	email = Column('email', String, nullable=False)
-	fecha_de_nac = Column('fecha_de_nac', Date, nullable=False)
+#	fecha_de_nac = Column('fecha_de_nac', Date, nullable=False)
 	telefono = Column('telefono', String, nullable=False)
 
-	#foreign keys
+	"""#foreign keys
 	codigo = Column('codigo', Integer, ForeignKey("documento.codigo"), nullable=False)
 	id_direccion = Column('id_direccion', Integer, ForeignKey("direccion.id_direccion"), nullable=False)
 	id_nacionalidad = Column('id_nacionalidad', Integer, ForeignKey("nacionalidad.id_nacionalidad"), nullable=False)
 	id_ocupacion = Column('id_ocupacion', Integer, ForeignKey("ocupacion.id_ocupacion"), nullable=False)
 	id_iva = Column('id_iva', Integer, ForeignKey("posicion_iva.id_iva"), nullable=False)
+"""
 
-
-
+db_connect()

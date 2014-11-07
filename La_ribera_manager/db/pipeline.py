@@ -25,3 +25,4 @@ class PasajeroPipe(object):
 			session.close()
 		
 		return item
+PasajeroPipe()
