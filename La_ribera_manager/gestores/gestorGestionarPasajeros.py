@@ -44,17 +44,16 @@ class GestorGestionarPasajeros:
 			else:
 				completarCarga(pasajero)
 				return True
-				
-	def completo(self,DtoPasajero):
-		listaAtributos = [a for a in dir(DtoPasajero) if not a.startswith('__')]
-		print dir(DtoPasajero)
-		#if DtoPasajero.nombre is "":
-			#print "nombre es null"
-			#return False
-		#if DtoPasajero.apellido is "":
-			#print "apellido es null"
-			#return False
-		#else:
-			#return True
-		
 
+		else:
+			return faltantes(dtoPasajero)
+		
+	def completo(self, dtoPasajero):
+		omisiones=list()
+		
+		for atributo in dtoPasajero.pack:
+			for elemento in atributo:
+				if elemento is None:
+					omisiones.append(elemento)
+
+		return omisiones
