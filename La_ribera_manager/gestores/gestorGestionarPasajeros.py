@@ -17,7 +17,8 @@ class GestorGestionarPasajeros:
 		return gestordb.buscarPasajero(nombre, apellido, tipoDocu, Documento)
 	
 	def crearPasajero(self, dtoPasajero):	
-		if self.completo(dtoPasajero):
+		omisiones = self.completo(dtoPasajero)
+		if not omisiones:
 		
 			# Llamamos al gestor de direcciones
 			#gestorDireccion = GestorDireccion()
@@ -39,13 +40,13 @@ class GestorGestionarPasajeros:
 			gestordb = GestorDB()
 			arregloPasajeros = self.obtenerPasajero(pasajero) 
 			
-			if existePasajero(arregloPasajeros):
+			if self.existePasajero(arregloPasajeros):
 				return False
 			else:
-				completarCarga(pasajero)
+				self.completarCarga(pasajero)
 				return True
 		else:
-			return faltantes(dtoPasajero)
+			return omisiones
 		
 	def completo(self, dtoPasajero):
 		omisiones=list()
@@ -56,3 +57,8 @@ class GestorGestionarPasajeros:
 					omisiones.append(elemento)
 
 		return omisiones
+
+
+	def obtenerPasajero(pasajero):
+
+		
