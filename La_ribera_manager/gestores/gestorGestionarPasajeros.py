@@ -17,7 +17,7 @@ class GestorGestionarPasajeros:
 		return gestordb.buscarPasajero(nombre, apellido, tipoDocu, Documento)
 	
 	def crearPasajero(self, dtoPasajero):	
-		if completo(dtoPasajero):
+		if self.completo(dtoPasajero):
 		
 			# Llamamos al gestor de direcciones
 			#gestorDireccion = GestorDireccion()
@@ -44,19 +44,17 @@ class GestorGestionarPasajeros:
 			else:
 				completarCarga(pasajero)
 				return True
-			
-
-
-			
-		
+				
 	def completo(self,DtoPasajero):
-		if DtoPasajero.nombre is "":
-			print "nombre es null"
-			return False
-		if DtoPasajero.apellido is "":
-			print "apellido es null"
-			return False
-		else:
-			return True
+		listaAtributos = [a for a in dir(DtoPasajero) if not a.startswith('__')]
+		print dir(DtoPasajero)
+		#if DtoPasajero.nombre is "":
+			#print "nombre es null"
+			#return False
+		#if DtoPasajero.apellido is "":
+			#print "apellido es null"
+			#return False
+		#else:
+			#return True
 		
 

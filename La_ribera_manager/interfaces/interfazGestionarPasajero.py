@@ -45,14 +45,14 @@ class interfazGestionarPasajero:
 		apellido = self.eApellidos.get_text()
 		codigo = self.eDocumento.get_text()
 		##tipo = #Obtener valor del combobox
-
+		
 		gestionarPasajeros = GestorGestionarPasajeros()
 		
 		# Comprobamos el contenido del arreglo de pasajeros
 		coleccionPasajeros = gestionarPasajeros.buscar(nombre, apellido, tipo, codigo)	
-		if isnull(coleccionPasajeros):
+		#if isnull(coleccionPasajeros):
 			## llamamos alta pasajero
-		else
+		#else
 			## seleccionamos pasajero y llamamos a modificar pasajero
 			## sino selecciona llamamos a dar alta
 
