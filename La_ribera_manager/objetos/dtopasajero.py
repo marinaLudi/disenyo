@@ -3,10 +3,9 @@ class dtoPasajero:
 
 		# Atributos del objeto pasajero
 		atributosPasajero = dict(nombre=nombre, apellido=apellido, cuit=cuit, email=email, fecha_de_nac=fecha_de_nac, telefono=telefono)
-		print atributosPasajero	
+
 		# Atributos del objeto documento
 		atributosDocumento = dict(tipo=tipo, codigo=codigo)
-		print atributosDocumento
 			
 		# Atributos del objeto direccion, localidad, provincia y pais
 		atributosDireccion = dict(calle=calle, numero=numero, dpto=dpto, piso=piso, CP=CP)
@@ -21,5 +20,11 @@ class dtoPasajero:
 		#Atributos de posicino frente al IVA
 		atributosIva = dict(id_iva=id_iva, descripcion_iva=None)
 
-
+		
+		def pack(self):
+			return [atributosPasajero, atributosDocumento,
+					atributosDireccion, atributosLocalidad,
+					atributosProvincia, atributosPais,
+					atributosOcupacion, atributosNacionalidad,
+					atributosIva]
 
