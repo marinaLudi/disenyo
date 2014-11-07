@@ -1,7 +1,7 @@
 from sqlalchemy.orm import sessionmaker
 from models import Pasajero, db_connect, create_pasajero_table
 
-class PasajeroPipe(object):
+class Pipe(object):
 	def __init__(self):
 		"""
 		Inicilializa la coneccion a la base de datos y el sessionmaker.
@@ -25,4 +25,15 @@ class PasajeroPipe(object):
 			session.close()
 		
 		return item
-PasajeroPipe()
+
+	def getPasajeroList(self, nombre=None, apellido=None, tipoDocu=None, documento=None):
+		session = self.Session()
+
+		try:
+			arregloPasajeros = session.query(Pasajero).filter(Pasajero.name == nombre, Pasajero.apellido == apellido, Pasajero.tipoDocu == tipoDocu, Pasajero.documento == documento).order_by(Pasajero.apellido)
+		except:
+			raise
+		finally:
+			session.close()
+
+		return arregloPasajeros
