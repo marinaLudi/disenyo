@@ -32,7 +32,8 @@ class interfazPasajero:
 		self.eApellidos = builder.get_object("eApellidos")
 		self.eDocumento = builder.get_object("eDocumento")
 		self.eTelefono = builder.get_object("eTelefono")
-		self.eDireccion = builder.get_object("eDireccion")
+		self.eCalle = builder.get_object("eCalle")
+		self.eNumero = builder.get_object("eNumero")
 		self.eDepto = builder.get_object("eDepto")
 		self.ePiso = builder.get_object("ePiso")
 		self.ePostal = builder.get_object("ePostal")
@@ -54,11 +55,12 @@ class interfazPasajero:
 		self.cargarCombos(self.cPais,self.cProvincia,self.cLocalidad,self.cDocumento,self.cDia,self.cMes,self.cAnyo,self.cNacionalidad,self.cOcupacion)
 		
 		#variables auxiliares
-		self.codigo = None
+		self.tipo = None
 		self.localidad = None
 		self.provincia = None
 		self.nacionalidad = None
 		self.pais = None
+		self.ocupacion = None
 		
 		
 		
@@ -88,7 +90,7 @@ class interfazPasajero:
 		
 		
 	def on_cDocumento_changed(self,combo):
-		self.codigo = combo.get_active_text()
+		self.tipo = combo.get_active_text()
 		
 		
 	def on_cOcupacion_changed(self,combo):
@@ -122,22 +124,9 @@ class interfazPasajero:
 	
 	def on_bSiguiente_clicked(self,boton):
 		
-		#self.pasajero.nombre = self.eNombres.get_text()
-		#self.pasajero.apellido = self.eApellidos.get_text()
-		#self.pasajero.cuit = self.eCUIT.get_text()
-		#self.pasajero.email = self.eCorreo.get_text()
-		#self.pasajero.telefono = self.eTelefono.get_text()
-		#self.pasajero.direccion = self.eDireccion.get_text()
-		#self.pasajero.dpto = self.eDepto.get_text()
-		#self.pasajero.piso = self.ePiso.get_text()
-		#self.pasajero.cPostal = self.ePostal.get_text()
-		#self.pasajero.iva = self.eIVA.get_text()
-		#self.pasajero.fecha_de_nac = self.fecha
-		#self, nombre=None, apellido=None, cuit=None, email=None, fecha_de_nac=None, telefono=None, tipo=None, codigo=None, numero=None, calle=None, dpto=None, piso=None, id_localidad=None, id_prov=None, id_pais=None, id_ocupacion=None, id_nacionalidad=None, id_iva=None, CP=None, nombreLocalidad=None,descripcion_ocupacion=None):
-		
-		pasajero = dtoPasajero(nombre=self.eNombres.get_text(), apellido=self.eApellidos.get_text(), email=self.eCorreo.get_text(), fecha_de_nac=self.fecha, telefono=self.eTelefono.get_text(), direccion=self.eDireccion.get_text(), CP=self.ePostal.get_text(), id_iva=self.eIVA.get_text(), descripcion_ocupacion=self.ocupacion,nombrePais=self.pais,nombreLocalidad=self.localidad,nombreProv=self.provincia)
-		#gestor = GestorGestionarPasajeros()
-		#gestor.crearPasajero(self.pasajero)	
+		pasajero = dtoPasajero(nombre=self.eNombres.get_text(), apellido=self.eApellidos.get_text(), email=self.eCorreo.get_text(), fecha_de_nac=self.fecha, telefono=self.eTelefono.get_text(), CP=self.ePostal.get_text(), id_iva=self.eIVA.get_text(), descripcion_ocupacion=self.ocupacion,nombrePais=self.pais,nombreLocalidad=self.localidad,nombreProv=self.provincia,nombreNacionalidad=self.nacionalidad,calle=self.eCalle.get_text(),numero=self.eNumero.get_text(),dpto=self.eDepto.get_text(),piso=self.ePiso.get_text(),tipo=self.tipo,codigo=self.eDocumento.get_text())
+		gestor = GestorGestionarPasajeros()
+		gestor.crearPasajero(pasajero)	
 	
 	
 	def cargarCombos(self,cPais,cProvincia,cLocalidad,cDocumento,cDia,cMes,cAnyo,cNacionalidad,cOcupacion):
