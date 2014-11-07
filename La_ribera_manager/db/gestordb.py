@@ -10,4 +10,4 @@ class GestorDB:
 
 	# Buscamos un pasajero en la base de datos
 	def buscarPasajero(nombre, apellido, tipoDocu, Documento):
-		
+					

@@ -4,5 +4,5 @@ DATABASE = {
 	'port': '5432',
 	'username': 'argot',
 	'password': 'lolita',
-	'databse': 'testan'
+	'database': 'testan'
 }
