@@ -38,7 +38,7 @@ class interfazPasajero:
 		self.cOcupacion = builder.get_object("cOcupacion")
 		
 		self.window1.set_border_width(25)
-		self.window1.set_default_size(800,600)
+		self.window1.set_default_size(735,530)
 		self.cargarCombos(self.cPais,self.cProvincia,self.cLocalidad,self.cDocumento,self.cDia,self.cMes,self.cAnyo,self.cNacionalidad,self.cOcupacion)
 		
 		handlers = {
@@ -67,7 +67,7 @@ class interfazPasajero:
 		
 	def on_cOcupacion_changed(self,combo):
 		self.pasajero.ocupacion = combo.get_active_text()
-		print self.pasajero.ocupacion
+
 		
 	def on_cNacionalidad_changed(self,combo):
 		self.pasajero.nacionalidad = combo.get_active_text()
@@ -101,7 +101,6 @@ class interfazPasajero:
 		gestor = GestorGestionarPasajeros()
 		gestor.crearPasajero(self.pasajero)
 		
-		print self.pasajero.fecha_de_nac
 		
 	def on_cPais_changed(self,combo):
 		self.pasajero.nombrePais = combo.get_active_text()

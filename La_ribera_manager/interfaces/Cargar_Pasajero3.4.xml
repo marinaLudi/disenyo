@@ -12,13 +12,16 @@
       <object class="GtkBox" id="box1">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="hexpand">False</property>
         <property name="orientation">vertical</property>
-        <property name="spacing">14</property>
         <child>
           <object class="GtkLabel" id="label1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label" translatable="yes">Registrar nuevo pasajero</property>
+            <attributes>
+              <attribute name="scale" value="2"/>
+            </attributes>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -30,6 +33,8 @@
           <object class="GtkGrid" id="grid1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
             <property name="row_spacing">3</property>
             <property name="column_spacing">40</property>
             <property name="column_homogeneous">True</property>
@@ -346,6 +351,7 @@
                 <property name="spacing">6</property>
                 <child>
                   <object class="GtkComboBoxText" id="cDocumento">
+                    <property name="width_request">40</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <signal name="changed" handler="on_cDocumento_changed" swapped="no"/>
@@ -360,6 +366,7 @@
                   <object class="GtkEntry" id="eDocumento">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="hexpand">True</property>
                     <property name="max_length">30</property>
                     <property name="input_purpose">digits</property>
                   </object>
@@ -418,6 +425,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="spacing">10</property>
+                <property name="homogeneous">True</property>
                 <property name="baseline_position">top</property>
                 <child>
                   <object class="GtkLabel" id="label15">
@@ -636,10 +644,14 @@
             </child>
           </object>
           <packing>
-            <property name="expand">False</property>
+            <property name="expand">True</property>
             <property name="fill">True</property>
+            <property name="pack_type">end</property>
             <property name="position">1</property>
           </packing>
+        </child>
+        <child>
+          <placeholder/>
         </child>
       </object>
     </child>

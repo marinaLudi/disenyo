@@ -6,7 +6,7 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
 
-from objetos.pasajero import pasajero
+from db.models import Pasajero
 from db.gestordb import GestorDB
 
 class GestorGestionarPasajeros:
@@ -15,14 +15,24 @@ class GestorGestionarPasajeros:
 
 		return database.buscarPasajero(nombre, apellido, tipoDocu, Documento)
 	
-	def crearPasajero(self,DtoPasajero):
-		try:
-			self.completo(DtoPasajero)
-		except:
-			print 'eh?'
+	def crearPasajero(self,DtoPasajero):	
+		if self.completo(DtoPasajero):
+			print "completo"
+			pasajero = Pasajero()
+			pasajero.nombre = DtoPasajero.nombre
+			pasajero.apellido=DtoPasajero.apellido
+			print pasajero.nombre
+			
 
 		
 	def completo(self,DtoPasajero):
-		print DtoPasajero.nombre
+		if DtoPasajero.nombre is "":
+			print "nombre es null"
+			return False
+		if DtoPasajero.apellido is "":
+			print "apellido es null"
+			return False
+		else:
+			return True
 		
 

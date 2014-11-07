@@ -31,4 +31,3 @@ class Pasajero(DeclarativeBase):
 	id_iva = Column('id_iva', Integer, ForeignKey("posicion_iva.id_iva"), nullable=False)
 """
 
-db_connect()
