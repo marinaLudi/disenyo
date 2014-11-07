@@ -29,7 +29,7 @@ class Iva(DeclarativeBase):
 	id_iva = Column(Integer, primary_key=True)
 
 	# atributos
-	descripcion = Column(String, nullable=False)
+	descripcion_iva = Column("descripcion", String, nullable=False)
 
 class Ocupacion(DeclarativeBase):
 	__tablename__ = "ocupacion"
@@ -38,7 +38,7 @@ class Ocupacion(DeclarativeBase):
 	id_ocupacion = Column(Integer, primary_key=True)
 
 	# atributos
-	descripcion = Column(String, nullable=False)
+	descripcion_ocupacion = Column("descripcion", String, nullable=False)
 
 class Direccion(DeclarativeBase):
 	__tablename__ = "direccion"
@@ -49,7 +49,7 @@ class Direccion(DeclarativeBase):
 	# atributos
 	calle = Column(String, nullable=False)
 	numero = Column(Integer, nullable=False)
-	departamento = Column(String)
+	dpto = Column(String)
 	piso = Column(String)
 	CP = Column(String, nullable=False)
 
@@ -63,7 +63,7 @@ class Localidad(DeclarativeBase):
 	id_localidad = Column(Integer, primary_key=True)
 
 	# atributos
-	nombre = Column(String, nullable=False)
+	nombreLocalidad = Column("nombre", String, nullable=False)
 
 	# foreign keys
 	id_provincia = Column(Integer, ForeignKey("provincia.id_provincia"), nullable=False)
@@ -75,7 +75,7 @@ class Provincia(DeclarativeBase):
 	id_provincia = Column(Integer, primary_key=True)
 
 	# atributos
-	nombre = Column(String, nullable=False)
+	nombreProv = Column("nombre", String, nullable=False)
 
 	# foreign keys
 	id_pais = Column(Integer, ForeignKey("pais.id_pais"), nullable=False)
@@ -87,7 +87,7 @@ class Pais(DeclarativeBase):
 	id_pais = Column(Integer, primary_key=True)
 
 	# atributos
-	nombre = Column(String, nullable=False)
+	nombrePais = Column("nombre", String, nullable=False)
 
 class Pasajero(DeclarativeBase):
 	__tablename__ = "pasajero"

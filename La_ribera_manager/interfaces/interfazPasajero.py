@@ -19,7 +19,7 @@ class interfazPasajero:
 	def __init__(self):
 		
 		builder = Gtk.Builder()
-		builder.add_from_file("interfaces/Cargar_Pasajero3.4.xml")
+		builder.add_from_file("Cargar_Pasajero3.4.xml")
 		
 		self.window1 = builder.get_object("window1")
 		self.bSiguiente = builder.get_object("bSiguiente")

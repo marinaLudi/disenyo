@@ -3,7 +3,7 @@
 import sys, os, inspect
 
 #Agregamos directorio padre al path
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfile())))
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
 
@@ -14,7 +14,7 @@ class interfazGestionarPasajero:
 	def __init__(self):
 		
 		builder = Gtk.Builder()
-		builder.add_from_file("interfaces/Gestionar_Pasajero3.4.xml")
+		builder.add_from_file("Gestionar_Pasajero3.4.xml")
 		
 		self.window1 = builder.get_object("window1")
 		self.bSiguiente = builder.get_object("bSiguiente")
