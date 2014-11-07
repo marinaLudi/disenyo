@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy import create_engine, Column, Integer, String, Date
 from sqlalchemy.engine.url import URL
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -12,22 +12,100 @@ def db_connect():
 def create_pasajero_table(engine):
 	DeclarativeBase.metadata.create_all(engine)
 
+
+class Documento(DeclarativeBase):
+	__tablename__ = "documento"
+
+	# primary key
+	codigo = Column(Integer, primary_key=True)
+
+	# atributos
+	tipo = Column(String, nullable=False)
+
+class Iva(DeclarativeBase):
+	__tablename__ = "iva"
+	
+	# primary key
+	id_iva = Column(Integer, primary_key=True)
+
+	# atributos
+	descripcion = Column(String, nullable=False)
+
+class Ocupacion(DeclarativeBase):
+	__tablename__ = "ocupacion"
+
+	# primary key
+	id_ocupacion = Column(Integer, primary_key=True)
+
+	# atributos
+	descripcion = Column(String, nullable=False)
+
+class Direccion(DeclarativeBase):
+	__tablename__ = "direccion"
+
+	# primary keu
+	id_direccion = Column(Integer, primary_key=True)
+
+	# atributos
+	calle = Column(String, nullable=False)
+	numero = Column(Integer, nullable=False)
+	departamento = Column(String)
+	piso = Column(String)
+	CP = Column(String, nullable=False)
+
+	# foreign keys
+	id_localidad = Column(Integer, ForeignKey("localidad.id_localidad"), nullable=False)
+
+class Localidad(DeclarativeBase):
+	__tablename__ = "localidad"
+
+	# primary key
+	id_localidad = Column(Integer, primary_key=True)
+
+	# atributos
+	nombre = Column(String, nullable=False)
+
+	# foreign keys
+	id_provincia = Column(Integer, ForeignKey("provincia.id_provincia"), nullable=False)
+
+class Provincia(DeclarativeBase):
+	__tablename__ = "provincia"
+
+	# primary key
+	id_provincia = Column(Integer, primary_key=True)
+
+	# atributos
+	nombre = Column(String, nullable=False)
+
+	# foreign keys
+	id_pais = Column(Integer, ForeignKey("pais.id_pais"), nullable=False)
+
+class Pais(DeclarativeBase):
+	__tablename__ = "pais"
+
+	# primary key
+	id_pais = Column(Integer, primary_key=True)
+
+	# atributos
+	nombre = Column(String, nullable=False)
+
 class Pasajero(DeclarativeBase):
 	__tablename__ = "pasajero"
 
+	# primary key
 	id_pasajero = Column(Integer, primary_key=True)
-	nombre = Column('nombre', String, nullable=False)
-	apellido = Column('apellido', String, nullable=False)
-	cuit = Column('cuit', String, nullable=False)
-	email = Column('email', String, nullable=False)
-#	fecha_de_nac = Column('fecha_de_nac', Date, nullable=False)
-	telefono = Column('telefono', String, nullable=False)
 
-	"""#foreign keys
-	codigo = Column('codigo', Integer, ForeignKey("documento.codigo"), nullable=False)
-	id_direccion = Column('id_direccion', Integer, ForeignKey("direccion.id_direccion"), nullable=False)
-	id_nacionalidad = Column('id_nacionalidad', Integer, ForeignKey("nacionalidad.id_nacionalidad"), nullable=False)
-	id_ocupacion = Column('id_ocupacion', Integer, ForeignKey("ocupacion.id_ocupacion"), nullable=False)
-	id_iva = Column('id_iva', Integer, ForeignKey("posicion_iva.id_iva"), nullable=False)
-"""
+	# atributos
+	nombre = Column(String, nullable=False)
+	apellido = Column(String, nullable=False)
+	cuit = Column(String, nullable=False)
+	email = Column(String, nullable=False)
+	fecha_de_nac = Column(Date, nullable=False)
+	telefono = Column(String, nullable=False)
 
+	# foreign keys
+	codigo = Column(Integer, ForeignKey("documento.codigo"), nullable=False)
+	id_direccion = Column(Integer, ForeignKey("direccion.id_direccion"), nullable=False)
+	id_nacionalidad = Column(Integer, ForeignKey("nacionalidad.id_nacionalidad"), nullable=False)
+	id_ocupacion = Column(Integer, ForeignKey("ocupacion.id_ocupacion"), nullable=False)
+	id_iva = Column(Integer, ForeignKey("posicion_iva.id_iva"), nullable=False)

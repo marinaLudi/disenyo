@@ -30,7 +30,7 @@ class Pipe(object):
 		session = self.Session()
 
 		try:
-			arregloPasajeros = session.query(Pasajero).filter(Pasajero.name == nombre, Pasajero.apellido == apellido, Pasajero.tipoDocu == tipoDocu, Pasajero.documento == documento).order_by(Pasajero.apellido)
+			arregloPasajeros = session.query(Pasajero).filter(Pasajero.name == nombre, Pasajero.apellido == apellido, Pasajero.tipoDocu == tipoDocu, Pasajero.documento == documento).order_by(Pasajero.apellido).all()
 		except:
 			raise
 		finally:
