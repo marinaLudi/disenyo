@@ -1,12 +1,23 @@
+#### Interjfaz Gestionar Pasajero ####
+
+import sys, os, inspect
+
+#Agregamos directorio padre al path
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0, parentdir)
+
 from gi.repository import Gtk
-from objetos.dtopasajero import DtoPasajero
+from gestores.gestorGestionarPasajeros import GestorGestionarPasajeros
 
 class interfazGestionarPasajero:
 	def __init__(self):
 		
 		builder = Gtk.Builder()
-		builder.add_from_file("interfaces/Gestionar_Pasajero3.4.xml")
+		# Dibuja ventanas desde .xml
+		builder.add_from_file("Gestionar_Pasajero3.4.xml")
 		
+		# Obtenemos ventanas
 		self.window1 = builder.get_object("window1")
 		self.bSiguiente = builder.get_object("bSiguiente")
 		self.bCancelar = builder.get_object("bCancelar")
@@ -18,7 +29,7 @@ class interfazGestionarPasajero:
 		self.window1.set_border_width(25)
 		self.window1.set_default_size(735,530)
 
-		
+		# Events handlers
 		handlers = {
 		"on_bSiguiente_clicked": self.on_bSiguiente_clicked,
 		"on_window1_destroy": Gtk.main_quit,
@@ -26,15 +37,25 @@ class interfazGestionarPasajero:
 		"on_cDocumento_changed": self.on_cDocumento_changed,
 		}
 		builder.connect_signals(handlers)
-		pasajero = DtoPasajero()
 		
 		self.window1.show_all()	
 		
 	def on_bSiguiente_clicked(self,boton):
-		pasajero.nombre = self.eNombre.get_text()
-		pasajero.apellido = self.eApellidos.get_text()
-		pasajero.codigo = self.eDocumento.get_text()
-		print "buscar pasajero"
+		nombre = self.eNombre.get_text()
+		apellido = self.eApellidos.get_text()
+		codigo = self.eDocumento.get_text()
+		##tipo = #Obtener valor del combobox
+
+		gestionarPasajeros = GestorGestionarPasajeros()
+		
+		# Comprobamos el contenido del arreglo de pasajeros
+		coleccionPasajeros = gestionarPasajeros.buscar(nombre, apellido, tipo, codigo)	
+		if isnull(coleccionPasajeros):
+			## llamamos alta pasajero
+		else
+			## seleccionamos pasajero y llamamos a modificar pasajero
+			## sino selecciona llamamos a dar alta
+
 			
 	def on_bCancelar_clicked(self,boton):
 		print "cancelar"
@@ -42,7 +63,8 @@ class interfazGestionarPasajero:
 	def on_cDocumento_changed(self,combo):
 		print "cargar dni"
 		
-		
-		
+	def isnull(coleccionPasajeros):
+		return not coleccionPasajeros	
+
 interfazGestionarPasajero()
 Gtk.main()	

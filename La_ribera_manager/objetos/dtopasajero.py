@@ -1,26 +1,23 @@
-class DtoPasajero:
-	def __init__(self, nombre=None, apellido=None, cuit=None, email=None, fecha_de_nac=None, telefono=None, id_ocupacion=None, ocupacion=None, nombrePais=None, id_nacionalidad=None,nacionalidad=None, tipo=None, codigo=None, numero=None, calle=None, piso=None, dpto=None, nombreLocalidad=None, id_localidad=None, nombreProv=None, id_prov=None, id_pais=None, cPostal=None,iva=None):
-		self.nombre = nombre
-		self.apellido = apellido
-		self.cuit = cuit
-		self.email = email
-		self.fecha_de_nac = fecha_de_nac
-		self.telefono = telefono
-		self.id_ocupacion = id_ocupacion
-		self.ocupacion = ocupacion
-		self.nombrePais = nombrePais
-		self.id_nacionalidad = id_nacionalidad
-		self.nacionalidad = nacionalidad
-		self.tipo = tipo
-		self.codigo = codigo
-		self.numero = numero
-		self.calle = calle
-		self.piso = piso
-		self.dpto = dpto
-		self.nombreLocalidad = nombreLocalidad
-		self.id_localidad = id_localidad
-		self.nombreProv = nombreProv
-		self.id_prov = id_prov
-		self.id_pais = id_pais
-		self.cPostal = cPostal
-		self.iva = iva
+class dtoPasajero:
+	def __init__(self, nombre=None, apellido=None, cuit=None, email=None, fecha_de_nac=None, telefono=None, tipo=None, codigo=None, numero=None, calle=None, dpto=None, piso=None, id_localidad=None, id_prov=None, id_pais=None, id_ocupacion=None, id_nacionalidad=None, id_iva=None, CP=None, nombreLocalidad=None,descripcion_ocupacion=None,nombrePais=None,nombreProv=None):
+
+		# Atributos del objeto pasajero
+		atributosPasajero = dict(nombre=nombre, apellido=apellido, cuit=cuit, email=email, fecha_de_nac=fecha_de_nac, telefono=telefono)
+		
+		# Atributos del objeto documento
+		atributosDocumento = dict(tipo=tipo, codigo=codigo)
+			
+		# Atributos del objeto direccion, localidad, provincia y pais
+		atributosDireccion = dict(calle=calle, numero=numero, dpto=dpto, piso=piso, CP=CP)
+		atributosLocalidad = dict(id_localidad=id_localidad, nombreLocalidad=None)
+		atributosProvincia = dict(id_provincia=id_prov, nombreProv=None)
+		atributosPais = dict(id_pais=id_pais, nombrePais=None)
+
+		#Atributos de ocupacion
+		atributosOcupacion = dict(id_ocupacion=id_ocupacion, descripcion_ocupacion=None)
+
+		#Atributos de posicino frente al IVA
+		atributosIva = dict(id_iva=id_iva, descripcion_iva=None)
+
+
+

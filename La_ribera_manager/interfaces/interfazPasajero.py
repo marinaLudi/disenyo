@@ -1,11 +1,20 @@
+import sys, os, inspect
+
+#Agregamos directorio padre al path
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0, parentdir)
+
 from gi.repository import Gtk
 from sqlalchemy import *
 import datetime
-from objetos.dtopasajero import DtoPasajero
+from objetos.dtopasajero import dtoPasajero
 from gestores.gestorGestionarPasajeros import *
 from sqlalchemy.engine.url import URL
 from db import settingsm
 from sqlalchemy.orm import sessionmaker
+#from db.settings import DATABASE
+
 
 
 
@@ -13,8 +22,10 @@ class interfazPasajero:
 	def __init__(self):
 		
 		builder = Gtk.Builder()
-		builder.add_from_file("interfaces/Cargar_Pasajero3.4.xml")
+		builder.add_from_file("Cargar_Pasajero3.4.xml")
 		
+		
+		#carga conecta los widgets con la interfaz
 		self.window1 = builder.get_object("window1")
 		self.bSiguiente = builder.get_object("bSiguiente")
 		self.eNombres = builder.get_object("eNombres")
@@ -42,6 +53,16 @@ class interfazPasajero:
 		self.window1.set_default_size(735,530)
 		self.cargarCombos(self.cPais,self.cProvincia,self.cLocalidad,self.cDocumento,self.cDia,self.cMes,self.cAnyo,self.cNacionalidad,self.cOcupacion)
 		
+		#variables auxiliares
+		self.codigo = None
+		self.localidad = None
+		self.provincia = None
+		self.nacionalidad = None
+		self.pais = None
+		
+		
+		
+		#conecta las senyales con sus funciones
 		handlers = {
 		"on_bSiguiente_clicked": self.on_bSiguiente_clicked,
 		"on_window1_destroy": Gtk.main_quit,
@@ -57,62 +78,67 @@ class interfazPasajero:
 		}
 		builder.connect_signals(handlers)
 		
-		self.pasajero = DtoPasajero()
+
 		self.fecha = datetime.date(0001,01,01)
 				
 		self.window1.show_all()
 		
+		
+		
+		
+		
 	def on_cDocumento_changed(self,combo):
-		self.pasajero.codigo = combo.get_active_text()
+		self.codigo = combo.get_active_text()
 		
 		
 	def on_cOcupacion_changed(self,combo):
-		self.pasajero.ocupacion = combo.get_active_text()
+		self.ocupacion = combo.get_active_text()
 
 		
 	def on_cNacionalidad_changed(self,combo):
-		self.pasajero.nacionalidad = combo.get_active_text()
+		self.nacionalidad = combo.get_active_text()
 	
 	def on_cAnyo_changed(self,combo):
 		self.fecha = self.fecha.replace(year=int(combo.get_active_text()))
-		print self.fecha	
+	
 	
 	def on_cDia_changed(self,combo):
 		self.fecha = self.fecha.replace(day=int(combo.get_active_text()))
-		print self.fecha	
+	
 					
 	def on_cMes_changed(self,combo):
 		self.fecha = self.fecha.replace(month=int(combo.get_active_text()))
-		print self.fecha
-		
-	def on_bSiguiente_clicked(self,boton):
-		
-		self.pasajero.nombre = self.eNombres.get_text()
-		self.pasajero.apellido = self.eApellidos.get_text()
-		self.pasajero.cuit = self.eCUIT.get_text()
-		self.pasajero.email = self.eCorreo.get_text()
-		self.pasajero.telefono = self.eTelefono.get_text()
-		self.pasajero.direccion = self.eDireccion.get_text()
-		self.pasajero.dpto = self.eDepto.get_text()
-		self.pasajero.piso = self.ePiso.get_text()
-		self.pasajero.cPostal = self.ePostal.get_text()
-		self.pasajero.iva = self.eIVA.get_text()
-		self.pasajero.fecha_de_nac = self.fecha
-		
-		gestor = GestorGestionarPasajeros()
-		gestor.crearPasajero(self.pasajero)
-		
-		
+	
 	def on_cPais_changed(self,combo):
-		self.pasajero.nombrePais = combo.get_active_text()
+		self.pais = combo.get_active_text()
 
 		
 	def on_cProvincia_changed(self,combo):
-		self.pasajero.nombreProvincia = combo.get_active_text()
+		self.provincia = combo.get_active_text()
 
 	
 	def on_cLocalidad_changed(self,combo):
-		self.pasajero.nombreLocalidad = combo.get_active_text()	
+		self.localidad = combo.get_active_text()	
+	
+	def on_bSiguiente_clicked(self,boton):
+		
+		#self.pasajero.nombre = self.eNombres.get_text()
+		#self.pasajero.apellido = self.eApellidos.get_text()
+		#self.pasajero.cuit = self.eCUIT.get_text()
+		#self.pasajero.email = self.eCorreo.get_text()
+		#self.pasajero.telefono = self.eTelefono.get_text()
+		#self.pasajero.direccion = self.eDireccion.get_text()
+		#self.pasajero.dpto = self.eDepto.get_text()
+		#self.pasajero.piso = self.ePiso.get_text()
+		#self.pasajero.cPostal = self.ePostal.get_text()
+		#self.pasajero.iva = self.eIVA.get_text()
+		#self.pasajero.fecha_de_nac = self.fecha
+		#self, nombre=None, apellido=None, cuit=None, email=None, fecha_de_nac=None, telefono=None, tipo=None, codigo=None, numero=None, calle=None, dpto=None, piso=None, id_localidad=None, id_prov=None, id_pais=None, id_ocupacion=None, id_nacionalidad=None, id_iva=None, CP=None, nombreLocalidad=None,descripcion_ocupacion=None):
+		
+		pasajero = dtoPasajero(nombre=self.eNombres.get_text(), apellido=self.eApellidos.get_text(), email=self.eCorreo.get_text(), fecha_de_nac=self.fecha, telefono=self.eTelefono.get_text(), direccion=self.eDireccion.get_text(), CP=self.ePostal.get_text(), id_iva=self.eIVA.get_text(), descripcion_ocupacion=self.ocupacion,nombrePais=self.pais,nombreLocalidad=self.localidad,nombreProv=self.provincia)
+		#gestor = GestorGestionarPasajeros()
+		#gestor.crearPasajero(self.pasajero)	
+	
 	
 	def cargarCombos(self,cPais,cProvincia,cLocalidad,cDocumento,cDia,cMes,cAnyo,cNacionalidad,cOcupacion):
 		engine = create_engine(URL(**settingsm.DATABASE))
@@ -124,9 +150,6 @@ class interfazPasajero:
 			cDia.append_text(str(i))
 			i = i+1
 		
-		#meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
-		#for mes in meses:
-		#	cMes.append_text(mes)
 		i = 1
 		while i <=12:
 			cMes.append_text(str(i))
