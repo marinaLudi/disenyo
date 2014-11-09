@@ -52,8 +52,9 @@ class GestorGestionarPasajeros:
 		omisiones=list()
 		
 		for atributo in dtoPasajero.pack:
-			for elemento in atributo:
-				if elemento is None:
-					omisiones.append(elemento)
+			if not atributo.startwith("id"):
+				for elemento in atributo:
+					if elemento is None:
+						omisiones.append(elemento)
 
 		return omisiones

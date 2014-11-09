@@ -1,7 +1,7 @@
-from sqlalchemy import create_engine, Column, Integer, String, Date
+from sqlalchemy import create_engine, Column, Integer, String, Date, ForeignKey
 from sqlalchemy.engine.url import URL
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import *
+from sqlalchemy.orm import relationship, backref
 
 import settingsm
 
@@ -44,7 +44,7 @@ class Ocupacion(DeclarativeBase):
 class Direccion(DeclarativeBase):
 	__tablename__ = "direccion"
 
-	# primary keu
+	# primary key
 	id_direccion = Column(Integer, primary_key=True)
 
 	# atributos
@@ -56,6 +56,9 @@ class Direccion(DeclarativeBase):
 
 	# foreign keys
 	id_localidad = Column(Integer, ForeignKey("localidad.id_localidad"), nullable=False)
+	
+	#relacion
+	localidad = relationship("Localidad",backref=backref("direccion",order_by=id_direccion))
 
 class Localidad(DeclarativeBase):
 	__tablename__ = "localidad"
@@ -68,6 +71,9 @@ class Localidad(DeclarativeBase):
 
 	# foreign keys
 	id_provincia = Column(Integer, ForeignKey("provincia.id_provincia"), nullable=False)
+	
+	#relacion
+	provincia = relationship("Provincia",backref=backref("localidad",order_by=id_localidad))	
 
 class Provincia(DeclarativeBase):
 	__tablename__ = "provincia"
@@ -80,6 +86,9 @@ class Provincia(DeclarativeBase):
 
 	# foreign keys
 	id_pais = Column(Integer, ForeignKey("pais.id_pais"), nullable=False)
+
+	#relacion
+	pais = relationship("Pais",backref=backref("provincia",order_by=id_provincia))
 
 class Pais(DeclarativeBase):
 	__tablename__ = "pais"
@@ -110,3 +119,10 @@ class Pasajero(DeclarativeBase):
 	id_nacionalidad = Column(Integer, ForeignKey("nacionalidad.id_nacionalidad"), nullable=False)
 	id_ocupacion = Column(Integer, ForeignKey("ocupacion.id_ocupacion"), nullable=False)
 	id_iva = Column(Integer, ForeignKey("posicion_iva.id_iva"), nullable=False)
+
+	#relacion
+	documento = relationship("Documento",backref=backref("pasajero",order_by=id_pasajero))
+	direccion = relationship("Direccion",backref=backref("pasajero",order_by=id_pasajero))	
+	nacionalidad = relationship("Nacionalidad",backref=backref("pasajero",order_by=id_pasajero))
+	ocupacion = relationship("Ocupacion",backref=backref("pasajero",order_by=id_pasajero))
+	iva = relationship("Iva",backref=backref("pasajero",order_by=id_pasajero))

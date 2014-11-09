@@ -21,10 +21,11 @@ class dtoPasajero:
 		atributosIva = dict(id_iva=id_iva, descripcion_iva=None)
 
 		
-		def pack(self):
-			return [atributosPasajero, atributosDocumento,
-					atributosDireccion, atributosLocalidad,
-					atributosProvincia, atributosPais,
-					atributosOcupacion, atributosNacionalidad,
-					atributosIva]
+	def pack(self):
+		return [atributosPasajero, atributosDocumento,
+				atributosDireccion, atributosLocalidad,
+				atributosProvincia, atributosPais,
+				atributosOcupacion, atributosNacionalidad,
+				atributosIva]
+					
 
