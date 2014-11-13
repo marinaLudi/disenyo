@@ -22,7 +22,8 @@ class Pipe(object):
 			raise
 		finally:
 			session.close()
-		
+
+
 		return objeto
 
 	def getPasajeroList(self, filtros):
