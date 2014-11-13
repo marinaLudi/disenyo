@@ -36,33 +36,18 @@ class Pipe(object):
 			session.close()
 
 		return arregloPasajeros
-		
-	def cargarCombos(self,lPais,lNacionalidad,lOcupacion,lIVA):
-		session = self.Session()
-		
-		paises = session.query(Pais.id_pais, Pais.nombrePais).all()
-		for e in paises:
-			lPais.append([e.id_pais, e.nombrePais])
-		
-		nacionalidades = session.query(Nacionalidad.id_nacionalidad,Nacionalidad.nombreNacionalidad).all()
-		for e in nacionalidades:
-			lNacionalidad.append([e.id_nacionalidad,e.nombreNacionalidad])
-		
-		ocupaciones = session.query(Ocupacion.id_ocupacion,Ocupacion.descripcion_ocupacion).all()
-		for e in ocupaciones:
-			lOcupacion.append([e.id_ocupacion,e.descripcion_ocupacion])
 			
-		ivas = session.query(Iva.id_iva,Iva.descripcion_iva).all()
-		for e in ivas:
-			lIVA.append([e.id_iva,e.descripcion_iva])
-	
-	def cargarDocumento(self, lDocumento):
+	def cargarCombo(self,tabla):
 		session = self.Session()
-		documentos = session.query(Documento.codigo,Documento.tipo).all()
-		for e in documentos:
-			lDocumento.append([e.codigo,e.tipo])	
-		
-		
+		try:
+			tablas = session.query(tabla).all()
+		except:
+			session.rollback()
+			raise
+		finally:
+			session.close()
+			
+		return tablas		
 	
 	def getProvincia(self, lProvincia, id_pais):
 		session = self.Session()
@@ -79,3 +64,11 @@ class Pipe(object):
 			lLocalidad.append([e.id_localidad,e.nombreLocalidad])
 		
 			
+	def instanciaObjetoID(self,objeto,ID):
+		session = self.Session()
+		objeto = session.query(objeto).get(ID)
+		return objeto
+
+pipe = Pipe()
+pais = pipe.instanciaObjetoID(Provincia,3)
+print pais.nombreProv

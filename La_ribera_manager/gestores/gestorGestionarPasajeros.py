@@ -6,8 +6,9 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
 
-from db.models import Pasajero, Documento, Iva, Ocupacion, Pais
+from db.models import Pasajero, Documento, Iva, Ocupacion, Pais,Nacionalidad
 from db.gestordb import GestorDB
+from db.pipeline import Pipe
 from objetos.dtopasajero import dtoPasajero
 #from gestordireccion import GestorDireccion
 
@@ -25,13 +26,23 @@ class GestorGestionarPasajeros:
 			#direccion_aux = gestorDireccion.crearDireccion(dtoPasajero)
 
 			#mapea atributos dto con pasajero
+		pipe = Pipe()
 		keys = dtoPasajero.atributosPasajero.keys()
 		p1 = Pasajero()
 		for a in keys:
 			p1.a = dtoPasajero.atributosPasajero[a]
 		
-		gestor = GestorDB()
-		gestor.guardarPasajero(p1)
+		p1.id_nacionalidad = dtoPasajero.id_nacionalidad
+		p1.nacionalidad = pipe.instanciaObjetoID(Nacionalidad,dtoPasajero.id_nacionalidad)
+		p1.id_ocupacion = dtoPasajero.id_ocupacion
+		p1.ocupacion = pipe.instanciaObjetoID(Ocupacion,dtoPasajero.id_ocupacion) 
+		p1.id_iva = dtoPasajero.id_iva
+		
+		
+		
+		
+		#gestor = GestorDB()
+		#gestor.guardarPasajero(p1)
 				
 			# Llamamos al gestor de base de datos y obtenemos una lista de pasajeros
 		#gestordb = GestorDB()

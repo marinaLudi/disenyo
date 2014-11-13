@@ -14,8 +14,6 @@ from gestores.gestordireccion import GestorDireccion
 #from db.settings import DATABASE
 
 
-
-
 class interfazPasajero:
 	def __init__(self):
 		
@@ -27,6 +25,7 @@ class interfazPasajero:
 		self.window1 = builder.get_object("window1")
 		self.bSiguiente = builder.get_object("bSiguiente")
 		self.eNombres = builder.get_object("eNombres")
+
 		self.eApellidos = builder.get_object("eApellidos")
 		self.eDocumento = builder.get_object("eDocumento")
 		self.eTelefono = builder.get_object("eTelefono")
@@ -38,6 +37,7 @@ class interfazPasajero:
 		self.eCUIT = builder.get_object("eCUIT")
 		self.cPais = builder.get_object("cPais")
 		self.eCorreo = builder.get_object("eCorreo")
+
 		self.cProvincia = builder.get_object("cProvincia")
 		self.cLocalidad = builder.get_object("cLocalidad")
 		self.cDocumento = builder.get_object("cDocumento")
@@ -46,6 +46,7 @@ class interfazPasajero:
 		self.cAnyo = builder.get_object("cAnyo")
 		self.cNacionalidad = builder.get_object("cNacionalidad")
 		self.cOcupacion = builder.get_object("cOcupacion")
+
 		self.lPais = builder.get_object("lPais")
 		self.lNacionalidad = builder.get_object("lNacionalidad")
 		self.lOcupacion = builder.get_object("lOcupacion")
@@ -68,6 +69,7 @@ class interfazPasajero:
 		self.nacionalidad = None
 		self.pais = None
 		self.ocupacion = None
+		self.IVA = None
 		
 		
 		
@@ -83,7 +85,8 @@ class interfazPasajero:
 		"on_cAnyo_changed": self.on_cAnyo_changed,
 		"on_cMes_changed": self.on_cMes_changed,
 		"on_cDia_changed": self.on_cDia_changed,
-		"on_cOcupacion_changed":self.on_cOcupacion_changed
+		"on_cOcupacion_changed":self.on_cOcupacion_changed,
+		"on_cIVA_changed":self.on_cIVA_changed
 		}
 		builder.connect_signals(handlers)
 		
@@ -130,6 +133,12 @@ class interfazPasajero:
 			id_object = model[treeIter][0]
 			self.ocupacion = id_object
 
+	def on_cIVA_changed(self,combo):
+		treeIter = combo.get_active_iter()
+		if treeIter != None:
+			model = combo.get_model()
+			id_object = model[treeIter][0]
+			self.IVA = id_object
 		
 	def on_cNacionalidad_changed(self,combo):
 		treeIter = combo.get_active_iter()
@@ -154,7 +163,7 @@ class interfazPasajero:
 		if treeIter != None:
 			model = combo.get_model()
 			id_object = model[treeIter][0]
-			self.nacionalidad = id_object
+			self.pais = id_object
 			self.gestorDireccion.getProvincia(self.lProvincia,id_object)
 		
 	def on_cProvincia_changed(self,combo):
@@ -162,7 +171,7 @@ class interfazPasajero:
 		if treeIter != None:
 			model = combo.get_model()
 			id_object = model[treeIter][0]
-			self.nacionalidad = id_object
+			self.provincia = id_object
 			self.gestorDireccion.getLocalidad(self.lLocalidad,id_object)
 	
 	def on_cLocalidad_changed(self,combo):
@@ -170,11 +179,11 @@ class interfazPasajero:
 		if treeIter != None:
 			model = combo.get_model()
 			id_object = model[treeIter][0]
-			self.nacionalidad = id_object
+			self.localidad = id_object
 	
 	def on_bSiguiente_clicked(self,boton):
 		
-		pasajero = dtoPasajero(nombre=self.eNombres.get_text(), apellido=self.eApellidos.get_text(), email=self.eCorreo.get_text(), fecha_de_nac=self.fecha, telefono=self.eTelefono.get_text(), CP=self.ePostal.get_text(), id_iva=self.eIVA.get_text(), descripcion_ocupacion=self.ocupacion,nombrePais=self.pais,nombreLocalidad=self.localidad,nombreProv=self.provincia,nombreNacionalidad=self.nacionalidad,calle=self.eCalle.get_text(),numero=self.eNumero.get_text(),dpto=self.eDepto.get_text(),piso=self.ePiso.get_text(),tipo=self.tipo,codigo=self.eDocumento.get_text())
+		pasajero = dtoPasajero(nombre=self.eNombres.get_text(), apellido=self.eApellidos.get_text(), email=self.eCorreo.get_text(), fecha_de_nac=self.fecha, telefono=self.eTelefono.get_text(), CP=self.ePostal.get_text(), id_iva=self.IVA, id_ocupacion=self.ocupacion,id_pais=self.pais,id_localidad=self.localidad,id_prov=self.provincia,id_nacionalidad=self.nacionalidad,calle=self.eCalle.get_text(),numero=self.eNumero.get_text(),dpto=self.eDepto.get_text(),piso=self.ePiso.get_text(),tipo=self.tipo,codigo=self.eDocumento.get_text())
 		gestor = GestorGestionarPasajeros()
 		gestor.crearPasajero(pasajero)	
 		 

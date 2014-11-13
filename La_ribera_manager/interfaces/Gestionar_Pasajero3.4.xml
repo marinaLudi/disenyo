@@ -116,6 +116,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="model">lDocumento</property>
+                    <signal name="changed" handler="on_cDocumento_changed" swapped="no"/>
                     <child>
                       <object class="GtkCellRendererText" id="cellrenderertext1"/>
                       <attributes>
@@ -134,7 +135,6 @@
                     <property name="width_request">202</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="max_length">30</property>
                     <property name="input_purpose">digits</property>
                   </object>
                   <packing>
