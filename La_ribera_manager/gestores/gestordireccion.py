@@ -7,9 +7,9 @@ sys.path.insert(0, parentdir)
 from db.pipeline import Pipe
 
 class GestorDireccion:
-	def cargarCombos(self,lPais,lDocumento,lNacionalidad,lOcupacion):
+	def cargarCombos(self,lPais,lNacionalidad,lOcupacion,lIVA):
 		pipe = Pipe()
-		pipe.cargarCombos(lPais,lDocumento,lNacionalidad,lOcupacion)
+		pipe.cargarCombos(lPais,lNacionalidad,lOcupacion,lIVA)
 	
 	def getProvincia(self, lProvincia, id_pais):
 		pipe = Pipe()
@@ -18,6 +18,10 @@ class GestorDireccion:
 	def getLocalidad(self, lLocalidad, id_provincia):
 		pipe= Pipe()
 		pipe.getLocalidad(lLocalidad, id_provincia)	
+		
+	def cargarDocumento(self, lDocumento):
+		pipe= Pipe()
+		pipe.cargarDocumento(lDocumento)
 		
 		
 		

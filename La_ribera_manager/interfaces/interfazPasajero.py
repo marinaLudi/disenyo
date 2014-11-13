@@ -36,7 +36,6 @@ class interfazPasajero:
 		self.ePiso = builder.get_object("ePiso")
 		self.ePostal = builder.get_object("ePostal")
 		self.eCUIT = builder.get_object("eCUIT")
-		self.eIVA = builder.get_object("eIVA")
 		self.cPais = builder.get_object("cPais")
 		self.eCorreo = builder.get_object("eCorreo")
 		self.cProvincia = builder.get_object("cProvincia")
@@ -53,12 +52,14 @@ class interfazPasajero:
 		self.lProvincia = builder.get_object("lProvincia")
 		self.lLocalidad = builder.get_object("lLocalidad")
 		self.lDocumento = builder.get_object("lDocumento")
+		self.lIVA = builder.get_object("lIVA")
 		
 		self.window1.set_border_width(25)
 		self.window1.set_default_size(735,530)
 		
 		self.gestorDireccion = GestorDireccion()
-		self.gestorDireccion.cargarCombos(self.lPais,self.lDocumento,self.lNacionalidad,self.lOcupacion)
+		self.gestorDireccion.cargarCombos(self.lPais,self.lNacionalidad,self.lOcupacion,self.lIVA)
+		self.gestorDireccion.cargarDocumento(self.lDocumento)
 		
 		#variables auxiliares
 		self.tipo = None

@@ -1,5 +1,5 @@
 from sqlalchemy.orm import sessionmaker
-from models import db_connect, create_pasajero_table, Pais, Documento, Ocupacion, Nacionalidad,Provincia,Localidad
+from models import db_connect, create_pasajero_table, Pais, Documento, Ocupacion, Nacionalidad,Provincia,Localidad,Iva
 
 class Pipe(object):
 	def __init__(self):
@@ -37,16 +37,12 @@ class Pipe(object):
 
 		return arregloPasajeros
 		
-	def cargarCombos(self,lPais,lDocumento,lNacionalidad,lOcupacion):
+	def cargarCombos(self,lPais,lNacionalidad,lOcupacion,lIVA):
 		session = self.Session()
 		
 		paises = session.query(Pais.id_pais, Pais.nombrePais).all()
 		for e in paises:
 			lPais.append([e.id_pais, e.nombrePais])
-		
-		documentos = session.query(Documento.codigo,Documento.tipo).all()
-		for e in documentos:
-			lDocumento.append([e.codigo,e.tipo])	
 		
 		nacionalidades = session.query(Nacionalidad.id_nacionalidad,Nacionalidad.nombreNacionalidad).all()
 		for e in nacionalidades:
@@ -55,6 +51,18 @@ class Pipe(object):
 		ocupaciones = session.query(Ocupacion.id_ocupacion,Ocupacion.descripcion_ocupacion).all()
 		for e in ocupaciones:
 			lOcupacion.append([e.id_ocupacion,e.descripcion_ocupacion])
+			
+		ivas = session.query(Iva.id_iva,Iva.descripcion_iva).all()
+		for e in ivas:
+			lIVA.append([e.id_iva,e.descripcion_iva])
+	
+	def cargarDocumento(self, lDocumento):
+		session = self.Session()
+		documentos = session.query(Documento.codigo,Documento.tipo).all()
+		for e in documentos:
+			lDocumento.append([e.codigo,e.tipo])	
+		
+		
 	
 	def getProvincia(self, lProvincia, id_pais):
 		session = self.Session()

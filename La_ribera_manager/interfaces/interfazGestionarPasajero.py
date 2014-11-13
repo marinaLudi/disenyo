@@ -9,6 +9,7 @@ sys.path.insert(0, parentdir)
 
 from gi.repository import Gtk
 from gestores.gestorGestionarPasajeros import GestorGestionarPasajeros
+from gestores.gestordireccion import GestorDireccion
 
 class interfazGestionarPasajero:
 	def __init__(self):
@@ -25,6 +26,7 @@ class interfazGestionarPasajero:
 		self.eApellidos = builder.get_object("eApellidos")
 		self.eDocumento = builder.get_object("eDocumento")
 		self.cDocumento = builder.get_object("cDocumento")
+		self.lDocumento = builder.get_object("lDocumento")
 		
 		self.window1.set_border_width(25)
 		self.window1.set_default_size(735,530)
@@ -38,13 +40,16 @@ class interfazGestionarPasajero:
 		}
 		builder.connect_signals(handlers)
 		
+		self.tipo = None
+		gestorDireccion = GestorDireccion()
+		gestorDireccion.cargarDocumento(self.lDocumento)		
+		
 		self.window1.show_all()	
 		
 	def on_bSiguiente_clicked(self,boton):
 		nombre = self.eNombre.get_text()
 		apellido = self.eApellidos.get_text()
 		codigo = self.eDocumento.get_text()
-		##tipo = #Obtener valor del combobox
 		
 		gestionarPasajeros = GestorGestionarPasajeros()
 		
@@ -61,7 +66,11 @@ class interfazGestionarPasajero:
 		print "cancelar"
 			
 	def on_cDocumento_changed(self,combo):
-		print "cargar dni"
+		treeIter = combo.get_active_iter()
+		if treeIter != None:
+			model = combo.get_model()
+			id_object = model[treeIter][0]
+			self.tipo = id_object
 		
 	def isnull(coleccionPasajeros):
 		return not coleccionPasajeros	
