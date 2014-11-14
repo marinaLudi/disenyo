@@ -98,6 +98,15 @@ class Pais(DeclarativeBase):
 
 	# atributos
 	nombrePais = Column("nombre", String, nullable=False)
+	
+class Nacionalidad(DeclarativeBase):
+	__tablename__ = "nacionalidad"
+	
+	#primary key
+	id_nacionalidad = Column(Integer, primary_key=True)
+	
+	#atributos
+	nombreNacionalidad = Column("nombre",String,nullable=False)
 
 class Pasajero(DeclarativeBase):
 	__tablename__ = "pasajero"
@@ -118,7 +127,7 @@ class Pasajero(DeclarativeBase):
 	id_direccion = Column(Integer, ForeignKey("direccion.id_direccion"), nullable=False)
 	id_nacionalidad = Column(Integer, ForeignKey("nacionalidad.id_nacionalidad"), nullable=False)
 	id_ocupacion = Column(Integer, ForeignKey("ocupacion.id_ocupacion"), nullable=False)
-	id_iva = Column(Integer, ForeignKey("posicion_iva.id_iva"), nullable=False)
+	id_iva = Column(Integer, ForeignKey("iva.id_iva"), nullable=False)
 
 	#relacion
 	documento = relationship("Documento",backref=backref("pasajero",order_by=id_pasajero))
@@ -126,3 +135,4 @@ class Pasajero(DeclarativeBase):
 	nacionalidad = relationship("Nacionalidad",backref=backref("pasajero",order_by=id_pasajero))
 	ocupacion = relationship("Ocupacion",backref=backref("pasajero",order_by=id_pasajero))
 	iva = relationship("Iva",backref=backref("pasajero",order_by=id_pasajero))
+

@@ -2,6 +2,134 @@
 <!-- Generated with glade 3.16.1 -->
 <interface>
   <requires lib="gtk+" version="3.4"/>
+  <object class="GtkListStore" id="lDocumento">
+    <columns>
+      <!-- column-name id_combo -->
+      <column type="gint"/>
+      <!-- column-name nombre -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkListStore" id="lFecha">
+    <columns>
+      <!-- column-name mes -->
+      <column type="gint"/>
+      <!-- column-name dia -->
+      <column type="gint"/>
+      <!-- column-name año -->
+      <column type="gint"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0">1</col>
+        <col id="1">0</col>
+        <col id="2">0</col>
+      </row>
+      <row>
+        <col id="0">2</col>
+        <col id="1">0</col>
+        <col id="2">0</col>
+      </row>
+      <row>
+        <col id="0">3</col>
+        <col id="1">0</col>
+        <col id="2">0</col>
+      </row>
+      <row>
+        <col id="0">4</col>
+        <col id="1">0</col>
+        <col id="2">0</col>
+      </row>
+      <row>
+        <col id="0">5</col>
+        <col id="1">0</col>
+        <col id="2">0</col>
+      </row>
+      <row>
+        <col id="0">6</col>
+        <col id="1">0</col>
+        <col id="2">0</col>
+      </row>
+      <row>
+        <col id="0">7</col>
+        <col id="1">0</col>
+        <col id="2">0</col>
+      </row>
+      <row>
+        <col id="0">8</col>
+        <col id="1">0</col>
+        <col id="2">0</col>
+      </row>
+      <row>
+        <col id="0">9</col>
+        <col id="1">0</col>
+        <col id="2">0</col>
+      </row>
+      <row>
+        <col id="0">10</col>
+        <col id="1">0</col>
+        <col id="2">0</col>
+      </row>
+      <row>
+        <col id="0">11</col>
+        <col id="1">0</col>
+        <col id="2">0</col>
+      </row>
+      <row>
+        <col id="0">12</col>
+        <col id="1">0</col>
+        <col id="2">0</col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkListStore" id="lIVA">
+    <columns>
+      <!-- column-name id_combo -->
+      <column type="gint"/>
+      <!-- column-name nombre -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkListStore" id="lLocalidad">
+    <columns>
+      <!-- column-name id_combo -->
+      <column type="gint"/>
+      <!-- column-name nombre -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkListStore" id="lNacionalidad">
+    <columns>
+      <!-- column-name id_combo -->
+      <column type="gint"/>
+      <!-- column-name nombre -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkListStore" id="lOcupacion">
+    <columns>
+      <!-- column-name id_combo -->
+      <column type="gint"/>
+      <!-- column-name nombre -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkListStore" id="lPais">
+    <columns>
+      <!-- column-name id_combo -->
+      <column type="gint"/>
+      <!-- column-name nombre -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkListStore" id="lProvincia">
+    <columns>
+      <!-- column-name id_combo -->
+      <column type="gint"/>
+      <!-- column-name nombre -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
   <object class="GtkWindow" id="window1">
     <property name="can_focus">False</property>
     <property name="halign">center</property>
@@ -275,9 +403,11 @@
                 <property name="spacing">5</property>
                 <property name="homogeneous">True</property>
                 <child>
-                  <object class="GtkComboBoxText" id="cDia">
+                  <object class="GtkComboBox" id="cDia">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="model">lFecha</property>
+                    <property name="button_sensitivity">on</property>
                     <signal name="changed" handler="on_cDia_changed" swapped="no"/>
                   </object>
                   <packing>
@@ -287,10 +417,17 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkComboBoxText" id="cMes">
+                  <object class="GtkComboBox" id="cMes">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="model">lFecha</property>
                     <signal name="changed" handler="on_cMes_changed" swapped="no"/>
+                    <child>
+                      <object class="GtkCellRendererText" id="cellrenderertext1"/>
+                      <attributes>
+                        <attribute name="text">0</attribute>
+                      </attributes>
+                    </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -299,7 +436,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkComboBoxText" id="cAnyo">
+                  <object class="GtkComboBox" id="cAnyo">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <signal name="changed" handler="on_cAnyo_changed" swapped="no"/>
@@ -336,11 +473,17 @@
                 <property name="can_focus">False</property>
                 <property name="spacing">6</property>
                 <child>
-                  <object class="GtkComboBoxText" id="cDocumento">
-                    <property name="width_request">40</property>
+                  <object class="GtkComboBox" id="cDocumento">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="model">lDocumento</property>
                     <signal name="changed" handler="on_cDocumento_changed" swapped="no"/>
+                    <child>
+                      <object class="GtkCellRendererText" id="cellrenderertext6"/>
+                      <attributes>
+                        <attribute name="text">1</attribute>
+                      </attributes>
+                    </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -530,9 +673,18 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="eIVA">
+                  <object class="GtkComboBox" id="cIVA">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="model">lIVA</property>
+                    <property name="row_span_column">0</property>
+                    <signal name="changed" handler="on_cIVA_changed" swapped="no"/>
+                    <child>
+                      <object class="GtkCellRendererText" id="cellrenderertext7"/>
+                      <attributes>
+                        <attribute name="text">1</attribute>
+                      </attributes>
+                    </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -543,71 +695,6 @@
               </object>
               <packing>
                 <property name="left_attach">1</property>
-                <property name="top_attach">13</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkComboBoxText" id="cPais">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <signal name="changed" handler="on_cPais_changed" swapped="no"/>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">11</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkComboBoxText" id="cNacionalidad">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <signal name="changed" handler="on_cNacionalidad_changed" swapped="no"/>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">3</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkComboBoxText" id="cLocalidad">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <signal name="changed" handler="on_cLocalidad_changed" swapped="no"/>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">9</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkComboBoxText" id="cProvincia">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <signal name="changed" handler="on_cProvincia_changed" swapped="no"/>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">11</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkComboBoxText" id="cOcupacion">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <signal name="changed" handler="on_cOcupacion_changed" swapped="no"/>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
                 <property name="top_attach">13</property>
                 <property name="width">1</property>
                 <property name="height">1</property>
@@ -686,6 +773,107 @@
               <packing>
                 <property name="left_attach">0</property>
                 <property name="top_attach">6</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkComboBox" id="cLocalidad">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="model">lLocalidad</property>
+                <signal name="changed" handler="on_cLocalidad_changed" swapped="no"/>
+                <child>
+                  <object class="GtkCellRendererText" id="cellrenderertext2"/>
+                  <attributes>
+                    <attribute name="text">1</attribute>
+                  </attributes>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">9</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkComboBox" id="cProvincia">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="model">lProvincia</property>
+                <signal name="changed" handler="on_cProvincia_changed" swapped="no"/>
+                <child>
+                  <object class="GtkCellRendererText" id="cellrenderertext5"/>
+                  <attributes>
+                    <attribute name="text">1</attribute>
+                  </attributes>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">11</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkComboBox" id="cOcupacion">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="model">lOcupacion</property>
+                <signal name="changed" handler="on_cOcupacion_changed" swapped="no"/>
+                <child>
+                  <object class="GtkCellRendererText" id="cellrenderertext4"/>
+                  <attributes>
+                    <attribute name="text">1</attribute>
+                  </attributes>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">13</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkComboBox" id="cNacionalidad">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="model">lNacionalidad</property>
+                <signal name="changed" handler="on_cNacionalidad_changed" swapped="no"/>
+                <child>
+                  <object class="GtkCellRendererText" id="cellrenderertext3"/>
+                  <attributes>
+                    <attribute name="text">1</attribute>
+                  </attributes>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">3</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkComboBox" id="cPais">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="model">lPais</property>
+                <property name="row_span_column">0</property>
+                <signal name="changed" handler="on_cPais_changed" swapped="no"/>
+                <child>
+                  <object class="GtkCellRendererText" id="cellrenderertext"/>
+                  <attributes>
+                    <attribute name="text">1</attribute>
+                  </attributes>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">11</property>
                 <property name="width">1</property>
                 <property name="height">1</property>
               </packing>

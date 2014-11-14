@@ -1,5 +1,5 @@
 from sqlalchemy.orm import sessionmaker
-from models import db_connect, create_pasajero_table
+from models import db_connect, create_pasajero_table, Pais, Documento, Ocupacion, Nacionalidad,Provincia,Localidad,Iva
 
 class Pipe(object):
 	def __init__(self):
@@ -37,3 +37,39 @@ class Pipe(object):
 			session.close()
 
 		return arregloPasajeros
+			
+	def cargarCombo(self,tabla):
+		session = self.Session()
+		try:
+			tablas = session.query(tabla).all()
+		except:
+			session.rollback()
+			raise
+		finally:
+			session.close()
+			
+		return tablas		
+	
+	def getProvincia(self, lProvincia, id_pais):
+		session = self.Session()
+		lProvincia.clear()
+		provincias = session.query(Provincia.id_provincia,Provincia.nombreProv).filter(Provincia.id_pais == id_pais).all()
+		for e in provincias:
+			lProvincia.append([e.id_provincia,e.nombreProv])
+		
+	def getLocalidad(self, lLocalidad, id_provincia):
+		session = self.Session()
+		lLocalidad.clear()
+		localidades = session.query(Localidad.id_localidad,Localidad.nombreLocalidad).filter(Localidad.id_provincia == id_provincia).all()
+		for e in localidades:
+			lLocalidad.append([e.id_localidad,e.nombreLocalidad])
+		
+			
+	def instanciaObjetoID(self,objeto,ID):
+		session = self.Session()
+		objeto = session.query(objeto).get(ID)
+		return objeto
+
+pipe = Pipe()
+pais = pipe.instanciaObjetoID(Provincia,3)
+print pais.nombreProv
