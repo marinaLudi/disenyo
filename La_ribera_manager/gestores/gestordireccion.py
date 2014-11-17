@@ -17,7 +17,7 @@ class GestorDireccion:
 		localidad = gestordb.getObjbyID(Localidad, {'id_localidad':dtoPasajero.id_localidad})
 
 		# Creamos y llenamos el objeto direccion
-		direccion = Direccion(**dtoPasajero.atributosDireccion, localidad=localidad)
+		direccion = Direccion(localidad=localidad, **dtoPasajero.atributosDireccion)
 
 		return direccion
 		

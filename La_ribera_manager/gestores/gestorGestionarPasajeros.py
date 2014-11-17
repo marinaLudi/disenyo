@@ -58,7 +58,7 @@ class GestorGestionarPasajeros:
 
 
 	def existePasajero(self, arregloPasajeros):
-		# Verificamos si el arreglo esta lleno o vacío
+		# Verificamos si el arreglo esta lleno o vacio
 		if arregloPasajeros:
 
 			# Lleno
@@ -74,26 +74,26 @@ class GestorGestionarPasajeros:
 		guardarObjeto(pasajero)
 
 	
-	def construirPasajero(self.dtoPasajero):
+	def construirPasajero(self, dtoPasajero):
 
 		# Se mapea el dto a un objeto pasajero
 		gestorDir = GestorDireccion()
 		direccion = gestorDir.crearDireccion(dtoPasajero)
 		
-		# Obtenemos información necesaria de la db
+		# Obtenemos informacion necesaria de la db
 		gestordb = GestorDB()
 		ocupacion = gestordb.getObjbyID(Ocupacion, {'id_ocupacion':dtoPasajero.id_ocupacion})
 		nacionalidad = gestordb.getObjbyID(Nacionalidad, {'id_nacionalidad':dtoPasajero.id_nacionalidad})
-		iva = gestordb.getObjbyID(IVA, {'id_iva':dtoPasajero.id_iva)
+		iva = gestordb.getObjbyID(IVA, {'id_iva':dtoPasajero.id_iva})
 
 		# Creamos objetos pertinentes
 		documento = Documento(**dtoPasajero.atributosDocumento)
-		pasajero = Pasajero(**dtoPasajero.atributosPasajero,
-				documento=documento,
+		pasajero = Pasajero(documento=documento,
 				direccion=direccion,
 				nacionalidad=nacionalidad,
 				ocupacion=ocupacion,
-				iva=iva)
+				iva=iva,
+				**dtoPasajero.atributosPasajero)
 
 		return pasajero
 		
