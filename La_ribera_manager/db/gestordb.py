@@ -1,7 +1,7 @@
 #### Gestor gestordb ####
 
 from sqlalchemy.orm import sessionmaker
-from models import db_connect, create_pasajero_table
+from models import db_connect, create_pasajero_table, Pasajero, Iva, Ocupacion, Pais, Nacionalidad
 
 # Singleton como una metaclase
 class Singleton(type):
@@ -49,6 +49,7 @@ class GestorDB:
 			arregloObjetos = session.query(tabla).filter_by(**filtros).order_by(*criterios).all()
 		except:
 			raise
+
 		finally:
 			session.close()
 
@@ -59,4 +60,19 @@ class GestorDB:
 		filtros = {'nombre':nombre, 'apellido':apellido, 
 				'tipoDocu':tipoDocu, 'documento':documento}			
 
-		return getObjectList(pasajero, filtros, [pasajero.apellido])
+		return getObjectList(Pasajero, filtros, [pasajero.apellido])
+
+
+	def getObjbyID(self, tabla, ID):
+		session = self.Session()
+
+		try:
+			objeto = session.query(tabla).filter_by(**ID).first()
+
+		except:
+			raise
+		
+		finally:
+			session.close()
+
+		return objeto
