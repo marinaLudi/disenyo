@@ -1,7 +1,7 @@
-class dtoPasajero:
+class DtoPasajero:
 	def __init__(self, nombre=None, apellido=None, cuit=None,
 			email=None, fecha_de_nac=None, telefono=None,
-			tipo=None, codigo=None, numero=None,
+			codigo=None, id_tipo=None, numero=None,
 			calle=None, dpto=None, piso=None,
 			id_localidad=None, id_prov=None, id_pais=None,
 			id_ocupacion=None, id_nacionalidad=None, id_iva=None,
@@ -12,7 +12,8 @@ class dtoPasajero:
 				email=email, fecha_de_nac=fecha_de_nac, telefono=telefono)
 
 		# Atributos del objeto documento
-		self.atributosDocumento = dict(tipo=tipo, codigo=codigo)
+		self.documento_codigo = codigo
+		self.id_tipo = id_tipo
 			
 		# Atributos del objeto direccion, localidad, provincia y pais
 		self.atributosDireccion = dict(calle=calle, numero=numero, dpto=dpto, piso=piso, CP=CP)

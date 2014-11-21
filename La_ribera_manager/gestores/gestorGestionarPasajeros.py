@@ -6,9 +6,9 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
 
-from db.models import Pasajero, Documento, Iva, Ocupacion, Pais, Nacionalidad
+from db.models import Pasajero, Documento, Iva, Ocupacion, Pais, Nacionalidad, TipoDocumento
 from db.gestordb import GestorDB, Singleton
-from objetos.dtopasajero import dtoPasajero
+from objetos.dtopasajero import DtoPasajero
 from gestordireccion import GestorDireccion
 
 class GestorGestionarPasajeros:
@@ -77,17 +77,23 @@ class GestorGestionarPasajeros:
 	def construirPasajero(self, dtoPasajero):
 
 		# Se mapea el dto a un objeto pasajero
+
+		# Le pedimos al gestor de direccion que contruya un objeto direccion
+		# y lo llene con la informacion del dto
 		gestorDir = GestorDireccion()
 		direccion = gestorDir.crearDireccion(dtoPasajero)
 		
 		# Obtenemos informacion necesaria de la db
+		# Utilizando sus ids
 		gestordb = GestorDB()
 		ocupacion = gestordb.getObjbyID(Ocupacion, {'id_ocupacion':dtoPasajero.id_ocupacion})
 		nacionalidad = gestordb.getObjbyID(Nacionalidad, {'id_nacionalidad':dtoPasajero.id_nacionalidad})
 		iva = gestordb.getObjbyID(IVA, {'id_iva':dtoPasajero.id_iva})
+		tipoDocu = gestor.db.getObjbyID(TipoDocumento, {'id_tipo':dtoPasajero.id_tipo})
 
 		# Creamos objetos pertinentes
-		documento = Documento(**dtoPasajero.atributosDocumento)
+		documento = Documento(codigo=dtoPasajero.documento_codigo, tipo=tipoDocu)
+
 		pasajero = Pasajero(documento=documento,
 				direccion=direccion,
 				nacionalidad=nacionalidad,
@@ -96,7 +102,3 @@ class GestorGestionarPasajeros:
 				**dtoPasajero.atributosPasajero)
 
 		return pasajero
-		
-		
-		
-		

@@ -3,25 +3,40 @@ from sqlalchemy.engine.url import URL
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
 
-import settingsm
+import settings
 
 DeclarativeBase = declarative_base()
 
 def db_connect():
-	return create_engine(URL(**settingsm.DATABASE))
+	return create_engine(URL(**settings.DATABASE))
 
 def create_pasajero_table(engine):
 	DeclarativeBase.metadata.create_all(engine)
 
 
+class TipoDocumento(DeclarativeBase):
+	__tablename__ = "tipo_documento"
+
+	# primary key
+	id_tipo = Column(Integer, primary_key=True)
+
+	# atributos
+	tipo = Column(String, nullable=False)
+
 class Documento(DeclarativeBase):
 	__tablename__ = "documento"
 
 	# primary key
-	codigo = Column(Integer, primary_key=True)
+	id_documento = Column(Integer, primary_key=True)
 
 	# atributos
-	tipo = Column(String, nullable=False)
+	codigo = Column(String , nullable=False)
+	
+	# foreign keys
+	id_tipo = Column(Integer, ForeignKey("tipo_documento.id_tipo"), nullable=False)
+
+	# relacion
+	tipo = relationship("TipoDocumento", backref=backref("documento", order_by=id_documento))
 
 class Iva(DeclarativeBase):
 	__tablename__ = "iva"
@@ -123,7 +138,7 @@ class Pasajero(DeclarativeBase):
 	telefono = Column(String, nullable=False)
 
 	# foreign keys
-	codigo = Column(Integer, ForeignKey("documento.codigo"), nullable=False)
+	id_documento = Column(Integer, ForeignKey("documento.id_documento"), nullable=False)
 	id_direccion = Column(Integer, ForeignKey("direccion.id_direccion"), nullable=False)
 	id_nacionalidad = Column(Integer, ForeignKey("nacionalidad.id_nacionalidad"), nullable=False)
 	id_ocupacion = Column(Integer, ForeignKey("ocupacion.id_ocupacion"), nullable=False)
