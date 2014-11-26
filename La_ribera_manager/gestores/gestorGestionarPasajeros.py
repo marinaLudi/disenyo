@@ -15,7 +15,16 @@ class GestorGestionarPasajeros:
 	def buscar(self, nombre, apellido, tipoDocu, documento):
 		gestordb = GestorDB()
 
-		return gestordb.buscarPasajero(nombre, apellido, tipoDocu, documento)
+		arregloPasajeros = gestordb.buscarPasajero(nombre, apellido, tipoDocu, documento)
+		
+		# Comprobamos si la lista tiene algun pasajero 
+		# En caso de que contenga al menos un pasajero se devuelve la lista
+		# Si la lista esta vacia se devuelve False
+		if self.existePasajero(arregloPasajeros):
+			return arregloPasajeros
+		else:
+			return False
+
 	
 	def crearPasajero(self, dtoPasajero):	
 

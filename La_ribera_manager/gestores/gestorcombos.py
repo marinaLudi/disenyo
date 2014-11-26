@@ -7,40 +7,22 @@ sys.path.insert(0, parentdir)
 from db.gestordb import GestorDB, Singleton
 from db.models import Nacionalidad, Ocupacion, Iva, Pais, Documento
 
-	def cargarCombos(self,lPais,lNacionalidad,lOcupacion,lIVA):
-		#############################################################
-		#############################################################
-		pipe = Pipe()
-		
-		paises = pipe.cargarCombo(Pais)
-		for e in paises:
-			lPais.append([e.id_pais, e.nombrePais])
-		
-		nacionalidades = pipe.cargarCombo(Nacionalidad)
-		for e in nacionalidades:
-			lNacionalidad.append([e.id_nacionalidad,e.nombreNacionalidad])
-		
-		ocupaciones = pipe.cargarCombo(Ocupacion)	
-		for e in ocupaciones:
-			lOcupacion.append([e.id_ocupacion,e.descripcion_ocupacion])							
+	def cargarCombos(self, *tuplas):
+		gestordb = GestorDB()
 
-		ivas = pipe.cargarCombo(Iva)
-		for e in ivas:
-			lIVA.append([e.id_iva,e.descripcion_iva])
-			
-	
+		# Cada uno de los elementos en la lista 'tuplas' tiene la forma (objeto, combo)
+		for elem in tuplas:
+
+			# Con el 'objeto' se obtienen todas las filas de la tabla requerida
+			filas = gestordb.getRows(elem[0])
+
+			# Con los atributos de cada uno de los objetos se cargan los combos
+			for objeto in filas:
+				elem[1].append(objeto.pack())
+
+
 	def getProvincia(self, lProvincia, id_pais):
-		pipe = Pipe()
-		pipe.getProvincia(lProvincia, id_pais)
-	
+		# Stuff	
+
 	def getLocalidad(self, lLocalidad, id_provincia):
-		pipe= Pipe()
-		pipe.getLocalidad(lLocalidad, id_provincia)	
-		
-	def cargarDocumento(self, lDocumento):
-		pipe= Pipe()
-		documentos = pipe.cargarCombo(Documento)
-		for e in documentos:
-			lDocumento.append([e.codigo,e.tipo])
-		############################################################
-		############################################################
+		# Stuff	

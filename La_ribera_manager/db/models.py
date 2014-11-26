@@ -23,6 +23,10 @@ class TipoDocumento(DeclarativeBase):
 	# atributos
 	tipo = Column(String, nullable=False)
 
+	def pack(self):
+		return [self.id_tipo, self.tipo]
+
+
 class Documento(DeclarativeBase):
 	__tablename__ = "documento"
 
@@ -38,6 +42,10 @@ class Documento(DeclarativeBase):
 	# relacion
 	tipo = relationship("TipoDocumento", backref=backref("documento", order_by=id_documento))
 
+	def pack(self):
+		return [self.id_documento, self.codigo, self.tipo]
+
+
 class Iva(DeclarativeBase):
 	__tablename__ = "iva"
 	
@@ -47,6 +55,10 @@ class Iva(DeclarativeBase):
 	# atributos
 	descripcion_iva = Column("descripcion", String, nullable=False)
 
+	def pack(self):
+		return [self.id_iva, self.descripcion_iva]
+
+
 class Ocupacion(DeclarativeBase):
 	__tablename__ = "ocupacion"
 
@@ -55,6 +67,10 @@ class Ocupacion(DeclarativeBase):
 
 	# atributos
 	descripcion_ocupacion = Column("descripcion", String, nullable=False)
+
+	def pack(self):
+		return [self.id_ocupacion, self.descripcion_ocupacion]
+
 
 class Direccion(DeclarativeBase):
 	__tablename__ = "direccion"
@@ -75,6 +91,10 @@ class Direccion(DeclarativeBase):
 	#relacion
 	localidad = relationship("Localidad",backref=backref("direccion",order_by=id_direccion))
 
+	def pack(self):
+		return [self.id_direccion, self.calle, self.numero, self.dpto, self.piso, self.CP, self.localidad]
+
+
 class Localidad(DeclarativeBase):
 	__tablename__ = "localidad"
 
@@ -89,6 +109,10 @@ class Localidad(DeclarativeBase):
 	
 	#relacion
 	provincia = relationship("Provincia",backref=backref("localidad",order_by=id_localidad))	
+
+	def pack(self):
+		return [self.id_localidad, self.nombreLocalidad, self.provincia]
+
 
 class Provincia(DeclarativeBase):
 	__tablename__ = "provincia"
@@ -105,6 +129,10 @@ class Provincia(DeclarativeBase):
 	#relacion
 	pais = relationship("Pais",backref=backref("provincia",order_by=id_provincia))
 
+	def pack(self):
+		return [self.id_provincia, self.nombreProv, self.pais]
+
+
 class Pais(DeclarativeBase):
 	__tablename__ = "pais"
 
@@ -114,6 +142,10 @@ class Pais(DeclarativeBase):
 	# atributos
 	nombrePais = Column("nombre", String, nullable=False)
 	
+	def pack(self):
+		return [self.id_pais, self.nombrePais]
+
+
 class Nacionalidad(DeclarativeBase):
 	__tablename__ = "nacionalidad"
 	
@@ -122,6 +154,10 @@ class Nacionalidad(DeclarativeBase):
 	
 	#atributos
 	nombreNacionalidad = Column("nombre",String,nullable=False)
+
+	def pack(self):
+		return [self.id_nacionalidad, self.nombreNacionalidad]
+
 
 class Pasajero(DeclarativeBase):
 	__tablename__ = "pasajero"
@@ -150,4 +186,8 @@ class Pasajero(DeclarativeBase):
 	nacionalidad = relationship("Nacionalidad",backref=backref("pasajero",order_by=id_pasajero))
 	ocupacion = relationship("Ocupacion",backref=backref("pasajero",order_by=id_pasajero))
 	iva = relationship("Iva",backref=backref("pasajero",order_by=id_pasajero))
+
+	def pack(self):
+		return [self.id_pasajero, self.nombre, self.apellido, self.cuit, self.email, self.fecha_de_nac, self.telefono,
+				self.document, self.direccion, self.nacionalidad, self.ocupacion, self.iva]
 
