@@ -4,6 +4,15 @@ DATABASE = {
 	'port': '5432',
 	'username': 'argot',
 	'password': 'lolita',
-	'database': 'testan'
+	'database': 'diseno'
 
 }
+#DATABASE = {
+#	'drivername': 'postgresql',
+#	'host': 'localhost',
+#	'port': '5432',
+#	'username': 'marina',
+#	'password': 'mari',
+#	'database': 'marina'
+#}
+

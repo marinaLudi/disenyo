@@ -6,109 +6,68 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
 
-from db.models import Pasajero, Documento, Iva, Ocupacion, Pais,Nacionalidad
-from db.gestordb import GestorDB
-from db.pipeline import Pipe
-from objetos.dtopasajero import dtoPasajero
-#from gestordireccion import GestorDireccion
+from db.models import Pasajero, Documento, Iva, Ocupacion, Pais, Nacionalidad, TipoDocumento
+from db.gestordb import GestorDB, Singleton
+from objetos.dtopasajero import DtoPasajero
+from gestordireccion import GestorDireccion
 
 class GestorGestionarPasajeros:
 	def buscar(self, nombre, apellido, tipoDocu, documento):
 		gestordb = GestorDB()
 
-		return gestordb.buscarPasajero(nombre, apellido, tipoDocu, documento)
+		arregloPasajeros = gestordb.buscarPasajero(nombre, apellido, tipoDocu, documento)
+		
+		# Comprobamos si la lista tiene algun pasajero 
+		# En caso de que contenga al menos un pasajero se devuelve la lista
+		# Si la lista esta vacia se devuelve False
+		if self.existePasajero(arregloPasajeros):
+			return arregloPasajeros
+		else:
+			return False
+
 	
 	def crearPasajero(self, dtoPasajero):	
-<<<<<<< HEAD
+
+		# Comprobamos si el usuario omitio algun dato
 		omisiones = self.completo(dtoPasajero)
 		if not omisiones:
-=======
-		#if self.completo(dtoPasajero):
->>>>>>> 1f9f1e2e59037cf9fc3bd50c2140568087ad5d7d
-		
-			# Llamamos al gestor de direcciones
-			#gestorDireccion = GestorDireccion()
-			#direccion_aux = gestorDireccion.crearDireccion(dtoPasajero)
-
-			#mapea atributos dto con pasajero
-		pipe = Pipe()
-		keys = dtoPasajero.atributosPasajero.keys()
-		p1 = Pasajero()
-		for a in keys:
-			p1.a = dtoPasajero.atributosPasajero[a]
-		
-		p1.id_nacionalidad = dtoPasajero.id_nacionalidad
-		p1.nacionalidad = pipe.instanciaObjetoID(Nacionalidad,dtoPasajero.id_nacionalidad)
-		p1.id_ocupacion = dtoPasajero.id_ocupacion
-		p1.ocupacion = pipe.instanciaObjetoID(Ocupacion,dtoPasajero.id_ocupacion) 
-		p1.id_iva = dtoPasajero.id_iva
-		
-		
-		
-		
-		#gestor = GestorDB()
-		#gestor.guardarPasajero(p1)
-				
-			# Llamamos al gestor de base de datos y obtenemos una lista de pasajeros
-<<<<<<< HEAD
-			gestordb = GestorDB()
-			arregloPasajeros = self.buscarPasajero(pasajero.nombre,
-					pasajero.apellido, pasajero.tipoDocu, pasajero.documento)
+			# Creamos el objeto pasajero
+			pasajero = self.construirPasajero(dtoPasajero)
 			
+			# Corroboramos si hay un pasajero con los mismos datos en la db
+			arregloPasajeros = self.buscar(pasajero.nombre,
+					pasajero.apellido,
+					pasajero.documento.tipo,
+					pasajero.documento.codigo)
+
 			if self.existePasajero(arregloPasajeros):
 				return False
 			else:
-				self.completarCarga(pasajero)
+				self.completarCarga()
 				return True
-
+		
 		else:
 			return omisiones
-=======
-		#gestordb = GestorDB()
-		#arregloPasajeros = self.obtenerPasajero(pasajero) 
-			
-		#if existePasajero(arregloPasajeros):
-		#	return False
-		#else:
-		#	completarCarga(pasajero)
-		#	return True
 
-		#else:
-			#return faltantes(dtoPasajero)
->>>>>>> 1f9f1e2e59037cf9fc3bd50c2140568087ad5d7d
-		
 
 	def completo(self, dtoPasajero):
 		# Hacemos una lista con las omisiones
 		omisiones=list()
 		
-		for atributo in dtoPasajero.atributosPasajero:
-			print dtoPasajero.atributosPasajero[atributo],atributo
-			#if not atributo.startiwith("id"):
-			
-				
-			#for elemento in atributo:
-				#if not elemento.startwith("id"):
-					#if elemento is None or elemento is "" :
-						#omisiones.append(atributo)
+		for atributo in dtoPasajero.pack():
+			if type(atributo) == dict:
+				for atrName, value in atributo.iteritems():
+					if value is None:
+						omisiones.append(atrName)
+			else:
+				if atributo is None:
+					omisiones.append(atributo)
 
-		#return omisiones
-
-#probando de guardar cosas en la bd
-#gestor = GestorGestionarPasajeros()
-#pais = Pais()
-#pais.id_pais = 5
-#pais.nombrePais = "Jamaica"
-
-#gestor = GestorDB()
-#gestor.guardarPasajero(pais)
-
-<<<<<<< HEAD
 		return omisiones
 
 
 	def existePasajero(self, arregloPasajeros):
-		# Verificamos si el arreglo esta lleno o vacío
+		# Verificamos si el arreglo esta lleno o vacio
 		if arregloPasajeros:
 
 			# Lleno
@@ -117,10 +76,40 @@ class GestorGestionarPasajeros:
 
 			# Vacio
 			return False
-	
+			
 
 	def completarCarga(self, pasajero):
 		gestordb = GestorDB()
 		guardarObjeto(pasajero)
-=======
->>>>>>> 1f9f1e2e59037cf9fc3bd50c2140568087ad5d7d
+
+	
+	def construirPasajero(self, dtoPasajero):
+
+		# Se mapea el dto a un objeto pasajero
+
+		# Le pedimos al gestor de direccion que contruya un objeto direccion
+		# y lo llene con la informacion del dto
+		gestorDir = GestorDireccion()
+		direccion = gestorDir.crearDireccion(dtoPasajero)
+		
+		# Obtenemos informacion necesaria de la db
+		# Utilizando sus ids
+		gestordb = GestorDB()
+
+		# Con el '[0]' obtenemos el unico elemento que contiene la lista
+		ocupacion = gestordb.getObjs(Ocupacion, {'id_ocupacion':dtoPasajero.id_ocupacion})[0]
+		nacionalidad = gestordb.getObjs(Nacionalidad, {'id_nacionalidad':dtoPasajero.id_nacionalidad})[0]
+		iva = gestordb.getObjs(Iva, {'id_iva':dtoPasajero.id_iva})[0]
+		tipoDocu = gestordb.getObjs(TipoDocumento, {'id_tipo':dtoPasajero.id_tipo})[0]
+
+		# Creamos objetos pertinentes
+		documento = Documento(codigo=dtoPasajero.documento_codigo, tipo=tipoDocu)
+
+		pasajero = Pasajero(documento=documento,
+				direccion=direccion,
+				nacionalidad=nacionalidad,
+				ocupacion=ocupacion,
+				iva=iva,
+				**dtoPasajero.atributosPasajero)
+
+		return pasajero

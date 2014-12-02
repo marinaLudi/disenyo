@@ -1,7 +1,7 @@
 #### Gestor gestordb ####
 
 from sqlalchemy.orm import sessionmaker
-from models import db_connect, create_pasajero_table
+from models import db_connect, create_pasajero_table, Pasajero, Iva, Ocupacion, Pais, Nacionalidad, Documento
 
 # Singleton como una metaclase
 class Singleton(type):
@@ -42,21 +42,50 @@ class GestorDB:
 
 		return objeto
 
-	def getObjectList(self, tabla, filtros, criterios):
+#	def getObjectList(self, tabla, filtros, criterios):
+#		session = self.Session()
+#
+#		try:
+#			arregloObjetos = session.query(tabla).filter_by(**filtros).order_by(*criterios).all()
+#		except:
+#			raise
+#
+#		finally:
+#			session.close()
+#
+#		return arregloObjetos
+
+
+	def buscarPasajero(self, nombre, apellido, tipoDocu, codigo):
 		session = self.Session()
 
 		try:
-			arregloObjetos = session.query(tabla).filter_by(**filtros).order_by(*criterios).all()
+			arregloPasajeros = session.query(Pasajero).\
+					filter(Pasajero.nombre==nombre,
+							Pasajero.apellido==apellido,
+						Pasajero.documento.codigo==codigo)
 		except:
 			raise
+
 		finally:
 			session.close()
 
-		return arregloObjetos
+
+		return arregloPasajeros
 
 
-	def buscarPasajero(self, nombre, apellido, tipoDocu, documento):
-		filtros = {'nombre':nombre, 'apellido':apellido, 
-				'tipoDocu':tipoDocu, 'documento':documento}			
+	def getObjs(self, tabla, ID):
+		session = self.Session()
 
-		return getObjectList(pasajero, filtros, [pasajero.apellido])
+		try:
+			objeto = session.query(tabla).filter_by(**ID).all()
+
+		except:
+			raise
+		
+		finally:
+			session.close()
+
+		return objeto
+
+
