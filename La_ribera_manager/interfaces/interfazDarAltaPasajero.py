@@ -1,3 +1,5 @@
+#### Interfaz Dar Alta Pasajero ####
+
 import sys, os, inspect
 
 #Agregamos directorio padre al path
@@ -81,7 +83,7 @@ class InterfazDarAltaPasajero:
 		
 		
 		
-		#conecta las senyales con sus funciones
+		# Conecta las senales con sus funciones
 		handlers = {
 		"on_bSiguiente_clicked": self.on_bSiguiente_clicked,
 		"on_window1_destroy": Gtk.main_quit,

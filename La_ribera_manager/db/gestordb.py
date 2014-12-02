@@ -60,12 +60,10 @@ class GestorDB:
 		session = self.Session()
 
 		try:
-			arregloPasajeros = session.query(Pasajero, Documento).\
+			arregloPasajeros = session.query(Pasajero).\
 					filter(Pasajero.nombre==nombre,
-							Pasajero.apellido==apellido).\
-					filter(Documento.codigo==codigo,
-							Documento.id_tipo==tipoDocu).\
-									all()
+							Pasajero.apellido==apellido,
+						Pasajero.documento.codigo==codigo)
 		except:
 			raise
 
@@ -76,11 +74,11 @@ class GestorDB:
 		return arregloPasajeros
 
 
-	def getObjbyID(self, tabla, ID):
+	def getObjs(self, tabla, ID):
 		session = self.Session()
 
 		try:
-			objeto = session.query(tabla).filter_by(**ID).first()
+			objeto = session.query(tabla).filter_by(**ID).all()
 
 		except:
 			raise
@@ -89,3 +87,5 @@ class GestorDB:
 			session.close()
 
 		return objeto
+
+

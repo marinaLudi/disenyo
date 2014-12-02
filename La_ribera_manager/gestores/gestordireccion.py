@@ -14,7 +14,9 @@ class GestorDireccion:
 		# Se mapea del dto a un objeto direccion
 		# Obtenemos los datos necesarios de la db
 		gestordb = GestorDB()
-		localidad = gestordb.getObjbyID(Localidad, {'id_localidad':dtoPasajero.id_localidad})
+
+		# Con el [0] obtenemos el unico elemento de la lista que devuelve el mensaje
+		localidad = gestordb.getObjs(Localidad, {'id_localidad':dtoPasajero.id_localidad})[0]
 
 		# Creamos y llenamos el objeto direccion
 		direccion = Direccion(localidad=localidad, **dtoPasajero.atributosDireccion)

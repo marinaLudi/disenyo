@@ -4,6 +4,9 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
 
+#Globals
+NOFILTER = {}
+
 from db.gestordb import GestorDB, Singleton
 from db.models import Nacionalidad, Ocupacion, Iva, Pais, Documento
 
@@ -14,7 +17,7 @@ from db.models import Nacionalidad, Ocupacion, Iva, Pais, Documento
 		for elem in tuplas:
 
 			# Con el 'objeto' se obtienen todas las filas de la tabla requerida
-			filas = gestordb.getRows(elem[0])
+			filas = gestordb.getObjs(elem[0], NOFILTER)
 
 			# Con los atributos de cada uno de los objetos se cargan los combos
 			for objeto in filas:

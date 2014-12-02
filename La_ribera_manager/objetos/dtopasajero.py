@@ -12,7 +12,7 @@ class DtoPasajero:
 				email=email, fecha_de_nac=fecha_de_nac, telefono=telefono)
 
 		# Atributos del objeto documento
-		self.documento_codigo = codigo
+		self.codigo = codigo 
 		self.id_tipo = id_tipo
 			
 		# Atributos del objeto direccion, localidad, provincia y pais

@@ -32,7 +32,7 @@ class GestorGestionarPasajeros:
 		omisiones = self.completo(dtoPasajero)
 		if not omisiones:
 			# Creamos el objeto pasajero
-			pasajero = construirPasajero(dtoPasajero)
+			pasajero = self.construirPasajero(dtoPasajero)
 			
 			# Corroboramos si hay un pasajero con los mismos datos en la db
 			arregloPasajeros = self.buscar(pasajero.nombre,
@@ -95,10 +95,12 @@ class GestorGestionarPasajeros:
 		# Obtenemos informacion necesaria de la db
 		# Utilizando sus ids
 		gestordb = GestorDB()
-		ocupacion = gestordb.getObjbyID(Ocupacion, {'id_ocupacion':dtoPasajero.id_ocupacion})
-		nacionalidad = gestordb.getObjbyID(Nacionalidad, {'id_nacionalidad':dtoPasajero.id_nacionalidad})
-		iva = gestordb.getObjbyID(IVA, {'id_iva':dtoPasajero.id_iva})
-		tipoDocu = gestor.db.getObjbyID(TipoDocumento, {'id_tipo':dtoPasajero.id_tipo})
+
+		# Con el '[0]' obtenemos el unico elemento que contiene la lista
+		ocupacion = gestordb.getObjs(Ocupacion, {'id_ocupacion':dtoPasajero.id_ocupacion})[0]
+		nacionalidad = gestordb.getObjs(Nacionalidad, {'id_nacionalidad':dtoPasajero.id_nacionalidad})[0]
+		iva = gestordb.getObjs(Iva, {'id_iva':dtoPasajero.id_iva})[0]
+		tipoDocu = gestordb.getObjs(TipoDocumento, {'id_tipo':dtoPasajero.id_tipo})[0]
 
 		# Creamos objetos pertinentes
 		documento = Documento(codigo=dtoPasajero.documento_codigo, tipo=tipoDocu)
