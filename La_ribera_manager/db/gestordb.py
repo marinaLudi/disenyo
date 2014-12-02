@@ -60,10 +60,13 @@ class GestorDB:
 		session = self.Session()
 
 		try:
-			arregloPasajeros = session.query(Pasajero).\
-					filter(Pasajero.nombre==nombre,
-							Pasajero.apellido==apellido,
-						Pasajero.documento.codigo==codigo)
+			arregloPasajeros = session.query(Pasajero).join(Documento).\
+					filter(Pasajero.nombre == nombre,
+							Pasajero.apellido == apellido).\
+					filter(Documento.codigo == codigo,
+							Documento.id_tipo ==tipoDocu).\
+									all()
+
 		except:
 			raise
 

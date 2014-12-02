@@ -23,8 +23,16 @@ class TipoDocumento(DeclarativeBase):
 	# atributos
 	tipo = Column(String, nullable=False)
 
+	# gets 
+	def getId(self):
+		return self.id_tipo
+
+	def getTipo(self):
+		return str(self.tipo)
+
+	# Devuelve una lista con los atributos
 	def pack(self):
-		return [self.id_tipo, self.tipo]
+		return [self.getId(), self.getTipo()]
 
 
 class Documento(DeclarativeBase):
@@ -42,8 +50,19 @@ class Documento(DeclarativeBase):
 	# relacion
 	tipo = relationship("TipoDocumento", backref=backref("documento", order_by=id_documento))
 
+	# gets
+	def getId(self):
+		return self.id_documento
+
+	def getCodigo(self):
+		return str(self.codigo)
+
+	def getTipo(self):
+		return self.tipo
+
+	# Pack
 	def pack(self):
-		return [self.id_documento, self.codigo, self.tipo]
+		return [self.getId(), self.getCodigo(), self.getTipo()]
 
 
 class Iva(DeclarativeBase):
@@ -55,8 +74,16 @@ class Iva(DeclarativeBase):
 	# atributos
 	descripcion_iva = Column("descripcion", String, nullable=False)
 
+	# gets
+	def getId(self):
+		return self.id_iva
+
+	def getDescripcion(self):
+		return str(self.descripcion_iva)
+
+	# Pack
 	def pack(self):
-		return [self.id_iva, self.descripcion_iva]
+		return [self.getId(), self.getDescripcion()]
 
 
 class Ocupacion(DeclarativeBase):
@@ -68,6 +95,14 @@ class Ocupacion(DeclarativeBase):
 	# atributos
 	descripcion_ocupacion = Column("descripcion", String, nullable=False)
 
+	# gets
+	def getId(self):
+		return self.id_ocupacion
+
+	def getDescripcion(self):
+		return str(self.descripcion_ocupacion)
+
+	# Pack
 	def pack(self):
 		return [self.id_ocupacion, self.descripcion_ocupacion]
 
@@ -91,8 +126,37 @@ class Direccion(DeclarativeBase):
 	#relacion
 	localidad = relationship("Localidad",backref=backref("direccion",order_by=id_direccion))
 
+	# gets
+	def getId(self):
+		return self.id_direccion
+
+	def getCalle(self):
+		return str(self.calle)
+
+	def getNumero(self):
+		return self.numero
+
+	def getDpto(self):
+		return str(self.dpto)
+
+	def getPiso(self):
+		return str(self.piso)
+
+	def getCP(self):
+		return str(self.CP)
+
+	def getLocalidad(self):
+		return self.localidad
+
+	# pack
 	def pack(self):
-		return [self.id_direccion, self.calle, self.numero, self.dpto, self.piso, self.CP, self.localidad]
+		return [self.getId(), 
+				self.getCalle(), 
+				self.getNumero(), 
+				self.getDpto(), 
+				self.getpiso(), 
+				self.getCP(), 
+				self.getLocalidad()]
 
 
 class Localidad(DeclarativeBase):
@@ -107,11 +171,22 @@ class Localidad(DeclarativeBase):
 	# foreign keys
 	id_provincia = Column(Integer, ForeignKey("provincia.id_provincia"), nullable=False)
 	
-	#relacion
-	provincia = relationship("Provincia",backref=backref("localidad",order_by=id_localidad))	
+	# relacion
+	provincia = relationship("Provincia",backref=backref("localidad",order_by=id_localidad))
 
+	# gets
+	def getId(self):
+		return self.id_localidad
+
+	def getNombre(self):
+		return str(self.nombreLocalidad)
+
+	def getProvincia(self):
+		return self.provincia
+
+	# pack
 	def pack(self):
-		return [self.id_localidad, self.nombreLocalidad, self.provincia]
+		return [self.getId(), self.getNombre(), self.getProvincia()]
 
 
 class Provincia(DeclarativeBase):
@@ -129,8 +204,19 @@ class Provincia(DeclarativeBase):
 	#relacion
 	pais = relationship("Pais",backref=backref("provincia",order_by=id_provincia))
 
+	# gets
+	def getId(self):
+		return self.id_provincia
+
+	def getNombre(self):
+		return str(self.nombreProv)
+
+	def getPais(self):
+		return self.pais
+
+	# pack
 	def pack(self):
-		return [self.id_provincia, self.nombreProv, self.pais]
+		return [self.getId(), self.getNombre(), self.getPais()]
 
 
 class Pais(DeclarativeBase):
@@ -142,6 +228,14 @@ class Pais(DeclarativeBase):
 	# atributos
 	nombrePais = Column("nombre", String, nullable=False)
 	
+	# gets
+	def getId(self):
+		return self.id_pais
+
+	def getNombre(self):
+		return str(self.nombrePais)
+
+	# pack
 	def pack(self):
 		return [self.id_pais, self.nombrePais]
 
@@ -155,6 +249,14 @@ class Nacionalidad(DeclarativeBase):
 	#atributos
 	nombreNacionalidad = Column("nombre",String,nullable=False)
 
+	# gets
+	def getId(self):
+		return self.id_nacionalidad
+
+	def getNombre(self):
+		return str(self.nombreNacionalidad)
+
+	# pack
 	def pack(self):
 		return [self.id_nacionalidad, self.nombreNacionalidad]
 
@@ -187,7 +289,55 @@ class Pasajero(DeclarativeBase):
 	ocupacion = relationship("Ocupacion",backref=backref("pasajero",order_by=id_pasajero))
 	iva = relationship("Iva",backref=backref("pasajero",order_by=id_pasajero))
 
+	# gets
+	def getId(self):
+		return id_pasajero
+
+	def getNombre(self):
+		return str(self.nombre)
+
+	def getApellido(self):
+		return str(self.apellido)
+
+	def getCuit(self):
+		return str(self.cuit)
+
+	def getEmail(self):
+		return str(self.email)
+
+	def getFecha(self):
+		return self.fecha_de_nac
+
+	def getTelefono(self):
+		return str(self.telefono)
+
+	def getDocumento(self):
+		return self.documento
+
+	def getDireccion(self):
+		return self.direccion
+
+	def getNacionalidad(self):
+		return self.nacionalidad
+
+	def getOcupacion(self):
+		return self.ocupacion
+
+	def getIva(self):
+		return self.iva
+
+	# pack
 	def pack(self):
-		return [self.id_pasajero, self.nombre, self.apellido, self.cuit, self.email, self.fecha_de_nac, self.telefono,
-				self.document, self.direccion, self.nacionalidad, self.ocupacion, self.iva]
+		return [self.getId(), 
+				self.getNombre(), 
+				self.getApellido(), 
+				self.getCuit(), 
+				self.getEmail(), 
+				self.getFecha(), 
+				self.getTelefono(),
+				self.getDocumento(), 
+				self.getDireccion(), 
+				self.getNacionalidad(), 
+				self.getOcupacion(), 
+				self.getIva()]
 

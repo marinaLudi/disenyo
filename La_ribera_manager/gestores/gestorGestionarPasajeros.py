@@ -35,15 +35,15 @@ class GestorGestionarPasajeros:
 			pasajero = self.construirPasajero(dtoPasajero)
 			
 			# Corroboramos si hay un pasajero con los mismos datos en la db
-			arregloPasajeros = self.buscar(pasajero.nombre,
-					pasajero.apellido,
-					pasajero.documento.tipo,
-					pasajero.documento.codigo)
+			arregloPasajeros = self.buscar(pasajero.getNombre(),
+					pasajero.getApellido(),
+					pasajero.getDocumento().getTipo().getId(),
+					pasajero.getDocumento().getCodigo())
 
 			if self.existePasajero(arregloPasajeros):
 				return False
 			else:
-				self.completarCarga()
+				self.completarCarga(pasajero)
 				return True
 		
 		else:
@@ -80,7 +80,7 @@ class GestorGestionarPasajeros:
 
 	def completarCarga(self, pasajero):
 		gestordb = GestorDB()
-		guardarObjeto(pasajero)
+		gestordb.guardarObjeto(pasajero)
 
 	
 	def construirPasajero(self, dtoPasajero):
@@ -103,7 +103,7 @@ class GestorGestionarPasajeros:
 		tipoDocu = gestordb.getObjs(TipoDocumento, {'id_tipo':dtoPasajero.id_tipo})[0]
 
 		# Creamos objetos pertinentes
-		documento = Documento(codigo=dtoPasajero.documento_codigo, tipo=tipoDocu)
+		documento = Documento(codigo=dtoPasajero.getCodigo(), tipo=tipoDocu)
 
 		pasajero = Pasajero(documento=documento,
 				direccion=direccion,
