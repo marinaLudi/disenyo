@@ -183,7 +183,7 @@ class interfazPasajero:
 	
 	def on_bSiguiente_clicked(self,boton):
 		
-		pasajero = dtoPasajero(nombre=self.eNombres.get_text(), apellido=self.eApellidos.get_text(), email=self.eCorreo.get_text(), fecha_de_nac=self.fecha, telefono=self.eTelefono.get_text(), CP=self.ePostal.get_text(), id_iva=self.IVA, id_ocupacion=self.ocupacion,id_pais=self.pais,id_localidad=self.localidad,id_prov=self.provincia,id_nacionalidad=self.nacionalidad,calle=self.eCalle.get_text(),numero=self.eNumero.get_text(),dpto=self.eDepto.get_text(),piso=self.ePiso.get_text(),tipo=self.tipo,codigo=self.eDocumento.get_text())
+		pasajero = dtoPasajero(nombre=self.eNombres.get_text(), apellido=self.eApellidos.get_text(), email=self.eCorreo.get_text(), fecha_de_nac=self.fecha, telefono=self.eTelefono.get_text(), CP=self.ePostal.get_text(), id_iva=self.IVA, id_ocupacion=self.ocupacion,id_pais=self.pais,id_localidad=self.localidad,id_provincia=self.provincia,id_nacionalidad=self.nacionalidad,calle=self.eCalle.get_text(),numero=self.eNumero.get_text(),dpto=self.eDepto.get_text(),piso=self.ePiso.get_text(),tipo=self.tipo,codigo=self.eDocumento.get_text())
 		gestor = GestorGestionarPasajeros()
 		gestor.crearPasajero(pasajero)	
 		 
