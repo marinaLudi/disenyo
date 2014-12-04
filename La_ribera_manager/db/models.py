@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String, Date, ForeignKey
+from sqlalchemy import create_engine, Column, Integer, String, Date, Boolean,  ForeignKey
 from sqlalchemy.engine.url import URL
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
@@ -341,3 +341,202 @@ class Pasajero(DeclarativeBase):
 				self.getOcupacion(), 
 				self.getIva()]
 
+
+class TipoHabitacion(DeclarativeBase):
+	__tablename__ = "tipo_habitacion"
+
+	# primary key
+	id_tipo = Column(Integer, primary_key=True)
+
+	# atributos
+	precio = Column(Integer, nullable=False)
+	descripcion = Column(String, nullable=False)
+
+	# gets
+	def getId(self):
+		return self.id_tipo
+
+	def getPrecio(self):
+		return self.precio
+
+	def getDescripcion(self):
+		return str(self.descripcion)
+
+	# pack
+	def pack(self):
+		return [self.getId(), self.getPrecio(), self.getDescripcion()]
+
+
+class Habitacion(DeclarativeBase):
+	__tablename__ = "habitacion"
+
+	# primary key
+	nro_habitacion = Column(Integer, primary_key=True)
+
+	# atributos
+	descuento = Column(Integer, nullable=False)
+	cantidad_de_dias = Column(Integer, nullable=False)
+	estado = Column(Boolean, nullable=False)
+
+	# foreign key
+	id_tipo = Column(Integer, ForeignKey("tipo_habitacion.id_tipo"), nullable=False)
+
+	# relacion
+	tipo = relationship("TipoHabitacion", backref=backref("habitacion", order_by=nro_habitacion)) 
+
+	# gets
+	def getNumero(self):
+		return self.numero_habitacion
+
+	def getDescuento(self):
+		return self.descuento
+
+	def getCantidadDeDias(self):
+		return self.cantidad_de_dias
+
+	def getEstado(self):
+		return self.estado
+
+	def getTipo(self):
+		return self.tipo
+
+	# pack
+	def pack(self):
+		return [self.getNumero(),
+				self.getDescuento(),
+				self.getCantidadDeDias(),
+				self.getEstado(),
+				self.getTipo()]
+
+
+class Estadia(DeclarativeBase):
+	__tablename__ = "estadia"
+
+	# primary key
+	id_estadia = Column(Integer, primary_key=True)
+
+	# atributos
+	fecha_inicio = Column(Date, nullable=False)
+	fecha_fin = Column(Date, nullable=False)
+	
+	# foreign key
+	id_pasajero = Column(Integer, ForeignKey("pasajero.id_pasajero"), nullable=False)
+	nro_habitacion = Column(Integer, ForeignKey("habitacion.nro_habitacion"), nullable=False)
+
+	# relacion
+	pasajero = relationship("Pasajero", backref=backref("estadia", order_by=id_estadia))
+	habitacion = relationship("Habitacion", backref=backref("estadia", order_by=id_estadia))
+
+	# gets
+	def getId(self):
+		return self.id_estadia
+
+	def getFechaIni(self):
+		return self.fecha_inicio
+
+	def getFechaFin(self):
+		return self.fecha_fin
+
+	def getPasajero(self):
+		return self.pasajero
+
+	def getHabitacion(self):
+		return self.habitacion
+
+
+	# pack
+	def pack(self):
+		return [self.getId(),
+				self.getFechaIni(),
+				self.getFechaFin(),
+				self.getPasajero(),
+				self.getHabitacion()]
+
+
+class Reserva(DeclarativeBase):
+	__tablename__ = "reserva"
+
+	# primary key
+	id_reserva = Column(Integer, primary_key=True)
+
+	# atributos
+	nombre = Column(String, nullable=False)
+	apellido = Column(String, nullable=False)
+	telefono = Column(String, nullable=False)
+	fecha_inicio = Column(Date, nullable=False)
+	fecha_fin = Column(Date, nullable=False)
+
+	# foreign key
+	nro_habitacion = Column(Integer, ForeignKey("habitacion.nro_habitacion"), nullable=False)
+
+	# relacion
+	habitacion = relationship("Habitacion", backref=backref("reserva", order_by=id_reserva))
+
+	# gets
+	def getId(self):
+		return self.id_reserva
+
+	def getNombre(self):
+		return str(self.nombre)
+
+	def getApellido(self):
+		return str(self.apellido)
+
+	def getTelefono(self):
+		return str(self.telefono)
+
+	def getFechaIni(self):
+		return self.fecha_inicio
+
+	def getFechaFin(self):
+		return self.fecha_fin
+
+	def getHabitacion(self):
+		return self.habitacion
+
+	# pack
+	def pack(self):
+		return [self.getId(),
+				self.getNombre(),
+				self.getApellido(),
+				self.getTelefono(),
+				self.getFechaIni(),
+				self.getFechaFin(),
+				self.getHabitacion()]
+
+
+class Mantenimiento(DeclarativeBase):
+	__tablename__ = "mantenimiento"
+
+	# primary key
+	id_mantenimiento = Column(Integer, primary_key=True)
+
+	# atributos
+	fecha_inicio = Column(Date, nullable=False)
+	fecha_fin = Column(Date, nullable=False)
+
+	# foreign key
+	nro_habitacion = Column(Integer, ForeignKey("habitacion.nro_habitacion"), nullable=False)
+
+	# relacion
+	habitacion = relationship("Habitacion", backref=backref("mantenimiento", order_by=id_mantenimiento))
+
+	# gets
+	def getId(self):
+		return self.id_mantenimiento
+
+	def getFechaIni(self):
+		return self.fecha_inicio
+
+	def getFechaFin(self):
+		return self.fecha_fin
+
+	def getHabitacion(self):
+		return self.habitacion
+
+	# pack
+	def pack(self):
+		return [self.getId(),
+				self.getFechaIni(),
+				self.getFechaFin(),
+				self.getHabitacion()]

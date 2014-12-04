@@ -9,7 +9,10 @@ NOFILTER = {}
 
 from db.gestordb import GestorDB, Singleton
 from db.models import Nacionalidad, Ocupacion, Iva, Pais, Documento
+import calendar
+from datetime import date
 
+class GestorCombos:
 	def cargarCombos(self, *tuplas):
 		gestordb = GestorDB()
 
@@ -24,8 +27,21 @@ from db.models import Nacionalidad, Ocupacion, Iva, Pais, Documento
 				elem[1].append(objeto.pack())
 
 
-	def getProvincia(self, lProvincia, id_pais):
-		# Stuff	
+	def initDateCombo(self, combo_dia, combo_mes, combo_ano):
+		# seteamos rango de anos y meses
+		year_range = (1930, date.today().year)
+		month_range = (1, 12)
 
-	def getLocalidad(self, lLocalidad, id_provincia):
-		# Stuff	
+		# Cargamos los combos con los anos, meses y dias correspondientes
+		for year in range(year_range[0], year_range[1] + 1):
+			combo_ano.append_text(str(year))
+
+		for month in range(month_range[0], month_range[1] + 1):
+			combo_mes.append_text(str(month))
+
+		day_range = (1, calendar.monthrange(year, month)[1]) 
+		for day in range(day_range[0], day_range[1] + 1):
+			combo_dia.append_text(str(day))
+
+
+
