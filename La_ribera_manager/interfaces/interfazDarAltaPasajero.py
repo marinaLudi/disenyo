@@ -1,3 +1,4 @@
+#!/usr/bin/python
 #### Interfaz Dar Alta Pasajero ####
 
 import sys, os, inspect
@@ -10,7 +11,7 @@ sys.path.insert(0, parentdir)
 from gi.repository import Gtk
 import datetime
 from objetos.dtopasajero import DtoPasajero
-from gestores.gestorGestionarPasajeros import *
+from gestores.gestorGestionarPasajeros import GestorGestionarPasajeros
 from gestores.gestorcombos import GestorCombos
 
 # Globals
@@ -60,9 +61,9 @@ class InterfazDarAltaPasajero:
 		self.lIVA = builder.get_object("lIVA")
 		
 		self.window1.set_border_width(BORDE_ANCHO)
-		self.window1.set_default_size(VENTA_ALTO, VENTANA_ANCHO)
+		self.window1.set_default_size(VENTANA_ALTO, VENTANA_ANCHO)
 	
-		# Obtenemos información para los combos desde la db
+		# Obtenemos informacion para los combos desde la db
 		self.gestorCombos = GestorCombos()
 
 		self.gestorCombos.cargarCombos(self.lPais, 
@@ -70,7 +71,7 @@ class InterfazDarAltaPasajero:
 				self.lOcupacion, 
 				self.lIVA,
 				self.lDocumento)
-		
+		self.cargarFechas(self.cDia,self.cMes,self.cAnyo)
 		#variables auxiliares
 		self.tipo = None
 		self.localidad = None
@@ -178,7 +179,7 @@ class InterfazDarAltaPasajero:
 			model = combo.get_model()
 			id_object = model[treeIter][0]
 			self.pais = id_object
-			self.gestorDireccion.getProvincia(self.lProvincia,id_object)
+			self.gestorCombos.getProvincia(self.lProvincia,id_object)
 		
 
 	def on_cProvincia_changed(self,combo):
@@ -187,7 +188,7 @@ class InterfazDarAltaPasajero:
 			model = combo.get_model()
 			id_object = model[treeIter][0]
 			self.provincia = id_object
-			self.gestorDireccion.getLocalidad(self.lLocalidad,id_object)
+			self.gestorCombos.getLocalidad(self.lLocalidad,id_object)
 	
 
 	def on_cLocalidad_changed(self,combo):
@@ -201,7 +202,8 @@ class InterfazDarAltaPasajero:
 	def on_bSiguiente_clicked(self,boton):
 		
 		pasajero = DtoPasajero(nombre=self.eNombres.get_text(),
-				apellido=self.eApellidos.get_text(), 
+				apellido=self.eApellidos.get_text(),
+				cuit=self.eCUIT.get_text(), 
 				email=self.eCorreo.get_text(), 
 				fecha_de_nac=self.fecha, 
 				telefono=self.eTelefono.get_text(), 
@@ -210,20 +212,21 @@ class InterfazDarAltaPasajero:
 				id_ocupacion=self.ocupacion,
 				id_pais=self.pais,
 				id_localidad=self.localidad,
-				id_prov=self.provincia,
+				id_provincia=self.provincia,
 				id_nacionalidad=self.nacionalidad,
 				calle=self.eCalle.get_text(),
 				numero=self.eNumero.get_text(),
 				dpto=self.eDepto.get_text(),
 				piso=self.ePiso.get_text(),
-				tipo=self.tipo,
+				id_tipo=self.tipo,
 				codigo=self.eDocumento.get_text())
+				
 
 		gestor = GestorGestionarPasajeros()
 		gestor.crearPasajero(pasajero)	
 		 
 
 		
-		
-interfazPasajero()
-Gtk.main()
+if __name__ == '__main__':		
+	InterfazDarAltaPasajero()
+	Gtk.main()

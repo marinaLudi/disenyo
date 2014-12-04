@@ -11,6 +11,7 @@ from db.gestordb import GestorDB, Singleton
 from objetos.dtopasajero import DtoPasajero
 from gestordireccion import GestorDireccion
 
+
 class GestorGestionarPasajeros:
 	def buscar(self, nombre, apellido, tipoDocu, documento):
 		gestordb = GestorDB()
@@ -20,20 +21,23 @@ class GestorGestionarPasajeros:
 		# Comprobamos si la lista tiene algun pasajero 
 		# En caso de que contenga al menos un pasajero se devuelve la lista
 		# Si la lista esta vacia se devuelve False
-		if self.existePasajero(arregloPasajeros):
+		if arregloPasajeros:
 			return arregloPasajeros
 		else:
 			return False
 
 	
 	def crearPasajero(self, dtoPasajero):	
-
+			
 		# Comprobamos si el usuario omitio algun dato
+
 		omisiones = self.completo(dtoPasajero)
+		print omisiones
 		if not omisiones:
 			# Creamos el objeto pasajero
-			pasajero = self.construirPasajero(dtoPasajero)
-			
+			pasajero = self.construirPasajero(dtoPasajero)	
+
+
 			# Corroboramos si hay un pasajero con los mismos datos en la db
 			arregloPasajeros = self.buscar(pasajero.getNombre(),
 					pasajero.getApellido(),
@@ -51,7 +55,7 @@ class GestorGestionarPasajeros:
 
 
 	def completo(self, dtoPasajero):
-		# Hacemos una lista con las omisiones
+		# Hacemos una lista con las omisiones NO 
 		omisiones=list()
 		
 		for atributo in dtoPasajero.pack():
@@ -59,6 +63,7 @@ class GestorGestionarPasajeros:
 				for atrName, value in atributo.iteritems():
 					if value is None:
 						omisiones.append(atrName)
+					
 			else:
 				if atributo is None:
 					omisiones.append(atributo)
@@ -76,6 +81,7 @@ class GestorGestionarPasajeros:
 
 			# Vacio
 			return False
+
 			
 
 	def completarCarga(self, pasajero):
@@ -97,15 +103,16 @@ class GestorGestionarPasajeros:
 		gestordb = GestorDB()
 
 		# Con el '[0]' obtenemos el unico elemento que contiene la lista
-		ocupacion = gestordb.getObjs(Ocupacion, {'id_ocupacion':dtoPasajero.id_ocupacion})[0]
-		nacionalidad = gestordb.getObjs(Nacionalidad, {'id_nacionalidad':dtoPasajero.id_nacionalidad})[0]
-		iva = gestordb.getObjs(Iva, {'id_iva':dtoPasajero.id_iva})[0]
-		tipoDocu = gestordb.getObjs(TipoDocumento, {'id_tipo':dtoPasajero.id_tipo})[0]
+		ocupacion = gestordb.getObjetoID(Ocupacion,dtoPasajero.id_ocupacion)
+		nacionalidad = gestordb.getObjetoID(Nacionalidad,dtoPasajero.id_nacionalidad)
+		iva = gestordb.getObjetoID(Iva,dtoPasajero.id_iva)
+		tipoDocu = gestordb.getObjetoID(TipoDocumento,dtoPasajero.id_tipo)
 
 		# Creamos objetos pertinentes
-		documento = Documento(codigo=dtoPasajero.getCodigo(), tipo=tipoDocu)
+		documento = Documento(codigo=dtoPasajero.getCodigo(),id_tipo=dtoPasajero.getIdTipo(),tipo=tipoDocu)
 
-		pasajero = Pasajero(documento=documento,
+		pasajero = Pasajero(
+				documento=documento,
 				direccion=direccion,
 				nacionalidad=nacionalidad,
 				ocupacion=ocupacion,
@@ -113,3 +120,9 @@ class GestorGestionarPasajeros:
 				**dtoPasajero.atributosPasajero)
 
 		return pasajero
+
+#probando de guardar cosas en la bd
+#gestor = GestorGestionarPasajeros()
+#dto = DtoPasajero(nombre="rocio",apellido="lopez",telefono=4550642,codigo=360574845,id_tipo=1,email="ro@hotmail.com",CP=3000,calle="ramirez",id_iva=2,id_nacionalidad=1,id_ocupacion=1,numero=29,dpto="A",piso=2,id_localidad=1,id_provincia=1,id_pais=1,cuit=15,fecha_de_nac="26/12/1992")
+#gestor.crearPasajero(dto)
+

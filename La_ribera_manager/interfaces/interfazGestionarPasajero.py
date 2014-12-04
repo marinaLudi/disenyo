@@ -16,6 +16,7 @@ from interfaces.interfazDarAltaPasajero import InterfazDarAltaPasajero
 # Globals
 BORDE_ANCHO = 25
 VENTANA_ANCHO = 530
+
 VENTANA_ALTO = 735
 
 class InterfazGestionarPasajero:
@@ -31,17 +32,17 @@ class InterfazGestionarPasajero:
 		self.bSiguiente = builder.get_object("bSiguiente")
 		self.bCancelar = builder.get_object("bCancelar")
 		self.eNombre = builder.get_object("eNombre")
-		self.eApellidos = builder.get_object("eApellidos")
+		self.eApellido = builder.get_object("eApellido")
 		self.eDocumento = builder.get_object("eDocumento")
 		self.cDocumento = builder.get_object("cDocumento")
 		self.lDocumento = builder.get_object("lDocumento")
 		
 		self.window1.set_border_width(BORDE_ANCHO)
-		self.window1.set_default_size(VENTA_ALTO, VENTANA_ANCHO)
+		self.window1.set_default_size(VENTANA_ALTO, VENTANA_ANCHO)
 
-		# Obtenemos información para los combos desde la db
+		# Obtenemos informacion para los combos desde la db
 		self.gestorCombos = GestorCombos()
-		self.gestorCombos.cargarCombos(self.lDocumento)
+		self.gestorCombos.cargarCombos(lDocumento=self.lDocumento)
 
 		# Events handlers
 		handlers = {
@@ -60,16 +61,17 @@ class InterfazGestionarPasajero:
 		
 
 	def on_bSiguiente_clicked(self, boton):
-		# Obtenemos información de la interfaz
+		# Obtenemos informacion de la interfaz
 		nombre = self.eNombre.get_text()
-		apellido = self.eApellidos.get_text()
-		codigo = self.eDocumento.get_text()
+		apellido = self.eApellido.get_text()
+		codigo = str(self.eDocumento.get_text())
 		
 		# Buscamos pasajero
 		gestionarPasajeros = GestorGestionarPasajeros()
-		arregloPasajeros = gestionarPasajeros.buscar(nombre, apellido, codigo, self.tipo)
-		
-		if arregloPasajeros is False:
+		arregloPasajeros = gestionarPasajeros.buscar(nombre, apellido,  self.tipo,codigo)
+		print arregloPasajeros
+
+		if not arregloPasajeros:
 			# Se genera la intefaz de dar alta pasajero
 			darAlta = InterfazDarAltaPasajero()
 			darAlta.altaPasajero()
@@ -98,12 +100,14 @@ class InterfazGestionarPasajero:
 			model = combo.get_model()
 			id_object = model[treeIter][0]
 			self.tipo = id_object
+			print id_object
 		
 
 	def seleccionarPasajero(self, arregloPasajeros):
 		#####
+		uno = 0
 		#####
 
 
-interfazGestionarPasajero()
-Gtk.main()	
+InterfazGestionarPasajero()
+Gtk.main()

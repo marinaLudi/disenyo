@@ -1,7 +1,7 @@
 #### Gestor gestordb ####
 
 from sqlalchemy.orm import sessionmaker
-from models import db_connect, create_pasajero_table, Pasajero, Iva, Ocupacion, Pais, Nacionalidad, Documento
+from models import db_connect, create_tables, Pasajero, Iva, Ocupacion, Pais, Nacionalidad, Documento, Provincia
 
 # Singleton como una metaclase
 class Singleton(type):
@@ -24,7 +24,7 @@ class GestorDB:
 		construye tablas
 		"""
 		engine = db_connect()
-		create_pasajero_table(engine)
+		create_tables(engine)
 		self.Session = sessionmaker(bind=engine)
 
 	def guardarObjeto(self, objeto):
@@ -64,8 +64,7 @@ class GestorDB:
 					filter(Pasajero.nombre == nombre,
 							Pasajero.apellido == apellido).\
 					filter(Documento.codigo == codigo,
-							Documento.id_tipo ==tipoDocu).\
-									all()
+							Documento.id_tipo == tipoDocu).all()
 
 		except:
 			raise
@@ -90,5 +89,38 @@ class GestorDB:
 			session.close()
 
 		return objeto
-
-
+		
+	def getTabla(self,tabla):
+		session = self.Session()
+		
+		try:
+			filas = session.query(tabla).all()
+		except:
+			session.rollback()
+			raise
+		finally:
+			session.close()
+					
+		return filas
+		
+	def getTablaID(self, tabla, columna, ID):
+		session = self.Session()
+		try:
+			filas = session.query(tabla).filter(getattr(tabla, columna) == ID).all()
+		except:
+			raise
+		finally:
+			session.close()
+		return filas
+	
+	def getObjetoID(self,objeto,ID):
+		session = self.Session()
+		
+		try:
+			objeto = session.query(objeto).get(ID)
+		except:
+			raise
+		finally:
+			session.close()
+		return objeto
+		

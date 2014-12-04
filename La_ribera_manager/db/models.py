@@ -3,14 +3,15 @@ from sqlalchemy.engine.url import URL
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
 
-import settings
+import settingsm
+
 
 DeclarativeBase = declarative_base()
 
 def db_connect():
-	return create_engine(URL(**settings.DATABASE))
+	return create_engine(URL(**settingsm.DATABASE))
 
-def create_pasajero_table(engine):
+def create_tables(engine):
 	DeclarativeBase.metadata.create_all(engine)
 
 

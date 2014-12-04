@@ -56,6 +56,7 @@ class Pipe(object):
 		provincias = session.query(Provincia.id_provincia,Provincia.nombreProv).filter(Provincia.id_pais == id_pais).all()
 		for e in provincias:
 			lProvincia.append([e.id_provincia,e.nombreProv])
+		session.close()
 		
 	def getLocalidad(self, lLocalidad, id_provincia):
 		session = self.Session()
@@ -63,13 +64,12 @@ class Pipe(object):
 		localidades = session.query(Localidad.id_localidad,Localidad.nombreLocalidad).filter(Localidad.id_provincia == id_provincia).all()
 		for e in localidades:
 			lLocalidad.append([e.id_localidad,e.nombreLocalidad])
+		session.close()
 		
 			
 	def instanciaObjetoID(self,objeto,ID):
 		session = self.Session()
 		objeto = session.query(objeto).get(ID)
+		session.close()
 		return objeto
 
-pipe = Pipe()
-pais = pipe.instanciaObjetoID(Provincia,3)
-print pais.nombreProv
