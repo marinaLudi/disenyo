@@ -55,21 +55,40 @@ class GestorGestionarPasajeros:
 
 
 	def completo(self, dtoPasajero):
-		# Hacemos una lista con las omisiones NO 
+		# Hacemos una lista con las omisiones  
 		omisiones=list()
+
+		contenidoDto = [dtoPasajero.getAtributosPasajero,
+				dtoPasajero.getAtributosDireccion,
+				dict(codigo = dtoPasajero.getCodigo,
+					id_tipo = dtoPasajero.getIdTipo,
+					id_localidad = dtoPasajero.getIdLocalidad,
+					id_provincia = dtoPasajero.getIdProvincia,
+					id_pais = dtoPasajero.getIdPais,
+					id_ocupacion = dtoPasajero.getIdOcupacion,
+					id_nacionalidad = dtoPasajero.getIdNacionalidad,
+					id_iva = dtoPasajero.getIdIva)]	
 		
-		for atributo in dtoPasajero.pack():
-			if type(atributo) == dict:
-				for atrName, value in atributo.iteritems():
-					if value is None:
+		for atributo in contenidoDto: 
+			for atrName, value in atributo.iteritems():
+				# Checkeamos los atributos que esten vacios 
+				# y no sean opcionales
+				if value is None:
+					if not self.opcional(atrName):
 						omisiones.append(atrName)
 					
-			else:
-				if atributo is None:
-					omisiones.append(atributo)
 
 		return omisiones
 
+	def opcional(self, nombreAtr):
+		if nombreAtr is 'cuit'\
+				or nombreAtr is 'email'\
+				or nombreAtr is 'piso'\
+				or nombreAtr is 'dpto':
+
+			return True
+		else:
+			return False
 
 	def existePasajero(self, arregloPasajeros):
 		# Verificamos si el arreglo esta lleno o vacio
@@ -109,7 +128,9 @@ class GestorGestionarPasajeros:
 		tipoDocu = gestordb.getObjetoID(TipoDocumento,dtoPasajero.id_tipo)
 
 		# Creamos objetos pertinentes
-		documento = Documento(codigo=dtoPasajero.getCodigo(),id_tipo=dtoPasajero.getIdTipo(),tipo=tipoDocu)
+		documento = Documento(codigo=dtoPasajero.getCodigo(), 
+				id_tipo=dtoPasajero.getIdTipo(), 
+				tipo=tipoDocu)
 
 		pasajero = Pasajero(
 				documento=documento,
