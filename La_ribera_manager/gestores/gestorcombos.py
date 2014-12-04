@@ -6,7 +6,6 @@ sys.path.insert(0, parentdir)
 
 
 from db.gestordb import GestorDB, Singleton
-<<<<<<< HEAD
 from db.models import Nacionalidad, Ocupacion, Iva, Pais, Documento
 import calendar
 from datetime import date

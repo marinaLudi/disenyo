@@ -65,14 +65,12 @@ class GestorDB:
 							Pasajero.apellido == apellido).\
 					filter(Documento.codigo == codigo,
 							Documento.id_tipo == tipoDocu).all()
-
 		except:
 			raise
 
 		finally:
 			session.close()
-
-
+			
 		return arregloPasajeros
 
 

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.16.1 -->
+<interface>
+  <requires lib="gtk+" version="3.0"/>
+  <object class="GtkListStore" id="lPasajeros">
+    <columns>
+      <!-- column-name nombre -->
+      <column type="gchararray"/>
+      <!-- column-name apellido -->
+      <column type="gchararray"/>
+      <!-- column-name tipo documento -->
+      <column type="gchararray"/>
+      <!-- column-name nro documento -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkWindow" id="window2">
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkBox" id="box1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <object class="GtkTreeView" id="treeviewLista">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="model">lPasajeros</property>
+            <property name="enable_grid_lines">vertical</property>
+            <child internal-child="selection">
+              <object class="GtkTreeSelection" id="treeview-selection1"/>
+            </child>
+            <child>
+              <object class="GtkTreeViewColumn" id="nombre">
+                <property name="title" translatable="yes">Nombre</property>
+                <property name="sort_order">descending</property>
+                <signal name="clicked" handler="on_treeviewcolumn1_clicked" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkTreeViewColumn" id="apellido">
+                <property name="fixed_width">2</property>
+                <property name="min_width">2</property>
+                <property name="title" translatable="yes">Apellido</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkTreeViewColumn" id="tipo">
+                <property name="title" translatable="yes">Tipo</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkTreeViewColumn" id="documento">
+                <property name="title" translatable="yes">Documento</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox" id="box2">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkButton" id="bSiguiente">
+                <property name="label" translatable="yes">Siguiente</property>
+                <property name="name">bSiguiente</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="relief">half</property>
+                <property name="yalign">0.49000000953674316</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

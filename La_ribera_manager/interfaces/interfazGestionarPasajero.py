@@ -16,7 +16,6 @@ from interfaces.interfazDarAltaPasajero import InterfazDarAltaPasajero
 # Globals
 BORDE_ANCHO = 25
 VENTANA_ANCHO = 530
-
 VENTANA_ALTO = 735
 
 class InterfazGestionarPasajero:
@@ -69,7 +68,7 @@ class InterfazGestionarPasajero:
 		# Buscamos pasajero
 		gestionarPasajeros = GestorGestionarPasajeros()
 		arregloPasajeros = gestionarPasajeros.buscar(nombre, apellido,  self.tipo,codigo)
-		print arregloPasajeros
+
 
 		if not arregloPasajeros:
 			# Se genera la intefaz de dar alta pasajero
@@ -79,6 +78,7 @@ class InterfazGestionarPasajero:
 		else:
 			# Se muestra en la pantalla la grilla para seleccionar al pasajero
 			pasajero = self.seleccionarPasajero(arregloPasajeros)
+		
 
 			if pasajero is None:
 				# El usuario no elige ningun pasajero
@@ -92,7 +92,8 @@ class InterfazGestionarPasajero:
 			
 	def on_bCancelar_clicked(self, boton):
 		print "cancelar"
-			
+		Gtk.main_quit()
+		
 
 	def on_cDocumento_changed(self, combo):
 		treeIter = combo.get_active_iter()
@@ -100,13 +101,29 @@ class InterfazGestionarPasajero:
 			model = combo.get_model()
 			id_object = model[treeIter][0]
 			self.tipo = id_object
-			print id_object
+			
 		
 
 	def seleccionarPasajero(self, arregloPasajeros):
-		#####
-		uno = 0
-		#####
+		builder = Gtk.Builder()
+		
+		builder.add_from_file("Lista_pasajeros.xml")
+		window2 = builder.get_object("window2")
+		lPasajeros = builder.get_object("lPasajeros")
+		b2Siguiente = builder.get_object("b2Siguiente")
+		
+		handlers = {
+		"on_b2Siguiente_clicked": self.on_bSiguiente_clicked,
+		"on_window1_destroy": Gtk.main_quit}
+		
+		window2.set_border_width(BORDE_ANCHO)
+		window2.set_default_size(VENTANA_ALTO, VENTANA_ANCHO)		
+		for e in arregloPasajeros:
+				print e.getNombre()
+				lPasajeros.append([e.getNombre(),e.getApellido(),'1','32'])#e.getDocumento().getTipo(),e.getDocumento().getCodigo()])
+		window2.show_all()
+		
+		
 
 
 InterfazGestionarPasajero()
