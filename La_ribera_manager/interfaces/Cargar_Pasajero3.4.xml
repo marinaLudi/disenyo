@@ -10,78 +10,6 @@
       <column type="gchararray"/>
     </columns>
   </object>
-  <object class="GtkListStore" id="lFecha">
-    <columns>
-      <!-- column-name mes -->
-      <column type="gint"/>
-      <!-- column-name dia -->
-      <column type="gint"/>
-      <!-- column-name año -->
-      <column type="gint"/>
-    </columns>
-    <data>
-      <row>
-        <col id="0">1</col>
-        <col id="1">0</col>
-        <col id="2">0</col>
-      </row>
-      <row>
-        <col id="0">2</col>
-        <col id="1">0</col>
-        <col id="2">0</col>
-      </row>
-      <row>
-        <col id="0">3</col>
-        <col id="1">0</col>
-        <col id="2">0</col>
-      </row>
-      <row>
-        <col id="0">4</col>
-        <col id="1">0</col>
-        <col id="2">0</col>
-      </row>
-      <row>
-        <col id="0">5</col>
-        <col id="1">0</col>
-        <col id="2">0</col>
-      </row>
-      <row>
-        <col id="0">6</col>
-        <col id="1">0</col>
-        <col id="2">0</col>
-      </row>
-      <row>
-        <col id="0">7</col>
-        <col id="1">0</col>
-        <col id="2">0</col>
-      </row>
-      <row>
-        <col id="0">8</col>
-        <col id="1">0</col>
-        <col id="2">0</col>
-      </row>
-      <row>
-        <col id="0">9</col>
-        <col id="1">0</col>
-        <col id="2">0</col>
-      </row>
-      <row>
-        <col id="0">10</col>
-        <col id="1">0</col>
-        <col id="2">0</col>
-      </row>
-      <row>
-        <col id="0">11</col>
-        <col id="1">0</col>
-        <col id="2">0</col>
-      </row>
-      <row>
-        <col id="0">12</col>
-        <col id="1">0</col>
-        <col id="2">0</col>
-      </row>
-    </data>
-  </object>
   <object class="GtkListStore" id="lIVA">
     <columns>
       <!-- column-name id_combo -->
@@ -403,11 +331,9 @@
                 <property name="spacing">5</property>
                 <property name="homogeneous">True</property>
                 <child>
-                  <object class="GtkComboBox" id="cDia">
+                  <object class="GtkComboBoxText" id="cDia">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="model">lFecha</property>
-                    <property name="button_sensitivity">on</property>
                     <signal name="changed" handler="on_cDia_changed" swapped="no"/>
                   </object>
                   <packing>
@@ -417,17 +343,10 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkComboBox" id="cMes">
+                  <object class="GtkComboBoxText" id="cMes">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="model">lFecha</property>
                     <signal name="changed" handler="on_cMes_changed" swapped="no"/>
-                    <child>
-                      <object class="GtkCellRendererText" id="cellrenderertext1"/>
-                      <attributes>
-                        <attribute name="text">0</attribute>
-                      </attributes>
-                    </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -436,7 +355,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkComboBox" id="cAnyo">
+                  <object class="GtkComboBoxText" id="cAnyo">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <signal name="changed" handler="on_cAnyo_changed" swapped="no"/>

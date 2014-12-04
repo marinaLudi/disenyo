@@ -12,6 +12,7 @@
   </object>
   <object class="GtkWindow" id="window1">
     <property name="can_focus">False</property>
+    <signal name="destroy" handler="on_window1_destroy" swapped="no"/>
     <child>
       <object class="GtkBox" id="box1">
         <property name="visible">True</property>
@@ -80,7 +81,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkEntry" id="eNombres">
+              <object class="GtkEntry" id="eNombre">
                 <property name="width_request">250</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>

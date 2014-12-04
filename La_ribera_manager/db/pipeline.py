@@ -22,14 +22,15 @@ class Pipe(object):
 			raise
 		finally:
 			session.close()
-					
+
+
 		return objeto
 
-	def getPasajeroList(self, nombre=None, apellido=None, tipoDocu=None, documento=None):
+	def getPasajeroList(self, filtros):
 		session = self.Session()
 
 		try:
-			arregloPasajeros = session.query(Pasajero).filter(Pasajero.nombre == nombre, Pasajero.apellido == apellido, Pasajero.tipoDocu == tipoDocu, Pasajero.documento == documento).order_by(Pasajero.apellido).all()
+			arregloPasajeros = session.query(Pasajero).filter(**filtros).order_by(Pasajero.apellido).all()
 		except:
 			raise
 		finally:
