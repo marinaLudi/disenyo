@@ -8,6 +8,7 @@ class DtoPasajero:
 			CP=None):
 
 
+
 		self.atributosPasajero = dict()
 		self.atributosDireccion = dict()
 
