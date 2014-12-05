@@ -73,7 +73,7 @@ class InterfazGestionarPasajero:
 		if not arregloPasajeros:
 			# Se genera la intefaz de dar alta pasajero
 			darAlta = InterfazDarAltaPasajero()
-			darAlta.altaPasajero()
+			self.window1.hide()
 
 		else:
 			# Se muestra en la pantalla la grilla para seleccionar al pasajero
@@ -96,6 +96,7 @@ class InterfazGestionarPasajero:
 		
 
 	def seleccionarPasajero(self, arregloPasajeros):
+		self.window1.hide()
 		builder = Gtk.Builder()
 		
 		builder.add_from_file("Lista_pasajeros.xml")
@@ -111,19 +112,18 @@ class InterfazGestionarPasajero:
 		window2.set_default_size(VENTANA_ALTO, VENTANA_ANCHO)		
 		for e in arregloPasajeros:
 				print e.getNombre()
-				lPasajeros.append([e.getNombre(),e.getApellido(),e.getDocumento().getTipo(),e.getDocumento().getCodigo()])
+				lPasajeros.append([e.getNombre(),e.getApellido(),'1','1'])#e.getDocumento().getTipo(),e.getDocumento().getCodigo()])
 		window2.show_all()
 	
 	def on_b2Siguiente_clicked(self,boton,pasajero):
-		
-			if pasajero is None:
-				# El usuario no elige ningun pasajero
-				darAlta = InterfazDarAltaPasajero()
-				darAlta.altaPasajero()
-
-			else:
-				# El usuario elige un pasajero
-				print "Mod Pasajero"
+		if pasajero is None:
+			# El usuario no elige ningun pasajero
+			darAlta = InterfazDarAltaPasajero()
+			self.window1.hide()
+			
+		else:
+			# El usuario elige un pasajero
+			print "Mod Pasajero"
 		
 		
 		

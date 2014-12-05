@@ -15,6 +15,7 @@ def create_tables(engine):
 	DeclarativeBase.metadata.create_all(engine)
 
 
+
 class TipoDocumento(DeclarativeBase):
 	__tablename__ = "tipo_documento"
 
@@ -541,3 +542,4 @@ class Mantenimiento(DeclarativeBase):
 				self.getFechaIni(),
 				self.getFechaFin(),
 				self.getHabitacion()]
+

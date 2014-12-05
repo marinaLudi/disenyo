@@ -8,11 +8,17 @@
       <column type="gchararray"/>
       <!-- column-name apellido -->
       <column type="gchararray"/>
-      <!-- column-name tipo documento -->
+      <!-- column-name tipo -->
       <column type="gchararray"/>
-      <!-- column-name nro documento -->
+      <!-- column-name nro -->
       <column type="gchararray"/>
     </columns>
+  </object>
+  <object class="GtkIconView" id="iconview1">
+    <property name="visible">True</property>
+    <property name="can_focus">True</property>
+    <property name="margin">6</property>
+    <property name="model">lPasajeros</property>
   </object>
   <object class="GtkWindow" id="window2">
     <property name="can_focus">False</property>
@@ -22,9 +28,6 @@
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
-        <child>
-          <placeholder/>
-        </child>
         <child>
           <object class="GtkTreeView" id="treeviewLista">
             <property name="visible">True</property>

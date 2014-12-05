@@ -1,4 +1,6 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 #### Interfaz Dar Alta Pasajero ####
 
 import sys, os, inspect
@@ -29,6 +31,7 @@ class InterfazDarAltaPasajero:
 		#carga conecta los widgets con la interfaz
 		self.window1 = builder.get_object("window1")
 		self.bSiguiente = builder.get_object("bSiguiente")
+		self.bCancelar = builder.get_object("bCancelar")
 		self.eNombres = builder.get_object("eNombres")
 
 		self.eApellidos = builder.get_object("eApellidos")
@@ -87,6 +90,7 @@ class InterfazDarAltaPasajero:
 		# Conecta las senales con sus funciones
 		handlers = {
 		"on_bSiguiente_clicked": self.on_bSiguiente_clicked,
+		"on_bCancelar_clicked":self.on_bCancelar_clicked,
 		"on_window1_destroy": Gtk.main_quit,
 		"on_cPais_changed": self.on_cPais_changed,
 		"on_cProvincia_changed": self.on_cProvincia_changed,
@@ -223,7 +227,43 @@ class InterfazDarAltaPasajero:
 				
 
 		gestor = GestorGestionarPasajeros()
-		gestor.crearPasajero(pasajero)	
+		omisiones = gestor.crearPasajero(pasajero)	
+		if omisiones == False:
+			print 'false'
+		elif omisiones == True:
+			print 'true'
+		else:
+			print omisiones
+			
+	def on_bCancelar_clicked(self,boton):
+			
+		dialog = Gtk.Dialog()
+		dialog.set_title("Cancelar")
+
+		dialog.set_modal(True)
+
+		dialog.add_button(button_text="SI", response_id=Gtk.ResponseType.YES)
+		dialog.add_button(button_text="NO", response_id=Gtk.ResponseType.NO)
+			
+		dialog.connect("response", self.on_cancelar)
+		
+		content_area = dialog.get_content_area()
+		label = Gtk.Label("¿Desea cancelar el alta del pasajero?")
+		content_area.add(label)
+		dialog.show_all()
+		
+	def on_cancelar(self, widget, response_id):
+		#response_id predefinidos YES:-8 , NO:-9
+		
+		if response_id == -8:
+			Gtk.main_quit()
+		if response_id == -9:
+			widget.destroy()
+		
+
+		
+						
+		
 		 
 
 		

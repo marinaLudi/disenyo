@@ -32,7 +32,7 @@ class GestorGestionarPasajeros:
 		# Comprobamos si el usuario omitio algun dato
 
 		omisiones = self.completo(dtoPasajero)
-		print omisiones
+
 		if not omisiones:
 			# Creamos el objeto pasajero
 			pasajero = self.construirPasajero(dtoPasajero)	
