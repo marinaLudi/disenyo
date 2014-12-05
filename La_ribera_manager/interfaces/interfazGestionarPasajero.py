@@ -80,15 +80,6 @@ class InterfazGestionarPasajero:
 			pasajero = self.seleccionarPasajero(arregloPasajeros)
 		
 
-			if pasajero is None:
-				# El usuario no elige ningun pasajero
-				darAlta = InterfazDarAltaPasajero()
-				darAlta.altaPasajero()
-
-			else:
-				# El usuario elige un pasajero
-				print "Mod Pasajero"
-
 			
 	def on_bCancelar_clicked(self, boton):
 		print "cancelar"
@@ -113,18 +104,30 @@ class InterfazGestionarPasajero:
 		b2Siguiente = builder.get_object("b2Siguiente")
 		
 		handlers = {
-		"on_b2Siguiente_clicked": self.on_bSiguiente_clicked,
+		"on_b2Siguiente_clicked": self.on_b2Siguiente_clicked,
 		"on_window1_destroy": Gtk.main_quit}
 		
 		window2.set_border_width(BORDE_ANCHO)
 		window2.set_default_size(VENTANA_ALTO, VENTANA_ANCHO)		
 		for e in arregloPasajeros:
 				print e.getNombre()
-				lPasajeros.append([e.getNombre(),e.getApellido(),'1','32'])#e.getDocumento().getTipo(),e.getDocumento().getCodigo()])
+				lPasajeros.append([e.getNombre(),e.getApellido(),e.getDocumento().getTipo(),e.getDocumento().getCodigo()])
 		window2.show_all()
+	
+	def on_b2Siguiente_clicked(self,boton,pasajero):
+		
+			if pasajero is None:
+				# El usuario no elige ningun pasajero
+				darAlta = InterfazDarAltaPasajero()
+				darAlta.altaPasajero()
+
+			else:
+				# El usuario elige un pasajero
+				print "Mod Pasajero"
+		
 		
 		
 
-
-InterfazGestionarPasajero()
-Gtk.main()
+if __name__ == '__main__':		
+	InterfazGestionarPasajero()
+	Gtk.main()
