@@ -3,13 +3,13 @@ from sqlalchemy.engine.url import URL
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
 
-import settingsm
+import settings
 
 
 DeclarativeBase = declarative_base()
 
 def db_connect():
-	return create_engine(URL(**settingsm.DATABASE))
+	return create_engine(URL(**settings.DATABASE))
 
 def create_tables(engine):
 	DeclarativeBase.metadata.create_all(engine)

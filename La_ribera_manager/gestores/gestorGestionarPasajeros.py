@@ -58,17 +58,17 @@ class GestorGestionarPasajeros:
 		# Hacemos una lista con las omisiones  
 		omisiones=list()
 
-		contenidoDto = [dtoPasajero.getAtributosPasajero,
-				dtoPasajero.getAtributosDireccion,
-				dict(codigo = dtoPasajero.getCodigo,
-					id_tipo = dtoPasajero.getIdTipo,
-					id_localidad = dtoPasajero.getIdLocalidad,
-					id_provincia = dtoPasajero.getIdProvincia,
-					id_pais = dtoPasajero.getIdPais,
-					id_ocupacion = dtoPasajero.getIdOcupacion,
-					id_nacionalidad = dtoPasajero.getIdNacionalidad,
-					id_iva = dtoPasajero.getIdIva)]	
-		
+		contenidoDto = [dtoPasajero.getAtributosPasajero(),
+				dtoPasajero.getAtributosDireccion(),
+				dict(codigo = dtoPasajero.getCodigo(),
+					id_tipo = dtoPasajero.getIdTipo(),
+					id_localidad = dtoPasajero.getIdLocalidad(),
+					id_provincia = dtoPasajero.getIdProvincia(),
+					id_pais = dtoPasajero.getIdPais(),
+					id_ocupacion = dtoPasajero.getIdOcupacion(),
+					id_nacionalidad = dtoPasajero.getIdNacionalidad(),
+					id_iva = dtoPasajero.getIdIva())]	
+
 		for atributo in contenidoDto: 
 			for atrName, value in atributo.iteritems():
 				# Checkeamos los atributos que esten vacios 

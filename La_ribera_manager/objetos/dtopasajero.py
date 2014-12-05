@@ -8,6 +8,8 @@ class DtoPasajero:
 			CP=None):
 
 
+		self.atributosPasajero = dict()
+		self.atributosDireccion = dict()
 
 		# Atributos del objeto pasajero
 		self.setNombre(nombre)
@@ -170,5 +172,5 @@ class DtoPasajero:
 				self.getIdPais(), 
 				self.getIdOcupacion(),
 				self.getIdNacionalidad(), 
-				self.getIdIva)]
+				self.getIdIva()]
 
