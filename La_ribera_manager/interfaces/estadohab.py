@@ -43,6 +43,8 @@ class InterfazEstadoHabitacion:
 		# Conectamos las senales con sus funciones
 		handlers = {
 			"onDeleteWindow": Gtk.main_quit
+			"comboMesChanged": self.mesChange
+			"comboAnoChanged": self.anoChange
 		}
 		builder.connect_signals(handlers)
 
@@ -50,6 +52,11 @@ class InterfazEstadoHabitacion:
 		# Monstramos ventana
 		self.window = builder.get_object("window")
 		self.window.show_all()
+	
+
+	def mesChange(self, combo):
+		gestorCombos = GestorCombos()
+		#gestorCombos.actualizarDia
 		
 	
 InterfazEstadoHabitacion()

@@ -56,15 +56,30 @@ class GestorDB:
 #		return arregloObjetos
 
 
-	def buscarPasajero(self, nombre, apellido, tipoDocu, codigo):
+	def buscarPasajero(self, nombre=None, apellido=None, tipoDocu=None, codigo=None):
 		session = self.Session()
 
 		try:
-			arregloPasajeros = session.query(Pasajero).join(Documento).\
-					filter(Pasajero.nombre == nombre,
-							Pasajero.apellido == apellido).\
-					filter(Documento.codigo == codigo,
-							Documento.id_tipo == tipoDocu).all()
+			# Comienza la consulta
+			query = session.query(Pasajero).join(Documento)
+			
+			# Dependiendo que valores se omitan en los parametros se decide que buscar
+			# en la base de datos
+			if nombre is not None:
+				query = query.filter(Pasajero.nombre == nombre)
+
+			if apellido is not None:
+				query = query.filter(Pasajero.apellido == apellido)
+
+			if codigo is not None:
+				query = query.filter(Documento.codigo == codigo)
+
+			if tipoDocu is not None:
+				query = query.filter(Documento.id_tipo == tipoDocu)
+
+			# Se completa la consulta
+			arregloPasajeros = query.all()	
+
 		except:
 			raise
 

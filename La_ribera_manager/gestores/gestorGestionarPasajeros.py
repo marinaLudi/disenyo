@@ -13,7 +13,7 @@ from gestordireccion import GestorDireccion
 
 
 class GestorGestionarPasajeros:
-	def buscar(self, nombre, apellido, tipoDocu, documento):
+	def buscar(self, nombre=None, apellido=None, tipoDocu=None, documento=None):
 		gestordb = GestorDB()
 
 		arregloPasajeros = gestordb.buscarPasajero(nombre, apellido, tipoDocu, documento)
