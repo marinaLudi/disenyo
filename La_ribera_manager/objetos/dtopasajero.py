@@ -7,9 +7,11 @@ class DtoPasajero:
 			id_ocupacion=None, id_nacionalidad=None, id_iva=None,
 			CP=None):
 
+
+
 		self.atributosPasajero = dict()
 		self.atributosDireccion = dict()
-		
+
 		# Atributos del objeto pasajero
 		self.setNombre(nombre)
 		self.setApellido(apellido)
