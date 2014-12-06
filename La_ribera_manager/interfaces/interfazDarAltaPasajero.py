@@ -15,6 +15,7 @@ import datetime
 from objetos.dtopasajero import DtoPasajero
 from gestores.gestorGestionarPasajeros import GestorGestionarPasajeros
 from gestores.gestorcombos import GestorCombos
+from gestores.gestordialogos import GestorDialogos
 
 # Globals
 BORDE_ANCHO = 25
@@ -26,6 +27,7 @@ class InterfazDarAltaPasajero:
 		
 		builder = Gtk.Builder()
 		builder.add_from_file("Cargar_Pasajero3.4.xml")
+		self.dialogo = GestorDialogos()
 		
 		
 		#carga conecta los widgets con la interfaz
@@ -228,38 +230,22 @@ class InterfazDarAltaPasajero:
 
 		gestor = GestorGestionarPasajeros()
 		omisiones = gestor.crearPasajero(pasajero)	
+		
 		if omisiones == False:
-			print 'false'
+			respuesta = self.dialogo.comfirm("Aceptar Igualmente","Corregir","¡CUIDADO! El tipo y número de documento ya existen en el sistema")
+			if respuesta == True:
+				gestor.completarCarga(pasajero)
+				
 		elif omisiones == True:
 			print 'true'
 		else:
 			print omisiones
 			
 	def on_bCancelar_clicked(self,boton):
-			
-		dialog = Gtk.Dialog()
-		dialog.set_title("Cancelar")
-
-		dialog.set_modal(True)
-
-		dialog.add_button(button_text="SI", response_id=Gtk.ResponseType.YES)
-		dialog.add_button(button_text="NO", response_id=Gtk.ResponseType.NO)
-			
-		dialog.connect("response", self.on_cancelar)
 		
-		content_area = dialog.get_content_area()
-		label = Gtk.Label("¿Desea cancelar el alta del pasajero?")
-		content_area.add(label)
-		dialog.show_all()
-		
-	def on_cancelar(self, widget, response_id):
-		#response_id predefinidos YES:-8 , NO:-9
-		
-		if response_id == -8:
+		respuesta = self.dialogo.confirm("SI","NO","¿Desea cancelar el alta del pasajero?")
+		if respuesta == True:
 			Gtk.main_quit()
-		if response_id == -9:
-			widget.destroy()
-		
 
 		
 						

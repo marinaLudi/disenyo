@@ -33,6 +33,7 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="hscroll_policy">natural</property>
+            <property name="vscroll_policy">natural</property>
             <property name="model">lPasajeros</property>
             <property name="enable_grid_lines">both</property>
             <child internal-child="selection">
@@ -42,7 +43,6 @@
               <object class="GtkTreeViewColumn" id="nombre">
                 <property name="title" translatable="yes">Nombre</property>
                 <property name="sort_order">descending</property>
-                <signal name="clicked" handler="on_treeviewcolumn1_clicked" swapped="no"/>
                 <child>
                   <object class="GtkCellRendererText" id="cellrenderertext1"/>
                   <attributes>

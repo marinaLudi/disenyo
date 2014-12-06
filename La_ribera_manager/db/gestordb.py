@@ -136,4 +136,4 @@ class GestorDB:
 		finally:
 			session.close()
 		return objeto
-		
+
