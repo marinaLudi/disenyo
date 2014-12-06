@@ -3,4 +3,4 @@
 *~
 *.swp
 *.swo
-*settings.py
+La_ribera_manager/db/settings.py

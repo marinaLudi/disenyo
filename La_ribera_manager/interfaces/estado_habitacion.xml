@@ -84,6 +84,7 @@
                 <property name="can_focus">False</property>
                 <property name="entry_text_column">0</property>
                 <property name="id_column">1</property>
+                <signal name="changed" handler="comboDiaIniChanged" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -98,7 +99,7 @@
                 <property name="can_focus">False</property>
                 <property name="entry_text_column">0</property>
                 <property name="id_column">1</property>
-		<signal name="changed" handler="comboMesChanged" swapped="no"/>
+                <signal name="changed" handler="comboMesIniChanged" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -113,7 +114,7 @@
                 <property name="can_focus">False</property>
                 <property name="entry_text_column">0</property>
                 <property name="id_column">1</property>
-		<singal name="changed" hanlder="comboAnoChanged" swapped="no"/>
+                <signal name="changed" handler="comboAnoIniChanged" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">2</property>
@@ -128,6 +129,7 @@
                 <property name="can_focus">False</property>
                 <property name="entry_text_column">0</property>
                 <property name="id_column">1</property>
+                <signal name="changed" handler="comboDiaFinChanged" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">3</property>
@@ -142,7 +144,7 @@
                 <property name="can_focus">False</property>
                 <property name="entry_text_column">0</property>
                 <property name="id_column">1</property>
-		<signal name="changed" handler="comboMesChanged" swapped="no"/>
+                <signal name="changed" handler="comboMesFinChanged" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">4</property>
@@ -157,7 +159,7 @@
                 <property name="can_focus">False</property>
                 <property name="entry_text_column">0</property>
                 <property name="id_column">1</property>
-		<singal name="changed" hanlder="comboAnoChanged" swapped="no"/>
+                <signal name="changed" handler="comboAnoFinChanged" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">5</property>
