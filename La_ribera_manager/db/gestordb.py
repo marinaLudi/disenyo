@@ -26,38 +26,24 @@ class GestorDB:
 		engine = db_connect()
 		create_tables(engine)
 		self.Session = sessionmaker(bind=engine)
+		self.session = self.Session()
 
 	def guardarObjeto(self, objeto):
-		session = self.Session()
 
 		try:
 			session.add(objeto)
 			session.commit()
+
 		except:
 			session.rollback()
-			raise
+
 		finally:
-			session.close()
 
 
 		return objeto
 
-#	def getObjectList(self, tabla, filtros, criterios):
-#		session = self.Session()
-#
-#		try:
-#			arregloObjetos = session.query(tabla).filter_by(**filtros).order_by(*criterios).all()
-#		except:
-#			raise
-#
-#		finally:
-#			session.close()
-#
-#		return arregloObjetos
-
 
 	def buscarPasajero(self, nombre=None, apellido=None, tipoDocu=None, codigo=None):
-		session = self.Session()
 
 		try:
 			# Comienza la consulta
@@ -84,13 +70,12 @@ class GestorDB:
 			raise
 
 		finally:
-			session.close()
-			
+	
+	
 		return arregloPasajeros
 
 
 	def getObjs(self, tabla, ID):
-		session = self.Session()
 
 		try:
 			objeto = session.query(tabla).filter_by(**ID).all()
@@ -99,12 +84,10 @@ class GestorDB:
 			raise
 		
 		finally:
-			session.close()
 
 		return objeto
 		
 	def getTabla(self,tabla):
-		session = self.Session()
 		
 		try:
 			filas = session.query(tabla).all()
@@ -112,28 +95,26 @@ class GestorDB:
 			session.rollback()
 			raise
 		finally:
-			session.close()
 					
 		return filas
 		
 	def getTablaID(self, tabla, columna, ID):
-		session = self.Session()
+
 		try:
 			filas = session.query(tabla).filter(getattr(tabla, columna) == ID).all()
 		except:
 			raise
 		finally:
-			session.close()
+
 		return filas
 	
 	def getObjetoID(self,objeto,ID):
-		session = self.Session()
 		
 		try:
 			objeto = session.query(objeto).get(ID)
 		except:
 			raise
 		finally:
-			session.close()
+			
 		return objeto
 		

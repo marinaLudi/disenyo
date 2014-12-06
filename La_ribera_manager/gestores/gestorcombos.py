@@ -6,13 +6,16 @@ sys.path.insert(0, parentdir)
 
 
 from db.gestordb import GestorDB, Singleton
-from db.models import Nacionalidad, Ocupacion, Iva, Pais, Documento
+from db.models import Nacionalidad, Ocupacion, Iva, Pais, Documento, TipoDocumento, Provincia, Localidad
+
 import calendar
 from datetime import date
+from itertools import izip
 
 
-
-from db.models import Nacionalidad, Ocupacion, Iva, Pais, TipoDocumento, Provincia, Localidad
+# Globals
+ANO_MIN = 1930
+ANO_MAX = date.today().year
 
 class GestorCombos:
 	def __init__(self):
@@ -67,16 +70,80 @@ class GestorCombos:
 
 	def initDateCombo(self, combo_dia, combo_mes, combo_ano):
 		# seteamos rango de anos y meses
-		year_range = (1930, date.today().year)
+		year_range = (ANO_MIN, ANO_MAX)
 		month_range = (1, 12)
+		day_range = (1, calendar.monthrange(ANO_MIN, 1)[1]) 
 
 		# Cargamos los combos con los anos, meses y dias correspondientes
-		for year in range(year_range[0], year_range[1] + 1):
-			combo_ano.append_text(str(year))
+		self.upDateCombos([combo_dia, combo_mes, combo_ano],
+				[day_range, month_range, year_range])
+			
 
-		for month in range(month_range[0], month_range[1] + 1):
-			combo_mes.append_text(str(month))
+	def dateChange(self, diaCombo, mesCombo, anoCombo, diaOpuesto, mesOpuesto, anoOpuesto, flag):
 
-		day_range = (1, calendar.monthrange(year, month)[1]) 
-		for day in range(day_range[0], day_range[1] + 1):
-			combo_dia.append_text(str(day))
+		dia = int(diaCombo.get_active_text())
+		mes = int(mesCombo.get_active_text())
+		ano = int(anoCombo.get_active_text())
+
+		dopuesto = int(diaOpuesto.get_active_text())
+		mopuesto = int(mesOpuesto.get_active_text())
+		aopuesto = int(anoOpuesto.get_active_text())
+
+		# El valor flag == 1 indica que el combo cambiado es el combo de fecha incio 
+		# y el opuesto el de fecha fin
+		if flag is 1:
+			year_range = (ANO_MIN, aopuesto)
+
+			if ano == aopuesto:
+				month_range = (1, mopuesto)
+
+				if mes == mopuesto:
+					day_range = (1, dopuesto)
+
+				else:
+					day_range = (1, calendar.monthrange(ano, mes)[1])
+
+			else:
+				month_range = (1, 12)
+				day_range = (1, calendar.monthrange(ano, mes)[1])
+
+		elif flag is -1:
+			year_range = (aopuesto, ANO_MAX)
+
+			if ano == aopuesto:
+				month_range = (mopuesto, 12)
+
+				if mes == mopuesto:
+					day_range = (dopuesto,
+							calendar.monthrange(aopuesto, mopuesto)[1])
+
+				else:
+					day_range = (1, calendar.monthrange(aopuesto, mopuesto)[1])
+
+			else:
+				month_range = (1, 12)
+				day_range = (1, calendar.monthrange(aopuesto, mopuesto)[1])
+
+
+		# Actualizamos los valores de los combos
+		self.upDateCombos([diaCombo, mesCombo, anoCombo],
+				[day_range, month_range, year_range])
+
+
+	def upDateCombos(self, combos, rangos):
+		for combo, rango in izip(combos, rangos):
+			combo.remove_all()
+
+			for valor in range(rango[0], rango[1] + 1):
+				combo.append_text(str(valor))
+
+	
+	def setActive(self, combos, valoresActivos):
+		for combo, valor in izip(combos, valoresActivos):
+			combo.set_active(valor)
+	
+
+
+		
+
+		

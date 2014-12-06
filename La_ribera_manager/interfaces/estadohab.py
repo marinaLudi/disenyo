@@ -32,19 +32,32 @@ class InterfazEstadoHabitacion:
 
 		# Gestorcombos se ocupa de cargar los combos con info 
 		self.gestorCombos = GestorCombos()
-		self.gestorCombos.initDateCombo(self.dia_ini_combo,
-				self.mes_ini_combo,
-				self.ano_ini_combo)
-
+		
+		self.dia_ini_combo.append_text("1")		
+		self.mes_ini_combo.append_text("1")
+		self.ano_ini_combo.append_text("1930")
 		self.gestorCombos.initDateCombo(self.dia_fin_combo,
 				self.mes_fin_combo,
 				self.ano_fin_combo)
+		
+		# Seteamos items activos
+		self.gestorCombos.setActive([self.dia_ini_combo,
+			self.mes_ini_combo,
+			self.ano_ini_combo,
+			self.dia_fin_combo,
+			self.mes_fin_combo,
+			self.ano_fin_combo],
+				[0, 0, 0, 0, 0, 0])
 
 		# Conectamos las senales con sus funciones
 		handlers = {
-			"onDeleteWindow": Gtk.main_quit
-			"comboMesChanged": self.mesChange
-			"comboAnoChanged": self.anoChange
+			"onDeleteWindow": Gtk.main_quit,
+			"comboDiaIniChanged": self.comboIniChange,
+			"comboMesIniChanged": self.comboIniChange,
+			"comboAnoIniChanged": self.comboIniChange,
+			"comboDiaFinChanged": self.comboFinChange,
+			"comboMesFinChanged": self.comboFinChange,
+			"comboAnoFinChanged": self.comboFinChange
 		}
 		builder.connect_signals(handlers)
 
@@ -54,11 +67,28 @@ class InterfazEstadoHabitacion:
 		self.window.show_all()
 	
 
-	def mesChange(self, combo):
+	def comboIniChange(self, combo):
 		gestorCombos = GestorCombos()
-		#gestorCombos.actualizarDia
 		
-	
+		gestorCombos.dateChange(self.dia_ini_combo,
+				self.mes_ini_combo,
+				self.ano_ini_combo,
+				self.dia_fin_combo,
+				self.mes_fin_combo,
+				self.ano_fin_combo,
+				flag=1)
+
+
+	def comboFinChange(self, combo):
+		gestorCombos = GestorCombos()
+
+		gestorCombos.dateChange(self.dia_fin_combo,
+				self.mes_fin_combo,
+				self.ano_fin_combo,
+				self.dia_ini_combo,
+				self.mes_ini_combo,
+				self.ano_ini_combo,
+				flag=-1)
 InterfazEstadoHabitacion()
 Gtk.main()
 		
