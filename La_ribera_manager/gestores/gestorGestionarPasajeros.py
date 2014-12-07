@@ -21,7 +21,8 @@ class GestorGestionarPasajeros:
 		# Comprobamos si la lista tiene algun pasajero 
 		# En caso de que contenga al menos un pasajero se devuelve la lista
 		# Si la lista esta vacia se devuelve False
-		if self.existePasajero(arregloPasajeros) == True:
+		
+		if self.existePasajero(arregloPasajeros):
 			return arregloPasajeros
 		else:
 			return False
@@ -32,7 +33,7 @@ class GestorGestionarPasajeros:
 		# Comprobamos si el usuario omitio algun dato
 
 		omisiones = self.completo(dtoPasajero)
-		print omisiones
+
 		if not omisiones:
 			# Creamos el objeto pasajero
 			pasajero = self.construirPasajero(dtoPasajero)	
@@ -142,8 +143,4 @@ class GestorGestionarPasajeros:
 
 		return pasajero
 
-#probando de guardar cosas en la bd
-#gestor = GestorGestionarPasajeros()
-#dto = DtoPasajero(nombre="rocio",apellido="lopez",telefono=4550642,codigo=360574845,id_tipo=1,email="ro@hotmail.com",CP=3000,calle="ramirez",id_iva=2,id_nacionalidad=1,id_ocupacion=1,numero=29,dpto="A",piso=2,id_localidad=1,id_provincia=1,id_pais=1,cuit=15,fecha_de_nac="26/12/1992")
-#gestor.crearPasajero(dto)
 

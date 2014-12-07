@@ -54,6 +54,7 @@ class InterfazGestionarPasajero:
 		
 		# Variable auxiliar
 		self.tipo = None
+		self.pasajero = None
 
 		# Monstramos la ventana con los widgets
 		self.window1.show_all()	
@@ -64,16 +65,24 @@ class InterfazGestionarPasajero:
 		nombre = self.eNombre.get_text()
 		apellido = self.eApellido.get_text()
 		codigo = str(self.eDocumento.get_text())
+		if nombre is '':
+			nombre=None
+		if apellido is '':
+			apellido = None
+		if codigo is '':
+			codigo = None
+
 		
 		# Buscamos pasajero
 		gestionarPasajeros = GestorGestionarPasajeros()
-		arregloPasajeros = gestionarPasajeros.buscar(nombre, apellido,  self.tipo,codigo)
+		arregloPasajeros = gestionarPasajeros.buscar(nombre, apellido,self.tipo,codigo)
+
 
 
 		if not arregloPasajeros:
 			# Se genera la intefaz de dar alta pasajero
 			darAlta = InterfazDarAltaPasajero()
-			darAlta.altaPasajero()
+			self.window1.hide()
 
 		else:
 			# Se muestra en la pantalla la grilla para seleccionar al pasajero
@@ -95,35 +104,47 @@ class InterfazGestionarPasajero:
 			
 		
 
-	def seleccionarPasajero(self, arregloPasajeros):
+	def seleccionarPasajero(self,arregloPasajeros):
+		self.window1.hide()
 		builder = Gtk.Builder()
+		
 		
 		builder.add_from_file("Lista_pasajeros.xml")
 		window2 = builder.get_object("window2")
 		lPasajeros = builder.get_object("lPasajeros")
 		b2Siguiente = builder.get_object("b2Siguiente")
-		
+		treeView = builder.get_object("treeviewLista")
 		handlers = {
-		"on_b2Siguiente_clicked": self.on_b2Siguiente_clicked,
-		"on_window1_destroy": Gtk.main_quit}
+		"on_window2_destroy": Gtk.main_quit}
+		builder.connect_signals(handlers)
+
 		
 		window2.set_border_width(BORDE_ANCHO)
-		window2.set_default_size(VENTANA_ALTO, VENTANA_ANCHO)		
+		window2.set_default_size(VENTANA_ALTO, VENTANA_ANCHO)
+				
 		for e in arregloPasajeros:
-				print e.getNombre()
-				lPasajeros.append([e.getNombre(),e.getApellido(),e.getDocumento().getTipo(),e.getDocumento().getCodigo()])
+				lPasajeros.append([e.getNombre(),e.getApellido(),e.getDocumento().getTipo().getTipo(),e.getDocumento().getCodigo()])
+		
+		select = treeView.get_selection()
+		select.unselect_all()
+		
+		select.connect("changed", self.on_tree_selection_changed)
+		b2Siguiente.connect("clicked", self.on_b2Siguiente_clicked,treeView)
 		window2.show_all()
 	
-	def on_b2Siguiente_clicked(self,boton,pasajero):
+	def on_b2Siguiente_clicked(self,boton,treeView):
+		print self.pasajero
+		if self.pasajero is None:
+		# El usuario no elige ningun pasajero
+			darAlta = InterfazDarAltaPasajero()
+			self.window1.hide()
+	
+	def on_tree_selection_changed(self,selection):
+		model,treeiter = selection.get_selected()
+		if treeiter != None:
+			 self.pasajero = model[treeiter][0]
+	
 		
-			if pasajero is None:
-				# El usuario no elige ningun pasajero
-				darAlta = InterfazDarAltaPasajero()
-				darAlta.altaPasajero()
-
-			else:
-				# El usuario elige un pasajero
-				print "Mod Pasajero"
 		
 		
 		

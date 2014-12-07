@@ -1,6 +1,6 @@
 #### Gestor gestordb ####
 
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, contains_eager
 from models import db_connect, create_tables, Pasajero, Iva, Ocupacion, Pais, Nacionalidad, Documento, Provincia
 
 # Singleton como una metaclase
@@ -31,21 +31,22 @@ class GestorDB:
 	def guardarObjeto(self, objeto):
 
 		try:
-			session.add(objeto)
-			session.commit()
+			self.session.add(objeto)
+			self.session.commit()
 
 		except:
-			session.rollback()
-
-		finally:
-			return objeto
+			self.session.rollback()
+		
+		return objeto
 
 
 	def buscarPasajero(self, nombre=None, apellido=None, tipoDocu=None, codigo=None):
 
 		try:
 			# Comienza la consulta
-			query = session.query(Pasajero).join(Documento)
+			query = self.session.query(Pasajero).\
+			join(Documento).\
+			options(contains_eager(Pasajero.documento))
 			
 			# Dependiendo que valores se omitan en los parametros se decide que buscar
 			# en la base de datos
@@ -67,46 +68,46 @@ class GestorDB:
 		except:
 			raise
 
-		finally:
-			return arregloPasajeros
+		return arregloPasajeros
 
 
 	def getObjs(self, tabla, ID):
 
 		try:
-			objeto = session.query(tabla).filter_by(**ID).all()
+			objeto = self.session.query(tabla).filter_by(**ID).all()
 
 		except:
-			raise
+			raise	
+		return objeto
 		
-		finally:
-			return objeto
-		
-	def getTabla(self,tabla):
-		
+
+	def getTabla(self,tabla):	
 		try:
-			filas = session.query(tabla).all()
+			filas = self.session.query(tabla).all()
 		except:
-			session.rollback()
+			self.session.rollback()
 			raise
-		finally:
-			return filas
+
+		return filas
 		
+
 	def getTablaID(self, tabla, columna, ID):
 
 		try:
-			filas = session.query(tabla).filter(getattr(tabla, columna) == ID).all()
+			filas = self.session.query(tabla).filter(getattr(tabla, columna) == ID).all()
 		except:
 			raise
-		finally:
-			return filas
+
+
+		return filas
 	
+
 	def getObjetoID(self,objeto,ID):
 		
 		try:
 			objeto = session.query(objeto).get(ID)
 		except:
 			raise
-		finally:
-			return objeto
-		
+
+
+		return objeto

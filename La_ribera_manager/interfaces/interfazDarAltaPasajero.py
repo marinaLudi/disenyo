@@ -1,4 +1,6 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 #### Interfaz Dar Alta Pasajero ####
 
 import sys, os, inspect
@@ -13,6 +15,7 @@ import datetime
 from objetos.dtopasajero import DtoPasajero
 from gestores.gestorGestionarPasajeros import GestorGestionarPasajeros
 from gestores.gestorcombos import GestorCombos
+from gestores.gestordialogos import GestorDialogos
 
 # Globals
 BORDE_ANCHO = 25
@@ -24,11 +27,13 @@ class InterfazDarAltaPasajero:
 		
 		builder = Gtk.Builder()
 		builder.add_from_file("Cargar_Pasajero3.4.xml")
+		self.dialogo = GestorDialogos()
 		
 		
 		#carga conecta los widgets con la interfaz
 		self.window1 = builder.get_object("window1")
 		self.bSiguiente = builder.get_object("bSiguiente")
+		self.bCancelar = builder.get_object("bCancelar")
 		self.eNombres = builder.get_object("eNombres")
 
 		self.eApellidos = builder.get_object("eApellidos")
@@ -87,6 +92,7 @@ class InterfazDarAltaPasajero:
 		# Conecta las senales con sus funciones
 		handlers = {
 		"on_bSiguiente_clicked": self.on_bSiguiente_clicked,
+		"on_bCancelar_clicked":self.on_bCancelar_clicked,
 		"on_window1_destroy": Gtk.main_quit,
 		"on_cPais_changed": self.on_cPais_changed,
 		"on_cProvincia_changed": self.on_cProvincia_changed,
@@ -223,7 +229,23 @@ class InterfazDarAltaPasajero:
 				
 
 		gestor = GestorGestionarPasajeros()
-		gestor.crearPasajero(pasajero)	
+		omisiones = gestor.crearPasajero(pasajero)	
+		
+		if omisiones == False:
+			respuesta = self.dialogo.confirm("Aceptar Igualmente","Corregir","¡CUIDADO! El tipo y número de documento ya existen en el sistema")
+			if respuesta == True:
+				gestor.completarCarga(pasajero)				
+		elif omisiones == True:
+			print 'true'
+		else:
+			print omisiones
+			
+	def on_bCancelar_clicked(self,boton):
+		
+		respuesta = self.dialogo.confirm("SI","NO","¿Desea cancelar el alta del pasajero?")
+		if respuesta == True:
+			Gtk.main_quit()
+
 		 
 
 		
