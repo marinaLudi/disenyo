@@ -21,6 +21,9 @@ class InterfazEstadoHabitacion:
 		builder = Gtk.Builder()
 		builder.add_from_file("estado_habitacion.xml")
 
+		# Obtenemos ventana
+		self.window = builder.get_object("window")
+
 		# Obtenemos combos de la interfaz 
 		self.dia_ini_combo = builder.get_object("dia_ini_combo")
 		self.mes_ini_combo = builder.get_object("mes_ini_combo")
@@ -33,9 +36,10 @@ class InterfazEstadoHabitacion:
 		# Gestorcombos se ocupa de cargar los combos con info 
 		self.gestorCombos = GestorCombos()
 		
-		self.dia_ini_combo.append_text("1")		
-		self.mes_ini_combo.append_text("1")
-		self.ano_ini_combo.append_text("1930")
+		self.gestorCombos.initDateCombo(self.dia_ini_combo,
+				self.mes_ini_combo,
+				self.ano_ini_combo)
+
 		self.gestorCombos.initDateCombo(self.dia_fin_combo,
 				self.mes_fin_combo,
 				self.ano_fin_combo)
@@ -52,43 +56,45 @@ class InterfazEstadoHabitacion:
 		# Conectamos las senales con sus funciones
 		handlers = {
 			"onDeleteWindow": Gtk.main_quit,
-			"comboDiaIniChanged": self.comboIniChange,
-			"comboMesIniChanged": self.comboIniChange,
-			"comboAnoIniChanged": self.comboIniChange,
-			"comboDiaFinChanged": self.comboFinChange,
-			"comboMesFinChanged": self.comboFinChange,
-			"comboAnoFinChanged": self.comboFinChange
+			"onButtonClicked": self.mostrarHabitaciones,
+			"onComboIniChanged": self.comboIniChanged,
+			"onComboFinChanged": self.comboFinChanged
 		}
 		builder.connect_signals(handlers)
 
-
 		# Monstramos ventana
-		self.window = builder.get_object("window")
 		self.window.show_all()
 	
 
-	def comboIniChange(self, combo):
-		gestorCombos = GestorCombos()
+	def comboIniChanged(self, combo):
+		self.gestorCombos.comboUpDate(self.dia_ini_combo, 
+				self.mes_ini_combo, 
+				self.ano_ini_combo)
+
+
+	def comboFinChanged(self, combo):
+		self.gestorCombos.comboUpDate(self.dia_fin_combo, 
+				self.mes_fin_combo, 
+				self.ano_fin_combo)
+
+
+	def mostrarHabitaciones(self, combo):
+		fecha_ini = self.gestorCombos.getDate(self.dia_ini_combo,
+				self.mes_ini_combo,
+				self.ano_ini_combo)		
+
+
+		fecha_fin = self.gestorCombos.getDate(self.dia_fin_combo,
+				self.mes_fin_combo,
+				self.ano_fin_combo)
+
 		
-		gestorCombos.dateChange(self.dia_ini_combo,
-				self.mes_ini_combo,
-				self.ano_ini_combo,
-				self.dia_fin_combo,
-				self.mes_fin_combo,
-				self.ano_fin_combo,
-				flag=1)
+		if self.validarFecha(fecha_ini, fecha_fin):
+			print "Mostramos habitaciones"	
+		else:
+			print "Fecha ini > fin >:^("	
+		
 
-
-	def comboFinChange(self, combo):
-		gestorCombos = GestorCombos()
-
-		gestorCombos.dateChange(self.dia_fin_combo,
-				self.mes_fin_combo,
-				self.ano_fin_combo,
-				self.dia_ini_combo,
-				self.mes_ini_combo,
-				self.ano_ini_combo,
-				flag=-1)
 InterfazEstadoHabitacion()
 Gtk.main()
 		

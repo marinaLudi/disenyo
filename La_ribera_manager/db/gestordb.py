@@ -38,9 +38,7 @@ class GestorDB:
 			session.rollback()
 
 		finally:
-
-
-		return objeto
+			return objeto
 
 
 	def buscarPasajero(self, nombre=None, apellido=None, tipoDocu=None, codigo=None):
@@ -70,9 +68,7 @@ class GestorDB:
 			raise
 
 		finally:
-	
-	
-		return arregloPasajeros
+			return arregloPasajeros
 
 
 	def getObjs(self, tabla, ID):
@@ -84,8 +80,7 @@ class GestorDB:
 			raise
 		
 		finally:
-
-		return objeto
+			return objeto
 		
 	def getTabla(self,tabla):
 		
@@ -95,8 +90,7 @@ class GestorDB:
 			session.rollback()
 			raise
 		finally:
-					
-		return filas
+			return filas
 		
 	def getTablaID(self, tabla, columna, ID):
 
@@ -105,8 +99,7 @@ class GestorDB:
 		except:
 			raise
 		finally:
-
-		return filas
+			return filas
 	
 	def getObjetoID(self,objeto,ID):
 		
@@ -115,6 +108,5 @@ class GestorDB:
 		except:
 			raise
 		finally:
-			
-		return objeto
+			return objeto
 		
