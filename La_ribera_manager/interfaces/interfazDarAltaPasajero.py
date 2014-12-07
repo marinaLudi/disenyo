@@ -232,10 +232,9 @@ class InterfazDarAltaPasajero:
 		omisiones = gestor.crearPasajero(pasajero)	
 		
 		if omisiones == False:
-			respuesta = self.dialogo.comfirm("Aceptar Igualmente","Corregir","¡CUIDADO! El tipo y número de documento ya existen en el sistema")
+			respuesta = self.dialogo.confirm("Aceptar Igualmente","Corregir","¡CUIDADO! El tipo y número de documento ya existen en el sistema")
 			if respuesta == True:
-				gestor.completarCarga(pasajero)
-				
+				gestor.completarCarga(pasajero)				
 		elif omisiones == True:
 			print 'true'
 		else:
@@ -247,9 +246,6 @@ class InterfazDarAltaPasajero:
 		if respuesta == True:
 			Gtk.main_quit()
 
-		
-						
-		
 		 
 
 		
