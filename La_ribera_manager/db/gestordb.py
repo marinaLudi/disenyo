@@ -1,8 +1,7 @@
 #### Gestor gestordb ####
 
 from sqlalchemy.orm import sessionmaker, contains_eager
-from models import db_connect, create_tables, Pasajero, Iva, Ocupacion, Pais, Nacionalidad, Documento, \
-Provincia, Habitacion
+from models import *
 
 # Singleton como una metaclase
 class Singleton(type):
@@ -112,6 +111,14 @@ class GestorDB:
 			raise
 
 		return objeto
+	
+	def getEstado(self,tabla,fecha,hab):
+		try:
+			arregloTablas = self.session.query(tabla).filter(tabla.nro_habitacion==hab).filter(tabla.fecha_inicio <= fecha, tabla.fecha_fin >= fecha).all()
+		except:
+			raise	
+		return arregloTablas
+
 
 
 	def getHab(self):

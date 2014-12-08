@@ -317,7 +317,6 @@ class Habitacion(DeclarativeBase):
 	# atributos
 	descuento = Column(Integer, nullable=False)
 	cantidad_de_dias = Column(Integer, nullable=False)
-	estado = Column(Boolean, nullable=False)
 
 	# foreign key
 	id_tipo = Column(Integer, ForeignKey("tipo_habitacion.id_tipo"), nullable=False)
@@ -331,7 +330,7 @@ class Habitacion(DeclarativeBase):
 
 	# gets
 	def getNumero(self):
-		return self.numero_habitacion
+		return self.nro_habitacion
 
 	def getDescuento(self):
 		return self.descuento
