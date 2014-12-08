@@ -1,7 +1,8 @@
 #### Gestor gestordb ####
 
 from sqlalchemy.orm import sessionmaker, contains_eager
-from models import db_connect, create_tables, Pasajero, Iva, Ocupacion, Pais, Nacionalidad, Documento, Provincia
+from models import db_connect, create_tables, Pasajero, Iva, Ocupacion, Pais, Nacionalidad, Documento, \
+Provincia, Habitacion
 
 # Singleton como una metaclase
 class Singleton(type):
@@ -71,14 +72,15 @@ class GestorDB:
 		return arregloPasajeros
 
 
-	def getObjs(self, tabla, ID):
-
-		try:
-			objeto = self.session.query(tabla).filter_by(**ID).all()
-
-		except:
-			raise	
-		return objeto
+#	def getObjs(self, tabla, ID):
+#
+#		try:
+#			objeto = self.session.query(tabla).filter_by(**ID).all()
+#
+#		except:
+#			raise	
+#
+#		return objeto
 		
 
 	def getTabla(self,tabla):	
@@ -102,12 +104,22 @@ class GestorDB:
 		return filas
 	
 
-	def getObjetoID(self,objeto,ID):
+	def getObjetoID(self, objeto, ID):
 		
 		try:
-			objeto = session.query(objeto).get(ID)
+			objeto = self.session.query(objeto).get(ID)
 		except:
 			raise
 
-
 		return objeto
+
+
+	def getHab(self):
+		try:
+			arregloHabitaciones = self.session.query(Habitacion).order_by(Habitacion.id_tipo). \
+			all()
+
+		except:
+			raise
+
+		return arregloHabitaciones

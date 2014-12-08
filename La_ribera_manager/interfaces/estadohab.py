@@ -90,10 +90,14 @@ class InterfazEstadoHabitacion:
 
 		
 		if self.validarFecha(fecha_ini, fecha_fin):
-			print "Mostramos habitaciones"	
+
 		else:
 			print "Fecha ini > fin >:^("	
 		
+
+	def validarFecha(self, ini, fin):
+		return fin > ini
+
 
 InterfazEstadoHabitacion()
 Gtk.main()

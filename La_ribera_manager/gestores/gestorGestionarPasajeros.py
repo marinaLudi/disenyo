@@ -122,7 +122,6 @@ class GestorGestionarPasajeros:
 		# Utilizando sus ids
 		gestordb = GestorDB()
 
-		# Con el '[0]' obtenemos el unico elemento que contiene la lista
 		ocupacion = gestordb.getObjetoID(Ocupacion,dtoPasajero.id_ocupacion)
 		nacionalidad = gestordb.getObjetoID(Nacionalidad,dtoPasajero.id_nacionalidad)
 		iva = gestordb.getObjetoID(Iva,dtoPasajero.id_iva)

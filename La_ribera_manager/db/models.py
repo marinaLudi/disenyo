@@ -32,10 +32,6 @@ class TipoDocumento(DeclarativeBase):
 	def getTipo(self):
 		return str(self.tipo)
 
-	# Devuelve una lista con los atributos
-	def pack(self):
-		return [self.getId(), self.getTipo()]
-
 
 class Documento(DeclarativeBase):
 	__tablename__ = "documento"
@@ -62,10 +58,6 @@ class Documento(DeclarativeBase):
 	def getTipo(self):
 		return self.tipo
 
-	# Pack
-	def pack(self):
-		return [self.getId(), self.getCodigo(), self.getTipo()]
-
 
 class Iva(DeclarativeBase):
 	__tablename__ = "iva"
@@ -83,10 +75,6 @@ class Iva(DeclarativeBase):
 	def getDescripcion(self):
 		return str(self.descripcion_iva)
 
-	# Pack
-	def pack(self):
-		return [self.getId(), self.getDescripcion()]
-
 
 class Ocupacion(DeclarativeBase):
 	__tablename__ = "ocupacion"
@@ -103,10 +91,6 @@ class Ocupacion(DeclarativeBase):
 
 	def getDescripcion(self):
 		return str(self.descripcion_ocupacion)
-
-	# Pack
-	def pack(self):
-		return [self.id_ocupacion, self.descripcion_ocupacion]
 
 
 class Direccion(DeclarativeBase):
@@ -150,16 +134,6 @@ class Direccion(DeclarativeBase):
 	def getLocalidad(self):
 		return self.localidad
 
-	# pack
-	def pack(self):
-		return [self.getId(), 
-				self.getCalle(), 
-				self.getNumero(), 
-				self.getDpto(), 
-				self.getpiso(), 
-				self.getCP(), 
-				self.getLocalidad()]
-
 
 class Localidad(DeclarativeBase):
 	__tablename__ = "localidad"
@@ -185,10 +159,6 @@ class Localidad(DeclarativeBase):
 
 	def getProvincia(self):
 		return self.provincia
-
-	# pack
-	def pack(self):
-		return [self.getId(), self.getNombre(), self.getProvincia()]
 
 
 class Provincia(DeclarativeBase):
@@ -216,10 +186,6 @@ class Provincia(DeclarativeBase):
 	def getPais(self):
 		return self.pais
 
-	# pack
-	def pack(self):
-		return [self.getId(), self.getNombre(), self.getPais()]
-
 
 class Pais(DeclarativeBase):
 	__tablename__ = "pais"
@@ -237,10 +203,6 @@ class Pais(DeclarativeBase):
 	def getNombre(self):
 		return str(self.nombrePais)
 
-	# pack
-	def pack(self):
-		return [self.id_pais, self.nombrePais]
-
 
 class Nacionalidad(DeclarativeBase):
 	__tablename__ = "nacionalidad"
@@ -257,10 +219,6 @@ class Nacionalidad(DeclarativeBase):
 
 	def getNombre(self):
 		return str(self.nombreNacionalidad)
-
-	# pack
-	def pack(self):
-		return [self.id_nacionalidad, self.nombreNacionalidad]
 
 
 class Pasajero(DeclarativeBase):
@@ -328,21 +286,6 @@ class Pasajero(DeclarativeBase):
 	def getIva(self):
 		return self.iva
 
-	# pack
-	def pack(self):
-		return [self.getId(), 
-				self.getNombre(), 
-				self.getApellido(), 
-				self.getCuit(), 
-				self.getEmail(), 
-				self.getFecha(), 
-				self.getTelefono(),
-				self.getDocumento(), 
-				self.getDireccion(), 
-				self.getNacionalidad(), 
-				self.getOcupacion(), 
-				self.getIva()]
-
 
 class TipoHabitacion(DeclarativeBase):
 	__tablename__ = "tipo_habitacion"
@@ -364,10 +307,6 @@ class TipoHabitacion(DeclarativeBase):
 	def getDescripcion(self):
 		return str(self.descripcion)
 
-	# pack
-	def pack(self):
-		return [self.getId(), self.getPrecio(), self.getDescripcion()]
-
 
 class Habitacion(DeclarativeBase):
 	__tablename__ = "habitacion"
@@ -383,8 +322,12 @@ class Habitacion(DeclarativeBase):
 	# foreign key
 	id_tipo = Column(Integer, ForeignKey("tipo_habitacion.id_tipo"), nullable=False)
 
-	# relacion
+	# relaciones
 	tipo = relationship("TipoHabitacion", backref=backref("habitacion", order_by=nro_habitacion)) 
+	estadias = relationship("Estadia")
+	reservas = relationship("Reserva")
+	mantenimientos = relationship("Mantenimiento")
+
 
 	# gets
 	def getNumero(self):
@@ -402,13 +345,14 @@ class Habitacion(DeclarativeBase):
 	def getTipo(self):
 		return self.tipo
 
-	# pack
-	def pack(self):
-		return [self.getNumero(),
-				self.getDescuento(),
-				self.getCantidadDeDias(),
-				self.getEstado(),
-				self.getTipo()]
+	def getEstadia(self):
+		return self.estadia
+
+	def getReserva(self):
+		return self.reserva
+
+	def getMantenimiento(self):
+		return self.mantenimiento
 
 
 class Estadia(DeclarativeBase):
@@ -422,12 +366,7 @@ class Estadia(DeclarativeBase):
 	fecha_fin = Column(Date, nullable=False)
 	
 	# foreign key
-	id_pasajero = Column(Integer, ForeignKey("pasajero.id_pasajero"), nullable=False)
 	nro_habitacion = Column(Integer, ForeignKey("habitacion.nro_habitacion"), nullable=False)
-
-	# relacion
-	pasajero = relationship("Pasajero", backref=backref("estadia", order_by=id_estadia))
-	habitacion = relationship("Habitacion", backref=backref("estadia", order_by=id_estadia))
 
 	# gets
 	def getId(self):
@@ -441,18 +380,6 @@ class Estadia(DeclarativeBase):
 
 	def getPasajero(self):
 		return self.pasajero
-
-	def getHabitacion(self):
-		return self.habitacion
-
-
-	# pack
-	def pack(self):
-		return [self.getId(),
-				self.getFechaIni(),
-				self.getFechaFin(),
-				self.getPasajero(),
-				self.getHabitacion()]
 
 
 class Reserva(DeclarativeBase):
@@ -470,9 +397,6 @@ class Reserva(DeclarativeBase):
 
 	# foreign key
 	nro_habitacion = Column(Integer, ForeignKey("habitacion.nro_habitacion"), nullable=False)
-
-	# relacion
-	habitacion = relationship("Habitacion", backref=backref("reserva", order_by=id_reserva))
 
 	# gets
 	def getId(self):
@@ -493,19 +417,6 @@ class Reserva(DeclarativeBase):
 	def getFechaFin(self):
 		return self.fecha_fin
 
-	def getHabitacion(self):
-		return self.habitacion
-
-	# pack
-	def pack(self):
-		return [self.getId(),
-				self.getNombre(),
-				self.getApellido(),
-				self.getTelefono(),
-				self.getFechaIni(),
-				self.getFechaFin(),
-				self.getHabitacion()]
-
 
 class Mantenimiento(DeclarativeBase):
 	__tablename__ = "mantenimiento"
@@ -520,9 +431,6 @@ class Mantenimiento(DeclarativeBase):
 	# foreign key
 	nro_habitacion = Column(Integer, ForeignKey("habitacion.nro_habitacion"), nullable=False)
 
-	# relacion
-	habitacion = relationship("Habitacion", backref=backref("mantenimiento", order_by=id_mantenimiento))
-
 	# gets
 	def getId(self):
 		return self.id_mantenimiento
@@ -532,14 +440,3 @@ class Mantenimiento(DeclarativeBase):
 
 	def getFechaFin(self):
 		return self.fecha_fin
-
-	def getHabitacion(self):
-		return self.habitacion
-
-	# pack
-	def pack(self):
-		return [self.getId(),
-				self.getFechaIni(),
-				self.getFechaFin(),
-				self.getHabitacion()]
-
