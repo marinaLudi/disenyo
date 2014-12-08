@@ -19,8 +19,8 @@ from gestores.gestordialogos import GestorDialogos
 
 # Globals
 BORDE_ANCHO = 25
-VENTANA_ANCHO = 530
-VENTANA_ALTO = 735
+VENTANA_ALTO = 530
+VENTANA_ANCHO = 735
 
 class InterfazDarAltaPasajero:
 	def __init__(self):
@@ -66,7 +66,7 @@ class InterfazDarAltaPasajero:
 		self.lIVA = builder.get_object("lIVA")
 		
 		self.window1.set_border_width(BORDE_ANCHO)
-		self.window1.set_default_size(VENTANA_ALTO, VENTANA_ANCHO)
+		self.window1.set_default_size(VENTANA_ANCHO, VENTANA_ALTO)
 	
 		# Obtenemos informacion para los combos desde la db
 		self.gestorCombos = GestorCombos()
@@ -76,7 +76,7 @@ class InterfazDarAltaPasajero:
 				self.lOcupacion, 
 				self.lIVA,
 				self.lDocumento)
-		self.cargarFechas(self.cDia,self.cMes,self.cAnyo)
+		self.gestorCombos.initDateCombo(self.cDia,self.cMes,self.cAnyo)
 		#variables auxiliares
 		self.tipo = None
 		self.localidad = None
@@ -110,29 +110,6 @@ class InterfazDarAltaPasajero:
 				
 		# Mostramos ventanas con todos los widgets
 		self.window1.show_all()
-		
-
-	def cargarFechas(self,cDia,cMes,cAnyo):
-			
-		i = 1
-		while i <= 31 :
-			cDia.append_text(str(i))
-			i = i+1
-		
-		i = 1
-		while i <=12:
-			cMes.append_text(str(i))
-			i = i +1	
-		
-		
-		ahora = datetime.datetime.now()
-		anyoActual = ahora.year
-		
-		anyo = 1900
-		while anyoActual >= anyo:
-			cAnyo.append_text(str(anyoActual))
-			anyoActual = anyoActual - 1
-				
 		
 		
 	def on_cDocumento_changed(self,combo):

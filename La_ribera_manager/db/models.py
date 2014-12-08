@@ -388,7 +388,7 @@ class Habitacion(DeclarativeBase):
 
 	# gets
 	def getNumero(self):
-		return self.numero_habitacion
+		return self.nro_habitacion
 
 	def getDescuento(self):
 		return self.descuento

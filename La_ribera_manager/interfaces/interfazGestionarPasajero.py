@@ -15,8 +15,8 @@ from interfaces.interfazDarAltaPasajero import InterfazDarAltaPasajero
 
 # Globals
 BORDE_ANCHO = 25
-VENTANA_ANCHO = 530
-VENTANA_ALTO = 735
+VENTANA_ALTO = 530
+VENTANA_ANCHO = 735
 
 class InterfazGestionarPasajero:
 	def __init__(self):
@@ -37,7 +37,7 @@ class InterfazGestionarPasajero:
 		self.lDocumento = builder.get_object("lDocumento")
 		
 		self.window1.set_border_width(BORDE_ANCHO)
-		self.window1.set_default_size(VENTANA_ALTO, VENTANA_ANCHO)
+		self.window1.set_default_size(VENTANA_ANCHO, VENTANA_ALTO)
 
 		# Obtenemos informacion para los combos desde la db
 		self.gestorCombos = GestorCombos()
@@ -91,7 +91,6 @@ class InterfazGestionarPasajero:
 
 			
 	def on_bCancelar_clicked(self, boton):
-		print "cancelar"
 		Gtk.main_quit()
 		
 
@@ -120,7 +119,7 @@ class InterfazGestionarPasajero:
 
 		
 		window2.set_border_width(BORDE_ANCHO)
-		window2.set_default_size(VENTANA_ALTO, VENTANA_ANCHO)
+		window2.set_default_size(VENTANA_ANCHO, VENTANA_ALTO)
 				
 		for e in arregloPasajeros:
 				lPasajeros.append([e.getNombre(),e.getApellido(),e.getDocumento().getTipo().getTipo(),e.getDocumento().getCodigo()])
@@ -129,15 +128,14 @@ class InterfazGestionarPasajero:
 		select.unselect_all()
 		
 		select.connect("changed", self.on_tree_selection_changed)
-		b2Siguiente.connect("clicked", self.on_b2Siguiente_clicked,treeView)
+		b2Siguiente.connect("clicked", self.on_b2Siguiente_clicked,window2,treeView)
 		window2.show_all()
 	
-	def on_b2Siguiente_clicked(self,boton,treeView):
-		print self.pasajero
+	def on_b2Siguiente_clicked(self,boton,window,treeView):
 		if self.pasajero is None:
 		# El usuario no elige ningun pasajero
 			darAlta = InterfazDarAltaPasajero()
-			self.window1.hide()
+			window.hide()
 	
 	def on_tree_selection_changed(self,selection):
 		model,treeiter = selection.get_selected()
