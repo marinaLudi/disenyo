@@ -10,10 +10,10 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
 
-from gi.repository import Gtk
+from gi.repository import Gtk,Gdk
 
 class GestorDialogos:
-	def confirm(widget,aceptar,cancelar, pregunta):
+	def confirm(self,aceptar,cancelar, pregunta):
 		dialog = Gtk.MessageDialog(type=Gtk.MessageType.WARNING,message_format=pregunta)
 
 		dialog.set_modal(True)
@@ -24,3 +24,15 @@ class GestorDialogos:
 		response = dialog.run()
 		dialog.destroy()
 		return response == Gtk.ResponseType.YES
+	
+	def presTecla(self,texto):
+		dialog = Gtk.MessageDialog(message_format=texto)		
+		dialog.set_modal(True)
+		dialog.connect("key-press-event",self.on_dialog_key_press_event)
+		response = dialog.run()
+		dialog.destroy()	
+		return response == Gtk.ResponseType.OK
+	
+	def on_dialog_key_press_event(self,dialog,event):
+		dialog.response(Gtk.ResponseType.OK)
+

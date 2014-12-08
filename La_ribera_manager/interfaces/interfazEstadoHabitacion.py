@@ -10,8 +10,10 @@ sys.path.insert(0, parentdir)
 
 from gi.repository import Gtk, Gdk
 from gestores.gestorcombos import GestorCombos
+from gestores.gestordialogos import GestorDialogos
 from gestores.mostrarhabitacion import GestorMostrarEstado
 from datetime import timedelta,date,datetime
+from time import strptime
 
 # Globals
 BORDE_ANCHO = 25
@@ -24,6 +26,11 @@ class InterfazEstadoHabitacion:
 		builder = Gtk.Builder()
 		builder.add_from_file("estado_habitacion.xml")
 
+		# Obtenemos ventana
+		self.window = builder.get_object("window")
+		self.window.set_border_width(BORDE_ANCHO)
+		self.window.set_default_size(VENTANA_ALTO, VENTANA_ANCHO)
+
 		# Obtenemos combos de la interfaz 
 		self.dia_ini_combo = builder.get_object("dia_ini_combo")
 		self.mes_ini_combo = builder.get_object("mes_ini_combo")
@@ -32,13 +39,19 @@ class InterfazEstadoHabitacion:
 		self.dia_fin_combo = builder.get_object("dia_fin_combo")
 		self.mes_fin_combo = builder.get_object("mes_fin_combo")
 		self.ano_fin_combo = builder.get_object("ano_fin_combo")
+		
+		self.scrolled_window = builder.get_object("scrolled_window")
+		self.scrolled_window.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.ALWAYS)
+
+		self.gestorDialogos = GestorDialogos()
 
 		# Gestorcombos se ocupa de cargar los combos con info 
 		self.gestorCombos = GestorCombos()
 		
-		self.dia_ini_combo.append_text("1")		
-		self.mes_ini_combo.append_text("1")
-		self.ano_ini_combo.append_text("1930")
+		self.gestorCombos.initDateCombo(self.dia_ini_combo,
+				self.mes_ini_combo,
+				self.ano_ini_combo)
+
 		self.gestorCombos.initDateCombo(self.dia_fin_combo,
 				self.mes_fin_combo,
 				self.ano_fin_combo)
@@ -55,58 +68,51 @@ class InterfazEstadoHabitacion:
 		# Conectamos las senales con sus funciones
 		handlers = {
 			"onDeleteWindow": Gtk.main_quit,
-			"comboDiaIniChanged": self.comboIniChange,
-			"comboMesIniChanged": self.comboIniChange,
-			"comboAnoIniChanged": self.comboIniChange,
-			"comboDiaFinChanged": self.comboFinChange,
-			"comboMesFinChanged": self.comboFinChange,
-			"comboAnoFinChanged": self.comboFinChange
+			"onButtonClicked": self.mostrarHabitaciones,
+			"onComboIniChanged": self.comboIniChanged,
+			"onComboFinChanged": self.comboFinChanged
 		}
 		builder.connect_signals(handlers)
 
-
 		# Monstramos ventana
-		self.window = builder.get_object("window")
 		self.window.show_all()
 	
 
-	def comboIniChange(self, combo):
-		gestorCombos = GestorCombos()
+	def comboIniChanged(self, combo):
+		self.gestorCombos.comboUpDate(self.dia_ini_combo, 
+				self.mes_ini_combo, 
+				self.ano_ini_combo)
+
+
+	def comboFinChanged(self, combo):
+		self.gestorCombos.comboUpDate(self.dia_fin_combo, 
+				self.mes_fin_combo, 
+				self.ano_fin_combo)
+	
+	def mostrarHabitaciones(self, combo):
+		fecha_ini = self.gestorCombos.getDate(self.dia_ini_combo,
+				self.mes_ini_combo,
+				self.ano_ini_combo)		
+
+
+		fecha_fin = self.gestorCombos.getDate(self.dia_fin_combo,
+				self.mes_fin_combo,
+				self.ano_fin_combo)
+
 		
-		gestorCombos.dateChange(self.dia_ini_combo,
-				self.mes_ini_combo,
-				self.ano_ini_combo,
-				self.dia_fin_combo,
-				self.mes_fin_combo,
-				self.ano_fin_combo,
-				flag=1)
+		if self.validarFecha(fecha_ini, fecha_fin):
+			self.armarGrilla(fecha_ini,fecha_fin)
+		else:
+			print "Fecha ini > fin >:^("	
+		
 
+	def validarFecha(self, ini, fin):
+		return fin > ini
 
-	def comboFinChange(self, combo):
-		gestorCombos = GestorCombos()
-
-		gestorCombos.dateChange(self.dia_fin_combo,
-				self.mes_fin_combo,
-				self.ano_fin_combo,
-				self.dia_ini_combo,
-				self.mes_ini_combo,
-				self.ano_ini_combo,
-				flag=-1)
 
 	def armarGrilla(self,fecha_inicio,fecha_fin):
 		
 		gestor_estado = GestorMostrarEstado()
-			
-		window = Gtk.Window()
-		scrolled_window = Gtk.ScrolledWindow()
-		scrolled_window.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.ALWAYS)
-		scrolled_window.set_min_content_height(VENTANA_ANCHO)
-		scrolled_window.set_min_content_width(VENTANA_ALTO)
-		window.set_border_width(BORDE_ANCHO)
-		window.set_default_size(VENTANA_ALTO, VENTANA_ANCHO)
-		grid = Gtk.Grid()
-		window.add(grid)
-		grid.add(scrolled_window)
 
 					
 		#crea la lista de donde va a tomar las cosas el toggle, el boolean activado o no
@@ -114,8 +120,8 @@ class InterfazEstadoHabitacion:
 		#la ultima columna seria la fecha
 		self.store = Gtk.ListStore(str)
 		
-		for date in self.daterange(fecha_inicio, fecha_fin):
-			treeiter = self.store.append([str(date)])
+		for fecha in self.daterange(fecha_inicio, fecha_fin):
+			treeiter = self.store.append([str(fecha)])
 				
 		tree = Gtk.TreeView(self.store)
 		renderer = Gtk.CellRendererText()
@@ -144,28 +150,43 @@ class InterfazEstadoHabitacion:
 			num = num + 1	
 
 		self.fecha_ini = None
+		self.primerCelda = [None,None]
 		self.fecha_fin = None
-		
-		for a in self.stores:
-			for b in self.daterange(fecha_inicio, fecha_fin):
-				a[0]
+		self.respuesta = None
 
-		scrolled_window.add(tree)
-		window.show_all()
+		self.scrolled_window.add(tree)
+		self.window.show_all()
+	
+	# Devuelve true si son iguales
+	def compararCelda(self,path1,num1,path2,num2):
+			if path1==path2 and num1==num2:
+				return True
 		
-	def on_cell_toggled(self, widget, path,num):
-		print num,path
-		if self.fecha_ini is None:
-			self.fecha_ini = self.stores[num][int(path)][2]
+	def on_cell_toggled(self, widget, path, num):
+		if self.compararCelda(self.primerCelda[0],self.primerCelda[1],int(path),num):
 			self.stores[num][int(path)][0] = not self.stores[num][int(path)][0]
-			print self.fecha_ini
+			self.fecha_ini=None					
+		elif self.fecha_ini is None:
+			self.stores[num][int(path)][0] = not self.stores[num][int(path)][0]
+			self.fecha_ini = self.stores[num][int(path)][2]
+			self.primerCelda[0]=int(path)
+			self.primerCelda[1]=num
+			self.pos_ini = int(path)
+			
 		elif self.fecha_fin is None:
 			self.fecha_fin = self.stores[num][int(path)][2]
 			self.stores[num][int(path)][0] = not self.stores[num][int(path)][0]
-			print self.fecha_fin
-		else:
-			self.fecha_ini=None
-			self.fecha_fin=None
+			
+			#~ self.comprobarEstado():
+			#pintamos las celdas de color ocupado
+			for b in range(self.primerCelda[0],int(path)+1):
+					self.stores[num][b][1] = 'red'
+					
+			self.respuesta = self.gestorDialogos.presTecla('PRESIONE CUALQUIER TECLA Y CONTINUA...')
+
+			
+			
+
 			
 	
 	def inIta(self,col, cell, model, iter, mymodel):
@@ -183,7 +204,6 @@ class InterfazEstadoHabitacion:
 
 
 
-
-inter=InterfazEstadoHabitacion()
-inter.armarGrilla(date(2014, 12, 1),date(2014, 12, 25))
-Gtk.main()
+if __name__ == '__main__':		
+	inter=InterfazEstadoHabitacion()
+	Gtk.main()
