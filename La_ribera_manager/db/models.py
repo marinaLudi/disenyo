@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String, Date, Boolean,  ForeignKey
+from sqlalchemy import create_engine, Table, Column, Integer, String, Date, Boolean, ForeignKey
 from sqlalchemy.engine.url import URL
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
@@ -13,7 +13,6 @@ def db_connect():
 
 def create_tables(engine):
 	DeclarativeBase.metadata.create_all(engine)
-
 
 
 class TipoDocumento(DeclarativeBase):
@@ -439,3 +438,10 @@ class Mantenimiento(DeclarativeBase):
 
 	def getFechaFin(self):
 		return self.fecha_fin
+
+
+# Tabla de relacion
+tiene_ocupante = Table('tiene_ocupante', DeclarativeBase.metadata,
+		Column('id_pasajero', Integer, ForeignKey('pasajero.id_pasajero')),
+		Column('id_estadia', Integer, ForeignKey('estadia.id_estadia'))
+)
