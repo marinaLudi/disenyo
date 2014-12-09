@@ -209,7 +209,7 @@ class InterfazDarAltaPasajero:
 		omisiones = gestor.crearPasajero(pasajero)	
 		
 		if omisiones == False:
-			respuesta = self.dialogo.confirm("Aceptar Igualmente","Corregir","¡CUIDADO! El tipo y número de documento ya existen en el sistema")
+			respuesta = self.dialogo.confirm("¡CUIDADO! El tipo y número de documento ya existen en el sistema","Aceptar Igualmente","Corregir")
 			if respuesta == True:
 				gestor.completarCarga(pasajero)				
 		elif omisiones == True:
@@ -219,7 +219,7 @@ class InterfazDarAltaPasajero:
 			
 	def on_bCancelar_clicked(self,boton):
 		
-		respuesta = self.dialogo.confirm("SI","NO","¿Desea cancelar el alta del pasajero?")
+		respuesta = self.dialogo.confirm("¿Desea cancelar el alta del pasajero?","SI","NO")
 		if respuesta == True:
 			Gtk.main_quit()
 

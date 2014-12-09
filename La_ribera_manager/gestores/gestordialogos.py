@@ -13,13 +13,15 @@ sys.path.insert(0, parentdir)
 from gi.repository import Gtk,Gdk
 
 class GestorDialogos:
-	def confirm(self,aceptar,cancelar, pregunta):
+	def confirm(self,pregunta,aceptar,cancelar=None):
 		dialog = Gtk.MessageDialog(type=Gtk.MessageType.WARNING,message_format=pregunta)
 
 		dialog.set_modal(True)
 
 		dialog.add_button(aceptar, Gtk.ResponseType.YES)
-		dialog.add_button(cancelar, Gtk.ResponseType.NO)
+		
+		if cancelar is not None:
+			dialog.add_button(cancelar, Gtk.ResponseType.NO)
 			
 		response = dialog.run()
 		dialog.destroy()
@@ -35,4 +37,3 @@ class GestorDialogos:
 	
 	def on_dialog_key_press_event(self,dialog,event):
 		dialog.response(Gtk.ResponseType.OK)
-

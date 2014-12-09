@@ -12,6 +12,7 @@ from gi.repository import Gtk, Gdk
 from gestores.gestorcombos import GestorCombos
 from gestores.gestordialogos import GestorDialogos
 from gestores.mostrarhabitacion import GestorMostrarEstado
+from interfaces.interfazOcuparHabitacion import InterfazOcuparHabitacion
 from datetime import timedelta,date,datetime
 from time import strptime
 
@@ -103,7 +104,7 @@ class InterfazEstadoHabitacion:
 		if self.validarFecha(fecha_ini, fecha_fin):
 			self.armarGrilla(fecha_ini,fecha_fin)
 		else:
-			print "Fecha ini > fin >:^("	
+			self.gestorDialogos.confirm("La fecha inicial no puede ser mayor que la final","Aceptar")
 		
 
 	def validarFecha(self, ini, fin):
@@ -171,8 +172,7 @@ class InterfazEstadoHabitacion:
 			self.fecha_ini = self.stores[num][int(path)][2]
 			self.primerCelda[0]=int(path)
 			self.primerCelda[1]=num
-			self.pos_ini = int(path)
-			
+			self.pos_ini = int(path)			
 		elif self.fecha_fin is None:
 			self.fecha_fin = self.stores[num][int(path)][2]
 			self.stores[num][int(path)][0] = not self.stores[num][int(path)][0]
@@ -182,7 +182,10 @@ class InterfazEstadoHabitacion:
 			for b in range(self.primerCelda[0],int(path)+1):
 					self.stores[num][b][1] = 'red'
 					
-			self.respuesta = self.gestorDialogos.presTecla('PRESIONE CUALQUIER TECLA Y CONTINUA...')
+			if self.gestorDialogos.presTecla('PRESIONE CUALQUIER TECLA Y CONTINUA...'):
+				InterfazOcuparHabitacion(self.fecha_ini,self.fecha_fin,'101')## hay que agregar la habitacion en el listStore tambien, es mas facil asi
+				self.window.hide()
+
 
 			
 			

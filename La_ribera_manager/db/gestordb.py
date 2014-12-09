@@ -130,3 +130,6 @@ class GestorDB:
 			raise
 
 		return arregloHabitaciones
+		
+		
+GestorDB()
