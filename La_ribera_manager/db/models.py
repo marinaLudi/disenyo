@@ -229,7 +229,7 @@ class Pasajero(DeclarativeBase):
 	# atributos
 	nombre = Column(String, nullable=False)
 	apellido = Column(String, nullable=False)
-	cuit = Column(String, nullable=False)
+	cuit = Column(String)
 	email = Column(String, nullable=False)
 	fecha_de_nac = Column(Date, nullable=False)
 	telefono = Column(String, nullable=False)
@@ -337,20 +337,17 @@ class Habitacion(DeclarativeBase):
 	def getCantidadDeDias(self):
 		return self.cantidad_de_dias
 
-	def getEstado(self):
-		return self.estado
-
 	def getTipo(self):
 		return self.tipo
 
-	def getEstadia(self):
-		return self.estadia
+	def getEstadias(self):
+		return self.estadias
 
-	def getReserva(self):
-		return self.reserva
+	def getReservas(self):
+		return self.reservas
 
-	def getMantenimiento(self):
-		return self.mantenimiento
+	def getMantenimientos(self):
+		return self.mantenimientos
 
 
 class Estadia(DeclarativeBase):
