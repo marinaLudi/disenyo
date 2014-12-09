@@ -12,28 +12,37 @@ import datetime
 
 class GestorMostrarEstadoHab:
 	def selectHab(self, fechaIni, fechaFin):
-		# Obtenemos habitaciones
-		gestordb = GestorDB()
-		arregloHabitaciones = gestordb.getHab()
 
-		tuplas = []
-		for habitacion in arregloHabitaciones:
-			# Obtenemos estados de la habitacion
-			estados = []
-			for dia in daterange(fechaIni, fechaFin):
-				estados.append(self.obtenerEstado(habitacion, dia))
+		if self.validarFecha(fechaIni, fechaFin):
+			# Obtenemos habitaciones
+			gestordb = GestorDB()
+			arregloHabitaciones = gestordb.getHab()
+	
+			tuplas = []
+			for habitacion in arregloHabitaciones:
+				# Obtenemos estados de la habitacion
+				estados = []
+				for dia in daterange(fechaIni, fechaFin):
+					estados.append(self.obtenerEstado(habitacion, dia))
 
-			# Elegimos color
-			color = self.obtenerColores(estados)	
+				# Elegimos color
+				color = self.obtenerColores(estados)	
 
-			# Concatenamos resultado
-			tuplas.append((habitacion.getNumero(),
-				habitacion.getTipo(),
-				estados,
-				color))
+				# Concatenamos resultado
+				tuplas.append((habitacion.getNumero(),
+					habitacion.getTipo(),
+					estados,
+					color))
 
 
-		return tuplas 
+			return tuplas 
+
+		else:
+			return False
+		
+
+	def validarFecha(self, ini, fin):
+		return fin > ini
 
 
 	def obtenerEstado(self, habitacion, fecha):
