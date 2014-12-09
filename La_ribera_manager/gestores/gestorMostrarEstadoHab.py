@@ -42,7 +42,7 @@ class GestorMostrarEstadoHab:
 		
 
 	def validarFecha(self, ini, fin):
-		return fin > ini
+		return True#fin > ini
 
 
 	def obtenerEstado(self, habitacion, fecha):
@@ -84,7 +84,6 @@ class GestorMostrarEstadoHab:
 
 			elif estado is 'libre':
 				colores.append('blue')
-
 
 		return colores
 

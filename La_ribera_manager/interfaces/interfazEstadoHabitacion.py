@@ -11,7 +11,7 @@ sys.path.insert(0, parentdir)
 from gi.repository import Gtk, Gdk
 from gestores.gestorcombos import GestorCombos
 from gestores.gestordialogos import GestorDialogos
-from gestores.mostrarhabitacion import GestorMostrarEstado
+from gestores.gestorMostrarEstadoHab import GestorMostrarEstadoHab
 from interfaces.interfazOcuparHabitacion import InterfazOcuparHabitacion
 from datetime import timedelta,date,datetime
 from time import strptime
@@ -45,6 +45,7 @@ class InterfazEstadoHabitacion:
 		self.scrolled_window.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.ALWAYS)
 
 		self.gestorDialogos = GestorDialogos()
+		self.gestor_estado = GestorMostrarEstadoHab()
 
 		# Gestorcombos se ocupa de cargar los combos con info 
 		self.gestorCombos = GestorCombos()
@@ -113,7 +114,7 @@ class InterfazEstadoHabitacion:
 
 	def armarGrilla(self,fecha_inicio,fecha_fin):
 		
-		gestor_estado = GestorMostrarEstado()
+		
 
 					
 		#crea la lista de donde va a tomar las cosas el toggle, el boolean activado o no
@@ -130,20 +131,22 @@ class InterfazEstadoHabitacion:
 		column = Gtk.TreeViewColumn("Fecha\hab", renderer,text=0)
 		tree.append_column(column)
 				
-		habitaciones = [101,102,201,202]
+		estados = self.gestor_estado.selectHab(fecha_inicio,fecha_fin)		
 		self.stores = []
 		columns = []
 		renderers = []
 		num = 0
-		for e in habitaciones:
-			self.stores.append(Gtk.ListStore(bool,str,str))
+		
+		for e in estados:
+			self.stores.append(Gtk.ListStore(bool,str,str,str))
 			
+			i = 0
 			for fecha in self.daterange(fecha_inicio, fecha_fin):
-				color = gestor_estado.estadoHabitacion(fecha,e)
-				self.stores[num].append([False,color,str(fecha)])
+				self.stores[num].append([False,e[3][i],e[2][i],str(fecha)])
+				i = i+1
 				
 			renderers.append(Gtk.CellRendererToggle())
-			columns.append(Gtk.TreeViewColumn(str(e), renderers[num]))
+			columns.append(Gtk.TreeViewColumn(str(e[0]), renderers[num]))
 			columns[num].set_cell_data_func(renderers[num], self.inIta, self.stores[num])
 			tree.append_column(columns[num])
 			renderers[num].connect("toggled", self.on_cell_toggled,num)
