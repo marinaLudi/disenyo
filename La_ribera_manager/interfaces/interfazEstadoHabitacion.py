@@ -131,13 +131,13 @@ class InterfazEstadoHabitacion:
 		column = Gtk.TreeViewColumn("Fecha\hab", renderer,text=0)
 		tree.append_column(column)
 				
-		estados = self.gestor_estado.selectHab(fecha_inicio,fecha_fin)		
+		self.estados = self.gestor_estado.selectHab(fecha_inicio,fecha_fin)		
 		self.stores = []
 		columns = []
 		renderers = []
 		num = 0
 		
-		for e in estados:
+		for e in self.estados:
 			self.stores.append(Gtk.ListStore(bool,str,str,str))
 			
 			i = 0
@@ -156,7 +156,7 @@ class InterfazEstadoHabitacion:
 		self.fecha_ini = None
 		self.primerCelda = [None,None]
 		self.fecha_fin = None
-		self.respuesta = None
+
 
 		self.scrolled_window.add(tree)
 		self.window.show_all()
@@ -167,6 +167,7 @@ class InterfazEstadoHabitacion:
 				return True
 		
 	def on_cell_toggled(self, widget, path, num):
+
 		if self.compararCelda(self.primerCelda[0],self.primerCelda[1],int(path),num):
 			self.stores[num][int(path)][0] = not self.stores[num][int(path)][0]
 			self.fecha_ini=None					
@@ -180,18 +181,36 @@ class InterfazEstadoHabitacion:
 			self.fecha_fin = self.stores[num][int(path)][2]
 			self.stores[num][int(path)][0] = not self.stores[num][int(path)][0]
 			
-			#~ self.comprobarEstado():
-			#pintamos las celdas de color ocupado
-			for b in range(self.primerCelda[0],int(path)+1):
-					self.stores[num][b][1] = 'red'
-					
-			if self.gestorDialogos.presTecla('PRESIONE CUALQUIER TECLA Y CONTINUA...'):
-				InterfazOcuparHabitacion(self.fecha_ini,self.fecha_fin,'101')## hay que agregar la habitacion en el listStore tambien, es mas facil asi
-				self.window.hide()
+			validacion = self.gestor_estado.validarRango(self.stores[num],self.primerCelda[0],int(path),self.estados[num][1])
+			if validacion == False:
+				self.resetearGrilla(num,path)
+			elif validacion == True:		
+				#pintamos las celdas de color ocupado
+				for b in range(self.primerCelda[0],int(path)+1):
+						self.stores[num][b][1] = 'red'
+						
+				if self.gestorDialogos.presTecla('PRESIONE CUALQUIER TECLA Y CONTINUA...'):
+					InterfazOcuparHabitacion(self.fecha_ini,self.fecha_fin,self.estados[num][0])
+					self.window.hide()
+			else:
+				respuesta = self.gestorDialogos.confirm("Ya existe una reserva nombre de {2} {3} entre la fecha {0} y {1}".\
+				format(str(validacion[0]),str(validacion[1]),validacion[2],validacion[3]),"Ocupar Igual","Volver")
+				
+				if respuesta == True:
+					for b in range(self.primerCelda[0],int(path)+1):
+						self.stores[num][b][1] = 'red'
+						
+					InterfazOcuparHabitacion(self.fecha_ini,self.fecha_fin,self.estados[num][0])
+					self.window.hide()
+				else:
+					self.resetearGrilla(num,path)
 
-
-			
-			
+	def resetearGrilla(self,num, path):
+		self.stores[num][int(path)][0] = False
+		self.stores[self.primerCelda[1]][self.primerCelda[0]][0] = False
+		self.primeraCelda = [None,None]
+		self.fecha_ini = None
+		self.fecha_fin = None	
 
 			
 	
