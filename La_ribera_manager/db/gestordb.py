@@ -132,4 +132,3 @@ class GestorDB:
 		return arregloHabitaciones
 		
 		
-GestorDB()

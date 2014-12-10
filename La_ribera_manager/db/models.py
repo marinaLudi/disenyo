@@ -362,7 +362,7 @@ class Estadia(DeclarativeBase):
 	
 	# foreign key
 	nro_habitacion = Column(Integer, ForeignKey("habitacion.nro_habitacion"), nullable=False)
-
+	
 	# gets
 	def getId(self):
 		return self.id_estadia
