@@ -362,6 +362,10 @@ class Estadia(DeclarativeBase):
 	
 	# foreign key
 	nro_habitacion = Column(Integer, ForeignKey("habitacion.nro_habitacion"), nullable=False)
+	id_responsable = Column(Integer, ForingnKey("pasajero.id_pasajero"), nullable=False)
+
+	# relation
+	responsable = relationship("Pasajero", backref=backref("pasajero", order_by=id_pasajero))
 
 	# gets
 	def getId(self):
