@@ -230,6 +230,7 @@ class Pasajero(DeclarativeBase):
 	nombre = Column(String, nullable=False)
 	apellido = Column(String, nullable=False)
 	cuit = Column(String)
+	cuit = Column(String)
 	email = Column(String, nullable=False)
 	fecha_de_nac = Column(Date, nullable=False)
 	telefono = Column(String, nullable=False)

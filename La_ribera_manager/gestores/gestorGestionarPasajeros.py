@@ -10,14 +10,14 @@ from db.models import Pasajero, Documento, Iva, Ocupacion, Pais, Nacionalidad, T
 from db.gestordb import GestorDB, Singleton
 from objetos.dtopasajero import DtoPasajero
 from gestordireccion import GestorDireccion
+from datetime import date
 
 
 class GestorGestionarPasajeros:
-	def buscar(self, nombre=None, apellido=None, tipoDocu=None, documento=None):
+	def buscar(self, tipoDocu=None, documento=None):
 		gestordb = GestorDB()
-
-		arregloPasajeros = gestordb.buscarPasajero(nombre, apellido, tipoDocu, documento)
-		
+		print tipoDocu,documento
+		arregloPasajeros = gestordb.buscarPasajero(tipoDocu=tipoDocu,codigo=documento)
 		# Comprobamos si la lista tiene algun pasajero 
 		# En caso de que contenga al menos un pasajero se devuelve la lista
 		# Si la lista esta vacia se devuelve False
@@ -35,17 +35,16 @@ class GestorGestionarPasajeros:
 		omisiones = self.completo(dtoPasajero)
 
 		if not omisiones:
+
+			# Corroboramos si hay un pasajero con los mismos datos en la db
+			arregloPasajeros = self.buscar(dtoPasajero.getIdTipo(),dtoPasajero.getCodigo())
+
 			# Creamos el objeto pasajero
 			pasajero = self.construirPasajero(dtoPasajero)	
 
 
-			# Corroboramos si hay un pasajero con los mismos datos en la db
-			arregloPasajeros = self.buscar(pasajero.getNombre(),
-					pasajero.getApellido(),
-					pasajero.getDocumento().getTipo().getId(),
-					pasajero.getDocumento().getCodigo())
-
 			if self.existePasajero(arregloPasajeros):
+				print arregloPasajeros[0].getNombre()
 				return False
 			else:
 				self.completarCarga(pasajero)
@@ -141,5 +140,5 @@ class GestorGestionarPasajeros:
 				**dtoPasajero.atributosPasajero)
 
 		return pasajero
-
+		
 

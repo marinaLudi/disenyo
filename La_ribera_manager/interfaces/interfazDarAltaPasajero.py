@@ -215,7 +215,7 @@ class InterfazDarAltaPasajero:
 		elif omisiones == True:
 			print 'true'
 		else:
-			print omisiones
+			self.dialogo.confirm("Complete los campos: {}".format(omisiones),"Aceptar")
 			
 	def on_bCancelar_clicked(self,boton):
 		
