@@ -8,7 +8,7 @@ sys.path.insert(0, parentdir)
 
 from db.gestordb import GestorDB, Singleton
 from gestores.date_operations import daterange, is_in_between
-import datetime,time
+import datetime, time
 
 class GestorMostrarEstadoHab:
 	def selectHab(self, fechaIni, fechaFin):
@@ -75,6 +75,7 @@ class GestorMostrarEstadoHab:
 	def obtenerColores(self, estados):
 		colores = []
 
+		# Devolvemos color dependiendo el estado de la habitacion
 		for estado in estados:
 			if estado is 'ocupado':
 				colores.append('red')
@@ -87,21 +88,26 @@ class GestorMostrarEstadoHab:
 
 		return colores
 		
+
 	def validarRango(self, lista, inicio, fin, habitacion):
-		for indice in range(inicio,fin + 1):
+		for indice in range(inicio, fin + 1):
 			if lista[indice][2] == 'ocupado':
 				return False
 			elif lista[indice][2] == 'reservado':
 				return self.mostrarReserva(lista[indice][3],habitacion)
 		return True
 				
+
 	def mostrarReserva(self, fecha, habitacion): 
 		fecha = datetime.date(int(fecha[:4]),int(fecha[5:7]),int(fecha[8:])) 
 
 		reservas = habitacion.getReservas()
 		for reserva in reservas:
 			if reserva.getFechaIni() <= fecha and fecha <= reserva.getFechaFin():
-				return [reserva.getFechaIni(),reserva.getFechaFin(),reserva.getNombre(),reserva.getApellido()]
+				return [reserva.getFechaIni(), 
+						reserva.getFechaFin(), 
+						reserva.getNombre(), 
+						reserva.getApellido()]
 				
 
 					

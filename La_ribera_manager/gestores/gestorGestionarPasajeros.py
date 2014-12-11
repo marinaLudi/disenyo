@@ -10,6 +10,7 @@ from db.models import Pasajero, Documento, Iva, Ocupacion, Pais, Nacionalidad, T
 from db.gestordb import GestorDB, Singleton
 from objetos.dtopasajero import DtoPasajero
 from gestordireccion import GestorDireccion
+import re
 
 
 class GestorGestionarPasajeros:
@@ -74,12 +75,17 @@ class GestorGestionarPasajeros:
 			for atrName, value in atributo.iteritems():
 				# Checkeamos los atributos que esten vacios 
 				# y no sean opcionales
-				if value is None:
+				if self.omitido(value): 
 					if not self.opcional(atrName):
 						omisiones.append(atrName)
 					
 
 		return omisiones
+
+
+	def omitido(self, valor):
+		# Comprobamos si el valor del campo es una lista vacia, una cadena vacia
+		return not valor
 
 	def opcional(self, nombreAtr):
 		if nombreAtr is 'cuit'\
@@ -91,6 +97,7 @@ class GestorGestionarPasajeros:
 		else:
 			return False
 
+
 	def existePasajero(self, arregloPasajeros):
 		# Verificamos si el arreglo esta lleno o vacio
 		if arregloPasajeros:
@@ -101,7 +108,6 @@ class GestorGestionarPasajeros:
 
 			# Vacio
 			return False
-
 			
 
 	def completarCarga(self, pasajero):

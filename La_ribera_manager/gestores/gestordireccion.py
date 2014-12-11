@@ -15,10 +15,10 @@ class GestorDireccion:
 		# Obtenemos los datos necesarios de la db
 		gestordb = GestorDB()
 
-		localidad = gestordb.getObjetoID(Localidad, dtoPasajero.id_localidad)
+		localidad = gestordb.getObjetoID(Localidad, dtoPasajero.getIdLocalidad())
 
 		# Creamos y llenamos el objeto direccion
-		direccion = Direccion(localidad=localidad, **dtoPasajero.atributosDireccion)
+		direccion = Direccion(localidad=localidad, **dtoPasajero.getAtributosDireccion())
 
 		return direccion
 		

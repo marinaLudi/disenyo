@@ -1,10 +1,9 @@
-interfaz dar alta pasajero:
-> manejo errores input
+>diagramas de clases, diagramas de secuencia
 
-crear gestor de direcciones
+>si ya existe una direccion no crearla de nuevo
 
-terminar gestor de pasajeros
+>pasajero no updatea
 
-pasaje de dto a objetos
+>el checkeo del dto no funciona
 
-mapear objetos a relacional
+>implementar facturacion e ingresar pago
