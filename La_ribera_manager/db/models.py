@@ -250,7 +250,7 @@ class Pasajero(DeclarativeBase):
 
 	# gets
 	def getId(self):
-		return id_pasajero
+		return self.id_pasajero
 
 	def getNombre(self):
 		return str(self.nombre)
@@ -322,9 +322,9 @@ class Habitacion(DeclarativeBase):
 
 	# relaciones
 	tipo = relationship("TipoHabitacion", backref=backref("habitacion", order_by=nro_habitacion)) 
-	estadias = relationship("Estadia")
-	reservas = relationship("Reserva")
-	mantenimientos = relationship("Mantenimiento")
+	estadias = relationship("Estadia",backref=backref("habitacion", order_by=nro_habitacion))
+	reservas = relationship("Reserva",backref=backref("habitacion", order_by=nro_habitacion))
+	mantenimientos = relationship("Mantenimiento",backref=backref("habitacion", order_by=nro_habitacion))
 
 
 	# gets
@@ -349,6 +349,11 @@ class Habitacion(DeclarativeBase):
 	def getMantenimientos(self):
 		return self.mantenimientos
 
+# Tabla de relacion
+tiene_ocupante = Table('tiene_ocupante', DeclarativeBase.metadata,
+		Column('id_pasajero', Integer, ForeignKey('pasajero.id_pasajero')),
+		Column('id_estadia', Integer, ForeignKey('estadia.id_estadia'))
+)
 
 class Estadia(DeclarativeBase):
 	__tablename__ = "estadia"
@@ -362,15 +367,13 @@ class Estadia(DeclarativeBase):
 	
 	# foreign key
 	nro_habitacion = Column(Integer, ForeignKey("habitacion.nro_habitacion"), nullable=False)
-<<<<<<< HEAD
-	
-=======
-	id_responsable = Column(Integer, ForingnKey("pasajero.id_pasajero"), nullable=False)
+
+	id_responsable = Column(Integer, ForeignKey("pasajero.id_pasajero"), nullable=False)
 
 	# relation
-	responsable = relationship("Pasajero", backref=backref("pasajero", order_by=id_pasajero))
+	responsable = relationship("Pasajero", backref=backref("estadia", order_by=id_estadia))
+	ocupantes = relationship("Pasajero",secondary=tiene_ocupante,backref='estadias')
 
->>>>>>> afca278abefa8e4b3f22509de6d302526948f82e
 	# gets
 	def getId(self):
 		return self.id_estadia
@@ -445,8 +448,3 @@ class Mantenimiento(DeclarativeBase):
 		return self.fecha_fin
 
 
-# Tabla de relacion
-tiene_ocupante = Table('tiene_ocupante', DeclarativeBase.metadata,
-		Column('id_pasajero', Integer, ForeignKey('pasajero.id_pasajero')),
-		Column('id_estadia', Integer, ForeignKey('estadia.id_estadia'))
-)
