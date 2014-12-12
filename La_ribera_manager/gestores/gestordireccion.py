@@ -6,6 +6,7 @@ sys.path.insert(0, parentdir)
 
 from db.gestordb import GestorDB, Singleton
 from db.models import Direccion, Localidad, Provincia, Pais
+from objetos.dtopasajero import DtoPasajero
 
 class GestorDireccion:
 	
@@ -14,13 +15,16 @@ class GestorDireccion:
 		# Se mapea del dto a un objeto direccion
 		# Obtenemos los datos necesarios de la db
 		gestordb = GestorDB()
+		verif = gestordb.getObjs(Direccion,**dtoPasajero.getAtributosDireccion())
 
-		localidad = gestordb.getObjetoID(Localidad, dtoPasajero.getIdLocalidad())
+		if verif:
+			return verif[0]
 
-		# Creamos y llenamos el objeto direccion
-		direccion = Direccion(localidad=localidad, **dtoPasajero.getAtributosDireccion())
+		else:	
+			localidad = gestordb.getObjetoID(Localidad, dtoPasajero.getIdLocalidad())
+	
+			# Creamos y llenamos el objeto direccion
+			direccion = Direccion(localidad=localidad, **dtoPasajero.getAtributosDireccion())
+			return direccion
 
-		return direccion
-		
-		
 

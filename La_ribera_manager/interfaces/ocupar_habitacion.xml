@@ -12,6 +12,8 @@
       <column type="gchararray"/>
       <!-- column-name nro -->
       <column type="gchararray"/>
+      <!-- column-name id -->
+      <column type="gint"/>
     </columns>
     <data>
       <row>
@@ -19,6 +21,7 @@
         <col id="1" translatable="yes"/>
         <col id="2" translatable="yes"/>
         <col id="3" translatable="yes"/>
+        <col id="4">0</col>
       </row>
     </data>
   </object>

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #### Interfaz Gestionar Pasajero ####
 
 import sys, os, inspect
@@ -12,8 +13,10 @@ from gestores.gestorGestionarPasajeros import GestorGestionarPasajeros
 from gestores.gestordireccion import GestorDireccion
 from gestores.gestorcombos import GestorCombos
 from gestores.gestordialogos import GestorDialogos
+from gestores.gestorOcuparHab import GestorOcuparHab
 from interfaces.interfazDarAltaPasajero import InterfazDarAltaPasajero
-
+import interfaces.interfazEstadoHabitacion
+from datetime import date
 # Globals
 BORDE_ANCHO = 25
 VENTANA_ALTO = 530
@@ -43,6 +46,10 @@ class InterfazOcuparHabitacion:
 		# Obtenemos informacion para los combos desde la db
 		self.gestorCombos = GestorCombos()
 		self.gestorCombos.cargarCombos(lDocumento=self.lDocumento)
+		
+		self.dialogos = GestorDialogos()
+		self.gestorOcuparHab = GestorOcuparHab()
+
 
 		# Events handlers
 		handlers = {
@@ -55,8 +62,12 @@ class InterfazOcuparHabitacion:
 		
 		# Variable auxiliar
 		self.tipo = None
-		self.pasajero = None
-
+		self.id_pasajero = None
+		self.habitacion = habitacion
+		self.fecha_inicio = date(int(fecha_inicio[:4]),int(fecha_inicio[5:7]),int(fecha_inicio[8:])) 
+		self.fecha_fin = date(int(fecha_fin[:4]),int(fecha_fin[5:7]),int(fecha_fin[8:])) 
+		self.tipoPasajero = 'responsable'
+		
 		# Monstramos la ventana con los widgets
 		self.window1.show_all()	
 		
@@ -106,12 +117,11 @@ class InterfazOcuparHabitacion:
 
 	def seleccionarPasajero(self,arregloPasajeros):
 		self.window1.hide()
-		self.dialgos = GestorDialogos()
-		self.tipoPasajero =None
+	
 		builder = Gtk.Builder()
 		
 		builder.add_from_file("ocupar_habitacion.xml")
-		window2 = builder.get_object("window2")
+		self.window2 = builder.get_object("window2")
 		lPasajeros = builder.get_object("lPasajeros")
 		bAceptar = builder.get_object("Aceptar")
 		treeView = builder.get_object("treeviewLista")
@@ -123,38 +133,55 @@ class InterfazOcuparHabitacion:
 		builder.connect_signals(handlers)
 
 		
-		window2.set_border_width(BORDE_ANCHO)
-		window2.set_default_size(VENTANA_ANCHO, VENTANA_ALTO)
+		self.window2.set_border_width(BORDE_ANCHO)
+		self.window2.set_default_size(VENTANA_ANCHO, VENTANA_ALTO)
 				
 		for e in arregloPasajeros:
-				lPasajeros.append([e.getNombre(),e.getApellido(),e.getDocumento().getTipo().getTipo(),e.getDocumento().getCodigo()])
+				lPasajeros.append([e.getNombre(),e.getApellido(),e.getDocumento().getTipo().getTipo(),e.getDocumento().getCodigo(),e.getId()])
 		
 		select = treeView.get_selection()
-		select.unselect_all()
 		
+
+	
 		select.connect("changed", self.on_tree_selection_changed)
-		bAceptar.connect("clicked", self.on_Aceptar_clicked,window2,treeView)
+		bAceptar.connect("clicked", self.on_Aceptar_clicked,self.window2,treeView)
 		rResponsable.connect("toggled", self.on_radio_toggled, "responsable")
 		rAcompanyante.connect("toggled", self.on_radio_toggled, "acompanyante")
 		
-		window2.show_all()
+		self.window2.show_all()
 	
 	def on_Aceptar_clicked(self,boton,window,treeView):
-		if self.pasajero is not None:
-			print ''
-			#~ self.dialogos.
 		# El usuario elige un pasajero
-		
+		if self.id_pasajero is not None:
+			respuesta = self.dialogos.pregunta("¿Que desea hacer?","Seguir Cargando","Cargar otra habitación","Salir")
+			if respuesta == Gtk.ResponseType.YES:
+				self.gestorOcuparHab.asignarPasajero(self.tipoPasajero,self.id_pasajero)
+				self.window2.hide()
+				self.window1.show_all()
+			elif respuesta == Gtk.ResponseType.NO:
+				self.gestorOcuparHab.asignarPasajero(self.tipoPasajero,self.id_pasajero)				
+				self.gestorOcuparHab.ocuparHab(self.habitacion,self.fecha_inicio,self.fecha_fin)
+				interfaces.interfazEstadoHabitacion.InterfazEstadoHabitacion()
+				self.window2.hide()
+				
+			elif respuesta == Gtk.ResponseType.CLOSE:
+				self.gestorOcuparHab.asignarPasajero(self.tipoPasajero,self.id_pasajero)				
+				self.gestorOcuparHab.ocuparHab(self.habitacion,self.fecha_inicio,self.fecha_fin)
+				Gtk.main_quit()
+
+	#~ def asignarPasajero(tipoPasasjero,)	
 	
 	def on_tree_selection_changed(self,selection):
 		model,treeiter = selection.get_selected()
 		if treeiter is not None:
-			 self.pasajero = model[treeiter][0]
+			self.id_pasajero = model[treeiter][4]
 			 
 	def on_radio_toggled(self, button, name):
 		if button.get_active():
 			self.tipoPasajero = name
 			 
-		
+if __name__ == '__main__':		
+	InterfazOcuparHabitacion()
+	Gtk.main()		
 		
 

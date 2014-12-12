@@ -12,7 +12,7 @@ from gi.repository import Gtk, Gdk
 from gestores.gestorcombos import GestorCombos
 from gestores.gestordialogos import GestorDialogos
 from gestores.gestorMostrarEstadoHab import GestorMostrarEstadoHab
-from interfaces.interfazOcuparHabitacion import InterfazOcuparHabitacion
+import interfaces.interfazOcuparHabitacion
 from datetime import timedelta,date,datetime
 from time import strptime
 
@@ -173,12 +173,12 @@ class InterfazEstadoHabitacion:
 			self.fecha_ini=None					
 		elif self.fecha_ini is None:
 			self.stores[num][int(path)][0] = not self.stores[num][int(path)][0]
-			self.fecha_ini = self.stores[num][int(path)][2]
+			self.fecha_ini = self.stores[num][int(path)][3]
 			self.primerCelda[0]=int(path)
 			self.primerCelda[1]=num
 			self.pos_ini = int(path)			
 		elif self.fecha_fin is None:
-			self.fecha_fin = self.stores[num][int(path)][2]
+			self.fecha_fin = self.stores[num][int(path)][3]
 			self.stores[num][int(path)][0] = not self.stores[num][int(path)][0]
 			
 			validacion = self.gestor_estado.validarRango(self.stores[num],self.primerCelda[0],int(path),self.estados[num][1])
@@ -190,7 +190,7 @@ class InterfazEstadoHabitacion:
 						self.stores[num][b][1] = 'red'
 						
 				if self.gestorDialogos.presTecla('PRESIONE CUALQUIER TECLA Y CONTINUA...'):
-					InterfazOcuparHabitacion(self.fecha_ini,self.fecha_fin,self.estados[num][0])
+					interfaces.interfazOcuparHabitacion.InterfazOcuparHabitacion(self.fecha_ini,self.fecha_fin,self.estados[num][1])
 					self.window.hide()
 			else:
 				respuesta = self.gestorDialogos.confirm("Ya existe una reserva nombre de {2} {3} entre la fecha {0} y {1}".\
@@ -200,7 +200,7 @@ class InterfazEstadoHabitacion:
 					for b in range(self.primerCelda[0],int(path)+1):
 						self.stores[num][b][1] = 'red'
 						
-					InterfazOcuparHabitacion(self.fecha_ini,self.fecha_fin,self.estados[num][0])
+					interfaces.interfazOcuparHabitacion.InterfazOcuparHabitacion(self.fecha_ini,self.fecha_fin,self.estados[num][1])
 					self.window.hide()
 				else:
 					self.resetearGrilla(num,path)

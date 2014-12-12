@@ -174,3 +174,5 @@ class DtoPasajero:
 				self.getIdNacionalidad(), 
 				self.getIdIva()]
 
+
+

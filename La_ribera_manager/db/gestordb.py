@@ -2,6 +2,7 @@
 
 from sqlalchemy.orm import sessionmaker, contains_eager
 from models import *
+import datetime
 
 # Singleton como una metaclase
 class Singleton(type):
@@ -51,6 +52,7 @@ class GestorDB:
 			
 			# Dependiendo que valores se omitan en los parametros se decide que buscar
 			# en la base de datos
+
 			if nombre is not None:
 				query = query.filter(Pasajero.nombre == nombre)
 
@@ -72,15 +74,14 @@ class GestorDB:
 		return arregloPasajeros
 
 
-#	def getObjs(self, tabla, ID):
-#
-#		try:
-#			objeto = self.session.query(tabla).filter_by(**ID).all()
-#
-#		except:
-#			raise	
-#
-#		return objeto
+	def getObjs(self, tabla, **ID):
+
+		try:
+			objeto = self.session.query(tabla).filter_by(**ID).all()
+		except:
+			raise
+
+		return objeto
 		
 
 	def getTabla(self,tabla):	
@@ -132,5 +133,3 @@ class GestorDB:
 
 		return arregloHabitaciones
 		
-		
-GestorDB()

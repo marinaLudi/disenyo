@@ -250,7 +250,7 @@ class Pasajero(DeclarativeBase):
 
 	# gets
 	def getId(self):
-		return id_pasajero
+		return self.id_pasajero
 
 	def getNombre(self):
 		return str(self.nombre)
@@ -322,9 +322,9 @@ class Habitacion(DeclarativeBase):
 
 	# relaciones
 	tipo = relationship("TipoHabitacion", backref=backref("habitacion", order_by=nro_habitacion)) 
-	estadias = relationship("Estadia")
-	reservas = relationship("Reserva")
-	mantenimientos = relationship("Mantenimiento")
+	estadias = relationship("Estadia",backref=backref("habitacion", order_by=nro_habitacion))
+	reservas = relationship("Reserva",backref=backref("habitacion", order_by=nro_habitacion))
+	mantenimientos = relationship("Mantenimiento",backref=backref("habitacion", order_by=nro_habitacion))
 
 
 	# gets
@@ -349,6 +349,11 @@ class Habitacion(DeclarativeBase):
 	def getMantenimientos(self):
 		return self.mantenimientos
 
+# Tabla de relacion
+tiene_ocupante = Table('tiene_ocupante', DeclarativeBase.metadata,
+		Column('id_pasajero', Integer, ForeignKey('pasajero.id_pasajero')),
+		Column('id_estadia', Integer, ForeignKey('estadia.id_estadia'))
+)
 
 class Estadia(DeclarativeBase):
 	__tablename__ = "estadia"
@@ -366,6 +371,7 @@ class Estadia(DeclarativeBase):
 
 	# relation
 	responsable = relationship("Pasajero", backref=backref("estadia", order_by=id_estadia))
+	ocupantes = relationship("Pasajero",secondary=tiene_ocupante,backref='estadias')
 
 	# gets
 	def getId(self):
@@ -441,8 +447,3 @@ class Mantenimiento(DeclarativeBase):
 		return self.fecha_fin
 
 
-# Tabla de relacion
-tiene_ocupante = Table('tiene_ocupante', DeclarativeBase.metadata,
-		Column('id_pasajero', Integer, ForeignKey('pasajero.id_pasajero')),
-		Column('id_estadia', Integer, ForeignKey('estadia.id_estadia'))
-)
