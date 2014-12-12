@@ -10,12 +10,13 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
 
-from gi.repository import Gtk
+from gi.repository import Gtk, Gdk
 import datetime
 from objetos.dtopasajero import DtoPasajero
 from gestores.gestorGestionarPasajeros import GestorGestionarPasajeros
 from gestores.gestorcombos import GestorCombos
 from gestores.gestordialogos import GestorDialogos
+from itertools import izip
 
 # Globals
 BORDE_ANCHO = 25
@@ -87,7 +88,13 @@ class InterfazDarAltaPasajero:
 		self.IVA = None
 		self.fecha = datetime.date(0001,01,01)
 		
-		
+		# CSS
+		screen = Gdk.Screen.get_default()
+		css_provider = Gtk.CssProvider()
+		css_provider.load_from_paht('style.css')
+		priority = Gtk.STYLE_PROVIDER_PRIORITY_USER
+		context = Gtk.StyleContext()
+		context.add_provider_for_screen(screen, css_provider, priority)
 		
 		# Conecta las senales con sus funciones
 		handlers = {
@@ -183,7 +190,6 @@ class InterfazDarAltaPasajero:
 	
 
 	def on_bSiguiente_clicked(self,boton):
-		
 		pasajero = DtoPasajero(nombre=self.eNombres.get_text(),
 				apellido=self.eApellidos.get_text(),
 				cuit=self.eCUIT.get_text(), 
@@ -214,8 +220,14 @@ class InterfazDarAltaPasajero:
 				gestor.completarCarga(pasajero)				
 		elif omisiones == True:
 			print 'true'
+
 		else:
-			self.dialogo.confirm("Complete los campos: {}".format(omisiones),"Aceptar")
+			# Obtenemos styles y widgets
+			widgets, styles = getEntries_Styles(omisiones)
+
+			# Pintamos widgets
+			self.pintarWidgets(widgets, styles)
+
 			
 	def on_bCancelar_clicked(self,boton):
 		
@@ -224,6 +236,87 @@ class InterfazDarAltaPasajero:
 			Gtk.main_quit()
 
 		 
+	def getEntries_Styles(self, omisiones):
+		widgets = list()
+		styles = list()
+
+		# Agrupamos los widgets y los styles contexts
+		for omision in omisiones:
+			if omision is 'nombre':
+				widgets.append(self.eNombres)
+				styles.append(self.eNombres.get_style_context())
+			
+			elif omision is 'apellido':
+				widgets.append(self.eApellidos)
+				styles.append(self.eApellidos.get_style_context())
+
+			elif omision is 'id_tipo':
+				widgets.append(self.)
+				styles.appen(self.)
+
+			elif omision is 'codigo':
+				widgets.append(self.eDocumento)
+				styles.append(self.eDocumento.get_style_context())
+
+			elif omision is 'id_nacionalidad':
+				widgets.append(self.)
+				styles.append(self.)
+
+			elif omision is 'fecha':
+				widgets.append(self.)
+				styles.append(self.)
+
+			elif omision is 'telefono':
+				widgets.append(self.eTelefono)
+				styles.append(self.eTelefono.get_style_context())
+
+			elif omision is 'calle':
+				widgets.append(self.eCalle)
+				styles.append(self.eCalle.get_style_context())
+
+			elif omision is 'numero':
+				widgets.append(self.eNumero)
+				styles.append(self.eNumero.get_style_context())
+
+			elif omision is 'id_localidad':
+				widgets.append(self.)
+				styles.append(self..get_styel_context())
+
+			elif omision is 'CP':
+				widgets.append(self.ePostal)
+				styles.append(self.ePostal.get_style_context())
+
+			elif omision is 'id_provincia':
+				widgets.append(self.)
+				styles.append(self..get_styel_context())
+
+			elif omision is 'id_pais':
+				widgets.append(self.)
+				styles.append(self.)
+
+			elif omision is 'id_ocupacion':
+				widgets.append(self.)
+				styles.appen(self.)
+
+			elif omision is 'id_iva':
+				widgets.append(self.)
+				styles.append(self.)
+
+
+		# retornamos widgets y style contexts
+		return widgets, styles 	
+		
+
+	def pintarWidgets(self, widgets, styles):
+		if not:
+			print "end_painting"
+
+		else:
+			styles.pop().add_class('invalid')
+			widgets.pop().grab_focus()
+
+			self.pintarWidgets(widgets, styles)
+		
 
 		
 if __name__ == '__main__':		
