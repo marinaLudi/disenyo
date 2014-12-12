@@ -91,6 +91,7 @@ class InterfazEstadoHabitacion:
 				self.mes_fin_combo, 
 				self.ano_fin_combo)
 	
+
 	def mostrarHabitaciones(self, combo):
 		fecha_ini = self.gestorCombos.getDate(self.dia_ini_combo,
 				self.mes_ini_combo,
@@ -104,17 +105,14 @@ class InterfazEstadoHabitacion:
 		
 		if self.gestor_estado.validarFecha(fecha_ini, fecha_fin):
 			self.armarGrilla(fecha_ini,fecha_fin)
-		else:
-			self.gestorDialogos.confirm("La fecha inicial no puede ser mayor que la final","Aceptar")
-		
 
+		else:
+			self.gestorDialogos.confirm("La fecha inicial no puede ser mayor que la final",
+					"Aceptar")
+		
 
 
 	def armarGrilla(self,fecha_inicio,fecha_fin):
-		
-		
-
-					
 		#crea la lista de donde va a tomar las cosas el toggle, el boolean activado o no
 		#los colores seria rojo=ocupada, azul=libre y amarillo=reservada
 		#la ultima columna seria la fecha
@@ -169,17 +167,23 @@ class InterfazEstadoHabitacion:
 		if self.compararCelda(self.primerCelda[0],self.primerCelda[1],int(path),num):
 			self.stores[num][int(path)][0] = not self.stores[num][int(path)][0]
 			self.fecha_ini=None					
+
 		elif self.fecha_ini is None:
 			self.stores[num][int(path)][0] = not self.stores[num][int(path)][0]
 			self.fecha_ini = self.stores[num][int(path)][3]
 			self.primerCelda[0]=int(path)
 			self.primerCelda[1]=num
 			self.pos_ini = int(path)			
+
 		elif self.fecha_fin is None:
 			self.fecha_fin = self.stores[num][int(path)][3]
 			self.stores[num][int(path)][0] = not self.stores[num][int(path)][0]
 			
-			validacion = self.gestor_estado.validarRango(self.stores[num],self.primerCelda[0],int(path),self.estados[num][1])
+			validacion = self.gestor_estado.validarRango(self.stores[num],
+					self.primerCelda[0],
+					int(path),
+					self.estados[num][1])
+
 			if validacion == False:
 				self.resetearGrilla(num,path)
 				
