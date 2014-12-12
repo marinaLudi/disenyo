@@ -260,20 +260,20 @@ class InterfazDarAltaPasajero:
 				styles.append(self.eApellidos.get_style_context())
 
 			elif omision is 'id_tipo':
-				widgets.append(self.)
-				styles.appen(self.)
+				widgets.append(self.ebDocumento)
+				styles.appen(self.ebDocumento.get_style_context())
 
 			elif omision is 'codigo':
 				widgets.append(self.eDocumento)
 				styles.append(self.eDocumento.get_style_context())
 
 			elif omision is 'id_nacionalidad':
-				widgets.append(self.)
-				styles.append(self.)
+				widgets.append(self.ebNacionalidad)
+				styles.append(self.ebNacionalidad.get_style_context())
 
 			elif omision is 'fecha':
-				widgets.append(self.)
-				styles.append(self.)
+				widgets.append(self.ebFecha)
+				styles.append(self.ebFecha.get_style_context())
 
 			elif omision is 'telefono':
 				widgets.append(self.eTelefono)
@@ -288,28 +288,28 @@ class InterfazDarAltaPasajero:
 				styles.append(self.eNumero.get_style_context())
 
 			elif omision is 'id_localidad':
-				widgets.append(self.)
-				styles.append(self..get_styel_context())
+				widgets.append(self.ebLocalidad)
+				styles.append(self.ebLocalidad.get_style_context())
 
 			elif omision is 'CP':
 				widgets.append(self.ePostal)
 				styles.append(self.ePostal.get_style_context())
 
 			elif omision is 'id_provincia':
-				widgets.append(self.)
-				styles.append(self..get_styel_context())
+				widgets.append(self.ebProvincia)
+				styles.append(self.ebProvincia.get_style_context())
 
 			elif omision is 'id_pais':
-				widgets.append(self.)
-				styles.append(self.)
+				widgets.append(self.ebPais)
+				styles.append(self.ebPais.get_style_context())
 
 			elif omision is 'id_ocupacion':
-				widgets.append(self.)
-				styles.appen(self.)
+				widgets.append(self.ebOcupacion)
+				styles.appen(self.ebOcupacion.get_style_context())
 
 			elif omision is 'id_iva':
-				widgets.append(self.)
-				styles.append(self.)
+				widgets.append(self.ebIVA)
+				styles.append(self.ebIVA.get_style_context())
 
 
 		# retornamos widgets y style contexts
