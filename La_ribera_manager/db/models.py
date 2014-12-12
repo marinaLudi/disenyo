@@ -446,4 +446,3 @@ class Mantenimiento(DeclarativeBase):
 	def getFechaFin(self):
 		return self.fecha_fin
 
-

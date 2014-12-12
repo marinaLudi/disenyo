@@ -144,7 +144,7 @@ class InterfazEstadoHabitacion:
 				i = i+1
 				
 			renderers.append(Gtk.CellRendererToggle())
-			columns.append(Gtk.TreeViewColumn(str(e[0]), renderers[num]))
+			columns.append(Gtk.TreeViewColumn(str(e[0])+" "+str(e[1].getTipo().getDescripcion()), renderers[num]))
 			columns[num].set_cell_data_func(renderers[num], self.inIta, self.stores[num])
 			tree.append_column(columns[num])
 			renderers[num].connect("toggled", self.on_cell_toggled,num)
