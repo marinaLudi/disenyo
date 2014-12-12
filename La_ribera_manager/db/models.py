@@ -230,7 +230,6 @@ class Pasajero(DeclarativeBase):
 	nombre = Column(String, nullable=False)
 	apellido = Column(String, nullable=False)
 	cuit = Column(String)
-	cuit = Column(String)
 	email = Column(String, nullable=False)
 	fecha_de_nac = Column(Date, nullable=False)
 	telefono = Column(String, nullable=False)
@@ -368,7 +367,6 @@ class Estadia(DeclarativeBase):
 	
 	# foreign key
 	nro_habitacion = Column(Integer, ForeignKey("habitacion.nro_habitacion"), nullable=False)
-
 	id_responsable = Column(Integer, ForeignKey("pasajero.id_pasajero"), nullable=False)
 
 	# relation

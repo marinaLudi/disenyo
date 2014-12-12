@@ -37,7 +37,8 @@ class GestorDB:
 
 		except:
 			self.session.rollback()
-		
+
+
 		return objeto
 
 

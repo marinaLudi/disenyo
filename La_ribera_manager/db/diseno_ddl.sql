@@ -145,7 +145,7 @@ INSERT INTO pasajero (id_pasajero, nombre, apellido, cuit, email, fecha_de_nac, 
 	(3, 'Pablo', 'Tesari', Null,'pablotesari@gmail.com', '03/10/92', '4604340', 3, 3, 2, 2, 1),
 	(4, 'Alexander', 'Robotnik', Null,'ar@robot.ru', '05/06/50', '1804899', 4, 4, 3, 3, 1),
 	(5, 'Vladimir', 'Putin', '3712348','supervlad@red.ru', '16/07/63', '1805000', 5, 4, 3, 1, 2),
-	(6, 'Paulo', 'Vicio', Null,'paolo@gmail.com', '22/08/85', '179245', 6, 5, 4, 5, 5, 1);
+	(6, 'Paulo', 'Vicio', Null,'paolo@gmail.com', '22/08/85', '179245', 6, 5, 4, 2, 1);
 
 INSERT INTO tipo_habitacion (id_tipo, precio, descripcion) VALUES
 	(1, 605, 'Individual Estandar'),
