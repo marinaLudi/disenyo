@@ -140,7 +140,6 @@ class InterfazOcuparHabitacion:
 				lPasajeros.append([e.getNombre(),e.getApellido(),e.getDocumento().getTipo().getTipo(),e.getDocumento().getCodigo(),e.getId()])
 		
 		select = treeView.get_selection()
-		
 
 	
 		select.connect("changed", self.on_tree_selection_changed)
@@ -169,7 +168,7 @@ class InterfazOcuparHabitacion:
 				self.gestorOcuparHab.ocuparHab(self.habitacion,self.fecha_inicio,self.fecha_fin)
 				Gtk.main_quit()
 
-	#~ def asignarPasajero(tipoPasasjero,)	
+	
 	
 	def on_tree_selection_changed(self,selection):
 		model,treeiter = selection.get_selected()

@@ -14,7 +14,7 @@ from datetime import date
 
 
 class GestorGestionarPasajeros:
-	def buscar(self, tipoDocu=None, documento=None):
+	def buscar(self, tipoDocu=None, documento=None,nombre=None,apellido=None):
 		gestordb = GestorDB()
 		print tipoDocu,documento
 		arregloPasajeros = gestordb.buscarPasajero(tipoDocu=tipoDocu,codigo=documento)
@@ -37,7 +37,7 @@ class GestorGestionarPasajeros:
 		if not omisiones:
 
 			# Corroboramos si hay un pasajero con los mismos datos en la db
-			arregloPasajeros = self.buscar(dtoPasajero.getIdTipo(),dtoPasajero.getCodigo())
+			arregloPasajeros = self.buscar(tipoDocu=dtoPasajero.getIdTipo(),documento=dtoPasajero.getCodigo())
 
 			# Creamos el objeto pasajero
 			pasajero = self.construirPasajero(dtoPasajero)	
@@ -73,7 +73,9 @@ class GestorGestionarPasajeros:
 			for atrName, value in atributo.iteritems():
 				# Checkeamos los atributos que esten vacios 
 				# y no sean opcionales
+
 				if self.omitido(value): 
+
 					if not self.opcional(atrName):
 						omisiones.append(atrName)
 					

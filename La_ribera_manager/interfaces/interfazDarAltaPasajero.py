@@ -66,6 +66,15 @@ class InterfazDarAltaPasajero:
 		self.lDocumento = builder.get_object("lDocumento")
 		self.lIVA = builder.get_object("lIVA")
 		
+		self.ebPais = builder.get_object("eventbox_pais")
+		self.ebNacionalidad = builder.get_object("eventbox_nacionalidad")
+		self.ebOcupacion = builder.get_object("eventbox_ocupacion")
+		self.ebProvincia = builder.get_object("eventbox_provincia")
+		self.ebLocalidad = builder.get_object("eventbox_localidad")
+		self.ebDocumento = builder.get_object("eventbox_dni")
+		self.ebIVA = builder.get_object("eventbox_iva")
+		self.ebFecha = builder.get_object("eventbox_fecha")
+		
 		self.window1.set_border_width(BORDE_ANCHO)
 		self.window1.set_default_size(VENTANA_ANCHO, VENTANA_ALTO)
 	

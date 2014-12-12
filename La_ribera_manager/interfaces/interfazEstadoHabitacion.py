@@ -102,14 +102,12 @@ class InterfazEstadoHabitacion:
 				self.ano_fin_combo)
 
 		
-		if self.validarFecha(fecha_ini, fecha_fin):
+		if self.gestor_estado.validarFecha(fecha_ini, fecha_fin):
 			self.armarGrilla(fecha_ini,fecha_fin)
 		else:
 			self.gestorDialogos.confirm("La fecha inicial no puede ser mayor que la final","Aceptar")
 		
 
-	def validarFecha(self, ini, fin):
-		return fin > ini
 
 
 	def armarGrilla(self,fecha_inicio,fecha_fin):
@@ -184,11 +182,11 @@ class InterfazEstadoHabitacion:
 			validacion = self.gestor_estado.validarRango(self.stores[num],self.primerCelda[0],int(path),self.estados[num][1])
 			if validacion == False:
 				self.resetearGrilla(num,path)
+				
 			elif validacion == True:		
 				#pintamos las celdas de color ocupado
-				for b in range(self.primerCelda[0],int(path)+1):
-						self.stores[num][b][1] = 'red'
-						
+				self.pintarCeldas(num,path)
+					
 				if self.gestorDialogos.presTecla('PRESIONE CUALQUIER TECLA Y CONTINUA...'):
 					interfaces.interfazOcuparHabitacion.InterfazOcuparHabitacion(self.fecha_ini,self.fecha_fin,self.estados[num][1])
 					self.window.hide()
@@ -197,13 +195,15 @@ class InterfazEstadoHabitacion:
 				format(str(validacion[0]),str(validacion[1]),validacion[2],validacion[3]),"Ocupar Igual","Volver")
 				
 				if respuesta == True:
-					for b in range(self.primerCelda[0],int(path)+1):
-						self.stores[num][b][1] = 'red'
-						
+					self.pintarCeldas(num,path)	
 					interfaces.interfazOcuparHabitacion.InterfazOcuparHabitacion(self.fecha_ini,self.fecha_fin,self.estados[num][1])
 					self.window.hide()
 				else:
 					self.resetearGrilla(num,path)
+	
+	def pintarCeldas(self,num,path):
+		for b in range(self.primerCelda[0],int(path)+1):
+			self.stores[num][b][1] = 'red'
 
 	def resetearGrilla(self,num, path):
 		self.stores[num][int(path)][0] = False
