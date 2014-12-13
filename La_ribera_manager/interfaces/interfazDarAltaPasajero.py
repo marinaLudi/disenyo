@@ -86,6 +86,7 @@ class InterfazDarAltaPasajero:
 				self.lOcupacion, 
 				self.lIVA,
 				self.lDocumento)
+				
 		self.gestorCombos.initDateCombo(self.cDia,self.cMes,self.cAnyo)
 		#variables auxiliares
 		self.tipo = None
