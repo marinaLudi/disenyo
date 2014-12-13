@@ -91,6 +91,7 @@ class InterfazEstadoHabitacion:
 				self.mes_fin_combo, 
 				self.ano_fin_combo)
 	
+
 	def mostrarHabitaciones(self, combo):
 		fecha_ini = self.gestorCombos.getDate(self.dia_ini_combo,
 				self.mes_ini_combo,
@@ -104,14 +105,15 @@ class InterfazEstadoHabitacion:
 		
 		if self.gestor_estado.validarFecha(fecha_ini, fecha_fin):
 			self.armarGrilla(fecha_ini,fecha_fin)
+
 		else:
-			self.gestorDialogos.confirm("La fecha inicial no puede ser mayor que la final","Aceptar")
+			self.gestorDialogos.confirm("La fecha inicial no puede ser mayor que la final",
+					"Aceptar")
 		
 
 
-
 	def armarGrilla(self,fecha_inicio,fecha_fin):
-					
+
 		#crea la lista de donde va a tomar las cosas el toggle, el boolean activado o no
 		#los colores seria rojo=ocupada, azul=libre y amarillo=reservada
 		#la ultima columna seria la fecha
@@ -164,43 +166,56 @@ class InterfazEstadoHabitacion:
 	def on_cell_toggled(self, widget, path, num):
 		print num,path
 		if self.compararCelda(self.primerCelda[0],self.primerCelda[1],int(path),num):
-			self.stores[num][int(path)][0] = not self.stores[num][int(path)][0]		
-			self.fecha_ini = None
+			self.stores[num][int(path)][0] = not self.stores[num][int(path)][0]
+			self.fecha_ini=None	
+							
 		elif self.fecha_ini is None:
 			self.stores[num][int(path)][0] = not self.stores[num][int(path)][0]
 			self.fecha_ini = self.stores[num][int(path)][3]
 			self.primerCelda[0]=int(path)
 			self.primerCelda[1]=num
 			self.pos_ini = int(path)			
+
 		elif self.fecha_fin is None:
 			if num != self.primerCelda[1] or int(path)<self.primerCelda[0]:
 				self.resetearGrilla(num,path)
-			else:
-				self.stores[num][int(path)][0] = not self.stores[num][int(path)][0]
+			else:	
 				self.fecha_fin = self.stores[num][int(path)][3]
-			
-				validacion = self.gestor_estado.validarRango(self.stores[num],self.primerCelda[0],int(path),self.estados[num][1])
-				print validacion
+				self.stores[num][int(path)][0] = not self.stores[num][int(path)][0]
+				validacion = self.gestor_estado.validarRango(self.stores[num],
+						self.primerCelda[0],
+						int(path),
+						self.estados[num][1])
+	
 				if validacion == False:
+	
 					self.resetearGrilla(num,path)
-				
-				elif validacion == True:		
-					#pintamos las celdas de color ocupado
-					self.pintarCeldas(num,path)
-					
-					if self.gestorDialogos.presTecla('PRESIONE CUALQUIER TECLA Y CONTINUA...'):
-						interfaces.interfazOcuparHabitacion.InterfazOcuparHabitacion(self.fecha_ini,self.fecha_fin,self.estados[num][1])
-						self.window.hide()
 				else:
-					respuesta = self.gestorDialogos.confirm("Ya existe una reserva nombre de {2} {3} entre la fecha {0} y {1}".\
-					format(str(validacion[0]),str(validacion[1]),validacion[2],validacion[3]),"Ocupar Igual","Volver")
+					self.stores[num][int(path)][0] = not self.stores[num][int(path)][0]
+					self.fecha_fin = self.stores[num][int(path)][3]
 				
-					if respuesta == True:
-						self.pintarCeldas(num,path)	
-						interfaces.interfazOcuparHabitacion.InterfazOcuparHabitacion(self.fecha_ini,self.fecha_fin,self.estados[num][1])
-						self.window.hide()
-					else:
+					validacion = self.gestor_estado.validarRango(self.stores[num],self.primerCelda[0],int(path),self.estados[num][1])
+					print validacion
+					if validacion == False:
 						self.resetearGrilla(num,path)
+					
+					elif validacion == True:		
+						#pintamos las celdas de color ocupado
+						self.pintarCeldas(num,path)
+						
+						if self.gestorDialogos.presTecla('PRESIONE CUALQUIER TECLA Y CONTINUA...'):
+							interfaces.interfazOcuparHabitacion.InterfazOcuparHabitacion(self.fecha_ini,self.fecha_fin,self.estados[num][1])
+							self.window.hide()
+					else:
+						respuesta = self.gestorDialogos.confirm("Ya existe una reserva nombre de {2} {3} entre la fecha {0} y {1}".\
+						format(str(validacion[0]),str(validacion[1]),validacion[2],validacion[3]),"Ocupar Igual","Volver")
+					
+						if respuesta == True:
+							self.pintarCeldas(num,path)	
+							interfaces.interfazOcuparHabitacion.InterfazOcuparHabitacion(self.fecha_ini,self.fecha_fin,self.estados[num][1])
+							self.window.hide()
+						else:
+							self.resetearGrilla(num,path)
 	
 	def pintarCeldas(self,num,path):
 		for b in range(self.primerCelda[0],int(path)+1):

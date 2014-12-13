@@ -14,8 +14,9 @@ from itertools import izip
 
 
 # Globals
-ANO_MIN = 1930
-ANO_MAX = date.today().year
+ano_actual = date.today().year
+ANO_MIN = ano_actual - 5
+ANO_MAX = ano_actual + 1
 
 class GestorCombos:
 	def __init__(self):
