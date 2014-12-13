@@ -100,7 +100,7 @@ class InterfazDarAltaPasajero:
 		# CSS
 		screen = Gdk.Screen.get_default()
 		css_provider = Gtk.CssProvider()
-		css_provider.load_from_paht('style.css')
+		css_provider.load_from_path('style.css')
 		priority = Gtk.STYLE_PROVIDER_PRIORITY_USER
 		context = Gtk.StyleContext()
 		context.add_provider_for_screen(screen, css_provider, priority)
@@ -226,13 +226,14 @@ class InterfazDarAltaPasajero:
 		if omisiones == False:
 			respuesta = self.dialogo.confirm("¡CUIDADO! El tipo y número de documento ya existen en el sistema","Aceptar Igualmente","Corregir")
 			if respuesta == True:
+				pasajero = gestor.construirPasajero(pasajero)				
 				gestor.completarCarga(pasajero)				
 		elif omisiones == True:
 			print 'true'
 
 		else:
 			# Obtenemos styles y widgets
-			widgets, styles = getEntries_Styles(omisiones)
+			widgets, styles = self.getEntries_Styles(omisiones)
 
 			# Pintamos widgets
 			self.pintarWidgets(widgets, styles)
@@ -261,7 +262,7 @@ class InterfazDarAltaPasajero:
 
 			elif omision is 'id_tipo':
 				widgets.append(self.ebDocumento)
-				styles.appen(self.ebDocumento.get_style_context())
+				styles.append(self.ebDocumento.get_style_context())
 
 			elif omision is 'codigo':
 				widgets.append(self.eDocumento)
@@ -305,7 +306,7 @@ class InterfazDarAltaPasajero:
 
 			elif omision is 'id_ocupacion':
 				widgets.append(self.ebOcupacion)
-				styles.appen(self.ebOcupacion.get_style_context())
+				styles.append(self.ebOcupacion.get_style_context())
 
 			elif omision is 'id_iva':
 				widgets.append(self.ebIVA)
@@ -317,7 +318,7 @@ class InterfazDarAltaPasajero:
 		
 
 	def pintarWidgets(self, widgets, styles):
-		if not:
+		if not widgets:
 			print "end_painting"
 
 		else:

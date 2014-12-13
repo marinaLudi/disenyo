@@ -16,8 +16,7 @@ from datetime import date
 class GestorGestionarPasajeros:
 	def buscar(self, tipoDocu=None, documento=None,nombre=None,apellido=None):
 		gestordb = GestorDB()
-		print tipoDocu,documento
-		arregloPasajeros = gestordb.buscarPasajero(tipoDocu=tipoDocu,codigo=documento)
+		arregloPasajeros = gestordb.buscarPasajero(tipoDocu=tipoDocu,codigo=documento,nombre=nombre,apellido=apellido)
 		# Comprobamos si la lista tiene algun pasajero 
 		# En caso de que contenga al menos un pasajero se devuelve la lista
 		# Si la lista esta vacia se devuelve False

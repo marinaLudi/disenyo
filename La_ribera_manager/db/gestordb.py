@@ -31,12 +31,12 @@ class GestorDB:
 
 	def guardarObjeto(self, objeto):
 
-		try:
-			self.session.add(objeto)
-			self.session.commit()
+	#~ try:
+		self.session.add(objeto)
+		self.session.commit()
 
-		except:
-			self.session.rollback()
+	#~ except:
+		self.session.rollback()
 
 
 		return objeto

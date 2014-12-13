@@ -75,7 +75,7 @@ class InterfazGestionarPasajero:
 		
 		# Buscamos pasajero
 		gestionarPasajeros = GestorGestionarPasajeros()
-		arregloPasajeros = gestionarPasajeros.buscar(nombre, apellido,self.tipo,codigo)
+		arregloPasajeros = gestionarPasajeros.buscar(tipoDocu=self.tipo,documento=codigo,nombre=nombre, apellido=apellido)
 
 
 
@@ -113,9 +113,6 @@ class InterfazGestionarPasajero:
 		lPasajeros = builder.get_object("lPasajeros")
 		b2Siguiente = builder.get_object("b2Siguiente")
 		treeView = builder.get_object("treeviewLista")
-		handlers = {
-		"on_window2_destroy": Gtk.main_quit}
-		builder.connect_signals(handlers)
 
 		
 		window2.set_border_width(BORDE_ANCHO)
@@ -135,7 +132,7 @@ class InterfazGestionarPasajero:
 		if self.pasajero is None:
 		# El usuario no elige ningun pasajero
 			darAlta = InterfazDarAltaPasajero()
-			window.hide()
+			window.destroy()
 	
 	def on_tree_selection_changed(self,selection):
 		model,treeiter = selection.get_selected()
