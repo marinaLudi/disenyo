@@ -221,24 +221,39 @@ class InterfazDarAltaPasajero:
 				
 
 		gestor = GestorGestionarPasajeros()
+
+		# Corroboramos que cada entry coincida con el formato de entrada
+		errores, tipos = gestor.checkentries(pasajero)	
+
+		# creamos pasajero
 		omisiones = gestor.crearPasajero(pasajero)	
 		
-		if omisiones == False:
-			respuesta = self.dialogo.confirm("¡CUIDADO! El tipo y número de documento ya existen en el sistema","Aceptar Igualmente","Corregir")
-			if respuesta == True:
-				pasajero = gestor.construirPasajero(pasajero)				
-				gestor.completarCarga(pasajero)				
-		elif omisiones == True:
-			print 'true'
+		if not errores:
+			if omisiones == False:
+				respuesta = self.dialogo.confirm("¡CUIDADO! El tipo y número de documento ya existen en el sistema", "Aceptar Igualmente", "Corregir")
+				if respuesta == True:
+					pasajero = gestor.construirPasajero(pasajero)
+					gestor.completarCarga(pasajero)				
+			elif omisiones == True:
+				print 'true'
 
+		#	else:
+		#		# Obtenemos styles y widgets
+		#		widgets, styles = self.getEntries_Styles(omisiones)
+
+		#		# Pintamos widgets
+		#		self.pintarWidgets(widgets, styles)
 		else:
 			# Obtenemos styles y widgets
-			widgets, styles = self.getEntries_Styles(omisiones)
+			widgets, styles = self.getEntries_Styles(errores)
 
 			# Pintamos widgets
-			self.pintarWidgets(widgets, styles)
+			self.pintaWidgets(widgets, styles)
 
-			
+			# Monstramos errores
+			for a, b in izip(errores, tipos):
+				print "%s -> %s" % (a, b)
+				
 	def on_bCancelar_clicked(self,boton):
 		
 		respuesta = self.dialogo.confirm("¿Desea cancelar el alta del pasajero?","SI","NO")
@@ -318,14 +333,11 @@ class InterfazDarAltaPasajero:
 		
 
 	def pintarWidgets(self, widgets, styles):
-		if not widgets:
-			print "end_painting"
+		for style, widget in izip(reversed(widgets), reversed(styles)):
+			style.add_class('invalid')
+			widget.grab_focus()
 
-		else:
-			styles.pop().add_class('invalid')
-			widgets.pop().grab_focus()
-
-			self.pintarWidgets(widgets, styles)
+		print "painting-finished"
 		
 
 		
