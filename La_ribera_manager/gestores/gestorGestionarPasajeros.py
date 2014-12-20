@@ -13,6 +13,8 @@ from gestordireccion import GestorDireccion
 from datetime import date
 import re
 
+# Globals
+dni_codigo = None
 
 class GestorGestionarPasajeros:
 	def buscar(self, tipoDocu=None, documento=None,nombre=None,apellido=None):
@@ -54,16 +56,16 @@ class GestorGestionarPasajeros:
 		errores=list()
 		tipo = list()
 
-		contenidoDto = [dtoPasajero.getAtributosPasajero(),
-				dtoPasajero.getAtributosDireccion(),
-				dict(codigo = dtoPasajero.getCodigo(),
+		contenidoDto = [dict(codigo = dtoPasajero.getCodigo(),
 					id_tipo = dtoPasajero.getIdTipo(),
 					id_localidad = dtoPasajero.getIdLocalidad(),
 					id_provincia = dtoPasajero.getIdProvincia(),
 					id_pais = dtoPasajero.getIdPais(),
 					id_ocupacion = dtoPasajero.getIdOcupacion(),
 					id_nacionalidad = dtoPasajero.getIdNacionalidad(),
-					id_iva = dtoPasajero.getIdIva())]	
+					id_iva = dtoPasajero.getIdIva()),
+				dtoPasajero.getAtributosPasajero(),
+				dtoPasajero.getAtributosDireccion()]	
 
 		for atributo in contenidoDto: 
 			for atrName, value in atributo.iteritems():
@@ -90,21 +92,22 @@ class GestorGestionarPasajeros:
 			return not self.checkNombre(valor)
 
 		elif atrName == 'codigo':
+			global dni_codigo 
 			dni_codigo = valor
 
-		elif atrName == 'cuit':
+		elif atrName == 'cuit' and valor is not None:
 			return not self.checkCuit(valor, dni_codigo)
 
-		elif atrName == 'email':
+		elif atrName == 'email' and valor is not None:
 			return not  self.checkEmail(valor)
 
 		elif atrName == 'CP':
 			return not self.checkCP(valor)
 
-		elif atrName == 'dpto':
+		elif atrName == 'dpto' and valor is not None:
 			return not self.checkDpto(valor)
 
-		elif atrName == 'piso':
+		elif atrName == 'piso' and valor is not None:
 			return not self.checkPiso(valor)
 
 		else:
@@ -116,7 +119,7 @@ class GestorGestionarPasajeros:
 		largo = len(nombre)
 		
 		if largo >= 3 and largo <= 30:
-			if re.match(r'^[a-z]+(\s[a-z]+)+$', nombre, re.I):
+			if re.match(r'^(([a-z]+)(\s[a-z]+)*)$', nombre, re.I):
 				return True
 			else:
 				return False
@@ -131,7 +134,7 @@ class GestorGestionarPasajeros:
 			tipo = r'\d{2}'
 			codigo = r'\d{8}'
 			confirm = r'\d'
-			cuit_pattern = r'^%s-(%s)-%s$' % (tipo, codigo, confirm)
+			cuit_pattern = r'^%s\-(%s)\-%s$' % (tipo, codigo, confirm)
 
 			# Comprobamos que el cuit tenga la forma estipulada
 			# y que la parte central sea igual al dni
@@ -142,6 +145,9 @@ class GestorGestionarPasajeros:
 
 			else:
 				return False
+
+		else:
+			return False
 
 
 	def checkDNI(self, dni):
@@ -167,7 +173,7 @@ class GestorGestionarPasajeros:
 
 	
 	def checkCP(self, cp):
-		if re.match(r'^\d{3,9}$'):
+		if re.match(r'^\d{3,9}$', cp):
 			return True
 		
 		else:
@@ -175,7 +181,7 @@ class GestorGestionarPasajeros:
 			
 
 	def checkDpto(self, dpto):
-		if re.match(r'^[a-z]$'):
+		if re.match(r'^[a-z]$', dpto):
 			return True
 
 		else:
@@ -183,7 +189,7 @@ class GestorGestionarPasajeros:
 
 	
 	def checkPiso(self, piso):
-		if re.match(r'^\d{1,163}$'):
+		if re.match(r'^\d{1,163}$', piso):
 			return True
 		
 		else:
