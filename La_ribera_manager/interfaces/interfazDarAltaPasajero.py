@@ -86,7 +86,14 @@ class InterfazDarAltaPasajero:
 				self.lOcupacion, 
 				self.lIVA,
 				self.lDocumento)
-		self.gestorCombos.initDateCombo(self.cDia,self.cMes,self.cAnyo)
+
+		# Iniciamos combo de fechas
+		self.gestorCombos.initDateCombo(self.cDia,
+				self.cMes,
+				self.cAnyo,
+				1900,
+				datetime.date.today.year())
+
 		#variables auxiliares
 		self.tipo = None
 		self.localidad = None
@@ -239,13 +246,18 @@ class InterfazDarAltaPasajero:
 				print 'true'
 
 		else:
+
+			# Obtenemos styles y widgets
+			widgets, styles = self.getEntries_Styles(errores)
+
+			# Despintamos todos los widgets
+			self.despintarWidgets(self.getallstyles())
+			
+			# Pintamos widgets
+			self.pintaWidgets(widgets, styles)
+
 			if tipo:  
 				# Si se cometieron errores
-				# Obtenemos styles y widgets
-				widgets, styles = self.getEntries_Styles(errores)
-				
-				# Pintamos widgets
-				self.pintaWidgets(widgets, styles)
 				
 				# Monstramos errores
 				self.dialogo.confirm(self.crearAdvertencia,
@@ -253,12 +265,7 @@ class InterfazDarAltaPasajero:
 
 			else:
 				# Si se realizaron omisiones
-				# Obtenemos styles y widgets
-				widgets, styles = self.getEntries_Styles(errores)
-				
-				# Pintamos widgets
-				self.pintaWidgets(widgets, styles)
-				
+				self.dialogo.confirm("Se omitieron campos obligatorios", "Aceptar")	
 				
 	def on_bCancelar_clicked(self,boton):
 		
@@ -344,6 +351,29 @@ class InterfazDarAltaPasajero:
 			widget.grab_focus()
 
 		print "painting-finished"
+	
+
+	def despintarWidgets(self, styles):
+		for style in styles:
+			style.remove_class('invalid')
+
+
+	def getallstyles():
+		return [eNombres.get_style_context(),
+				eApellidos.get_style_context(),
+				ebDocumento.get_style_context(),
+				eDocumento.get_style_context(),
+				ebNacionalidad.get_style_context(),
+				ebFecha.get_style_context(),
+				eTelefono.get_style_context(),
+				eCalle.get_style_context(),
+				eNumero.get_style_context(),
+				ebLocalidad.get_style_context(),
+				ePostal.get_style_context(),
+				ebProvincia.get_style_context(),
+				ebPais.get_style_context(),
+				ebOcupacion.get_style_context(),
+				ebIVA.get_style_context()]
 
 
 	def crearAdvertencia(self, errores):

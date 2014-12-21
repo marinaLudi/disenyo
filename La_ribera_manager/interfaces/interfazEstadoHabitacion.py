@@ -52,11 +52,15 @@ class InterfazEstadoHabitacion:
 		
 		self.gestorCombos.initDateCombo(self.dia_ini_combo,
 				self.mes_ini_combo,
-				self.ano_ini_combo)
+				self.ano_ini_combo,
+				date.today().year,
+				date.today().year + 1)
 
 		self.gestorCombos.initDateCombo(self.dia_fin_combo,
 				self.mes_fin_combo,
-				self.ano_fin_combo)
+				self.ano_fin_combo,
+				date.today().year,
+				date.today().year)
 		
 		# Seteamos items activos
 		self.gestorCombos.setActive([self.dia_ini_combo,
