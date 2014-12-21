@@ -75,7 +75,10 @@ class InterfazGestionarPasajero:
 		
 		# Buscamos pasajero
 		gestionarPasajeros = GestorGestionarPasajeros()
-		arregloPasajeros = gestionarPasajeros.buscar(tipoDocu=self.tipo,documento=codigo,nombre=nombre, apellido=apellido)
+		arregloPasajeros = gestionarPasajeros.buscar(tipoDocu=self.tipo,
+				documento=codigo,
+				nombre=nombre, 
+				apellido=apellido)
 
 
 
@@ -119,7 +122,10 @@ class InterfazGestionarPasajero:
 		window2.set_default_size(VENTANA_ANCHO, VENTANA_ALTO)
 				
 		for e in arregloPasajeros:
-				lPasajeros.append([e.getNombre(),e.getApellido(),e.getDocumento().getTipo().getTipo(),e.getDocumento().getCodigo()])
+				lPasajeros.append([e.getNombre(), 
+					e.getApellido(), 
+					e.getDocumento().getTipo().getTipo(), 
+					e.getDocumento().getCodigo()])
 		
 		select = treeView.get_selection()
 		select.unselect_all()
