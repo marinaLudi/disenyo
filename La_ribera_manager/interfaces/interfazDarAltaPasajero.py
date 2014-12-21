@@ -223,36 +223,42 @@ class InterfazDarAltaPasajero:
 		gestor = GestorGestionarPasajeros()
 
 		# Corroboramos que cada entry coincida con el formato de entrada
-		errores, tipos = gestor.checkentries(pasajero)	
+		errores, tipo = gestor.checkentries(pasajero)	
 
 		# creamos pasajero
-		omisiones = gestor.crearPasajero(pasajero)	
+		crear_return = gestor.crearPasajero(pasajero)	
 		
 		if not errores:
-			if omisiones == False:
+			if crear_return == False:
 				respuesta = self.dialogo.confirm("¡CUIDADO! El tipo y número de documento ya existen en el sistema", "Aceptar Igualmente", "Corregir")
 				if respuesta == True:
 					pasajero = gestor.construirPasajero(pasajero)
 					gestor.completarCarga(pasajero)				
-			elif omisiones == True:
+
+			elif crear_return == True:
 				print 'true'
 
-		#	else:
-		#		# Obtenemos styles y widgets
-		#		widgets, styles = self.getEntries_Styles(omisiones)
-
-		#		# Pintamos widgets
-		#		self.pintarWidgets(widgets, styles)
 		else:
-			# Obtenemos styles y widgets
-			widgets, styles = self.getEntries_Styles(errores)
+			if tipo:  
+				# Si se cometieron errores
+				# Obtenemos styles y widgets
+				widgets, styles = self.getEntries_Styles(errores)
+				
+				# Pintamos widgets
+				self.pintaWidgets(widgets, styles)
+				
+				# Monstramos errores
+				self.dialogo.confirm(self.crearAdvertencia,
+						"Aceptar")
 
-			# Pintamos widgets
-			self.pintaWidgets(widgets, styles)
-
-			# Monstramos errores
-			for a, b in izip(errores, tipos):
-				print "%s -> %s" % (a, b)
+			else:
+				# Si se realizaron omisiones
+				# Obtenemos styles y widgets
+				widgets, styles = self.getEntries_Styles(errores)
+				
+				# Pintamos widgets
+				self.pintaWidgets(widgets, styles)
+				
 				
 	def on_bCancelar_clicked(self,boton):
 		
@@ -338,7 +344,38 @@ class InterfazDarAltaPasajero:
 			widget.grab_focus()
 
 		print "painting-finished"
-		
+
+
+	def crearAdvertencia(self, errores):
+		if len(errores) == 1:
+			errorMessage = "Cometio un error al llenar el campo:"
+		else:
+			errorMessage = "Cometio un error al llenar los campos:"
+
+		for error in errores:
+			if error is 'nombre':
+				errorMessage+= "\nNombre, debe tener la forma -> <nombre>{<espacio><segundonombre>}*"
+
+			elif error is 'apellido':
+				errorMessage+= "\nApellido, debe tener la forma -> <apellido>{<espacio><segundoapellido>}*"
+
+			elif error is 'cuit':
+				errorMessage+= "\nCUIT, debe tener la forma -> <tipo>-<codigo>-<digitoverificador>"
+
+			elif error is 'email':
+				errorMessage+= "\nEmail, debe tener la forma -> <usuario>@<host>.<dominio>"
+
+			elif error is 'CP':
+				errorMessage+= "\nCodigo Postal, debe tener como minimo 3 digitos y como maximo 9"
+
+			elif error is 'dpto':
+				errorMessage+= "\nDepartamento, debe ser una letra del alfabeto"
+
+			elif error is 'piso':
+				errorMessage+= "\nPiso, el piso min es 1 y el maximo 163"
+
+		return errorMessage
+
 
 		
 if __name__ == '__main__':		

@@ -3,7 +3,6 @@
 from gi.repository import Gtk
 from interfazGestionarPasajero import InterfazGestionarPasajero
 from interfazOcuparHabitacion import InterfazOcuparHabitacion
-from interfazEstadoHabitacion import InterfazEstadoHabitacion
 
 # Globals
 BORDE_ANCHO = 25
@@ -46,10 +45,12 @@ class InterfazMenu:
 
 	def buttonPressed(self, widget):
 		if widget == self.gestionar_pasajero_button:
-			print "gestionar_pasajero_button"	
+			gestionarPasajero = InterfazGestionarPasajero()
+			self.window.hide()
 
 		elif widget == self.ocupar_hab_button:
-			print "ocupar_hab_button"
+			ocuparHabitacion = InterfazOcuparHabitacion()
+			self.window.hide()
 
 		elif widget == self.gestionar_rp_button:
 			print "gestionar_rp_button"
