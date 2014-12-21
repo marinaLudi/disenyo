@@ -159,7 +159,6 @@ class InterfazEstadoHabitacion:
 
         self.scrolled_window.add(self.tree)
         self.window.show_all()
-        return self.tree
 
     # Devuelve true si son iguales
     def compararCelda(self,path1,num1,path2,num2):
@@ -167,7 +166,6 @@ class InterfazEstadoHabitacion:
             return True
 
     def on_cell_toggled(self, widget, path, num):
-        print num,path
         if self.compararCelda(self.primerCelda[0],self.primerCelda[1],int(path),num):
             self.stores[num][int(path)][0] = not self.stores[num][int(path)][0]
             self.fecha_ini=None

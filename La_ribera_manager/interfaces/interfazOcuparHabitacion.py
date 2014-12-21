@@ -64,8 +64,8 @@ class InterfazOcuparHabitacion:
 		self.tipo = None
 		self.id_pasajero = None
 		self.habitacion = habitacion
-		self.fecha_inicio = date(int(fecha_inicio[:4]),int(fecha_inicio[5:7]),int(fecha_inicio[8:])) 
-		self.fecha_fin = date(int(fecha_fin[:4]),int(fecha_fin[5:7]),int(fecha_fin[8:])) 
+		self.fecha_inicio = date(int(fecha_inicio[:4]),int(fecha_inicio[5:7]),int(fecha_inicio[8:]))
+		self.fecha_fin = date(int(fecha_fin[:4]),int(fecha_fin[5:7]),int(fecha_fin[8:]))
 		self.tipoPasajero = 'responsable'
 		
 		# Monstramos la ventana con los widgets
@@ -87,14 +87,15 @@ class InterfazOcuparHabitacion:
 		
 		# Buscamos pasajero
 		gestionarPasajeros = GestorGestionarPasajeros()
-		arregloPasajeros = gestionarPasajeros.buscar(nombre, apellido,self.tipo,codigo)
+		arregloPasajeros = gestionarPasajeros.buscar(nombre=nombre, apellido=apellido,tipoDocu=self.tipo,documento=codigo)
 
 
 
 		if not arregloPasajeros:
 			# Se genera la intefaz de dar alta pasajero
-			darAlta = InterfazDarAltaPasajero()
-			self.window1.hide()
+			#darAlta = InterfazDarAltaPasajero()
+			#self.window1.hide()
+			self.dialogos.confirm("No se ha encontrado un pasajero con los datos, intente nuevamente","Aceptar")
 
 		else:
 			# Se muestra en la pantalla la grilla para seleccionar al pasajero
@@ -132,7 +133,7 @@ class InterfazOcuparHabitacion:
 		"on_window2_destroy": Gtk.main_quit}
 		builder.connect_signals(handlers)
 
-		
+
 		self.window2.set_border_width(BORDE_ANCHO)
 		self.window2.set_default_size(VENTANA_ANCHO, VENTANA_ALTO)
 				
@@ -141,44 +142,52 @@ class InterfazOcuparHabitacion:
 		
 		select = treeView.get_selection()
 
-	
+
 		select.connect("changed", self.on_tree_selection_changed)
 		bAceptar.connect("clicked", self.on_Aceptar_clicked,self.window2,treeView)
 		rResponsable.connect("toggled", self.on_radio_toggled, "responsable")
 		rAcompanyante.connect("toggled", self.on_radio_toggled, "acompanyante")
-		
+
 		self.window2.show_all()
-	
+
 	def on_Aceptar_clicked(self,boton,window,treeView):
 		# El usuario elige un pasajero
 		if self.id_pasajero is not None:
 			respuesta = self.dialogos.pregunta("¿Que desea hacer?","Seguir Cargando","Cargar otra habitación","Salir")
 			if respuesta == Gtk.ResponseType.YES:
-				self.gestorOcuparHab.asignarPasajero(self.tipoPasajero,self.id_pasajero)
+				asignado = self.gestorOcuparHab.asignarPasajero(self.tipoPasajero,self.id_pasajero,self.fecha_inicio,self.fecha_fin)
+				if not asignado:
+				    self.dialogos.confirm("Ya se habia asignado un responsable a esta habitacion","Aceptar")
+				elif asignado is not True:
+				    self.dialogos.confirm("El acompañante ya se esta alojando en el hotel en esa fecha","Aceptar")
 				self.window2.hide()
 				self.window1.show_all()
 			elif respuesta == Gtk.ResponseType.NO:
-				self.gestorOcuparHab.asignarPasajero(self.tipoPasajero,self.id_pasajero)				
-				self.gestorOcuparHab.ocuparHab(self.habitacion,self.fecha_inicio,self.fecha_fin)
-				interfaces.interfazEstadoHabitacion.InterfazEstadoHabitacion()
-				self.window2.hide()
-				
+				asignado = self.gestorOcuparHab.asignarPasajero(self.tipoPasajero,self.id_pasajero, self.fecha_inicio, self.fecha_fin)	
+				if asignado == True:
+				    self.gestorOcuparHab.ocuparHab(self.habitacion,self.fecha_inicio,self.fecha_fin)
+				    interfaces.interfazEstadoHabitacion.InterfazEstadoHabitacion()
+				    self.window2.hide()
+				elif asignado:
+				    self.dialogos.confirm("El acompañante ya se esta alojando en el hotel en esa fecha","Aceptar")
+				elif not asignado:
+				    self.dialogos.confirm("Ya se habia asignado un responsable a esta habitacion","Aceptar")
 			elif respuesta == Gtk.ResponseType.CLOSE:
-				self.gestorOcuparHab.asignarPasajero(self.tipoPasajero,self.id_pasajero)				
+				self.gestorOcuparHab.asignarPasajero(self.tipoPasajero,self.id_pasajero)	
 				self.gestorOcuparHab.ocuparHab(self.habitacion,self.fecha_inicio,self.fecha_fin)
 				Gtk.main_quit()
 
-	
-	
+
+
 	def on_tree_selection_changed(self,selection):
 		model,treeiter = selection.get_selected()
 		if treeiter is not None:
 			self.id_pasajero = model[treeiter][4]
-			 
+
 	def on_radio_toggled(self, button, name):
 		if button.get_active():
 			self.tipoPasajero = name
-			 
+
 if __name__ == '__main__':		
 	InterfazOcuparHabitacion()
 	Gtk.main()		

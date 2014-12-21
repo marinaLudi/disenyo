@@ -1,6 +1,7 @@
 #### Gestor gestordb ####
 
 from sqlalchemy.orm import sessionmaker, contains_eager
+from sqlalchemy import or_
 from models import *
 import datetime
 
@@ -132,4 +133,15 @@ class GestorDB:
 			raise
 
 		return arregloHabitaciones
-		
+	
+	
+	def buscarHospedado(self,id_pasajero,fecha_ini, fecha_fin):
+	    estadia = self.session.query(Estadia).join("ocupantes",tiene_ocupante).join(Pasajero).filter(Estadia.fecha_inicio<=fecha_ini,fecha_ini<=Estadia.fecha_fin).filter(Pasajero.id_pasajero==id_pasajero)
+	    estadia2 = self.session.query(Estadia).filter(Estadia.fecha_inicio<=fecha_fin,fecha_fin<=Estadia.fecha_fin).filter(Pasajero.id_pasajero==id_pasajero)
+	    estadia3 = self.session.query(Estadia).filter(Estadia.fecha_inicio>fecha_ini,Estadia.fecha_fin<fecha_fin).filter(Pasajero.id_pasajero==id_pasajero)
+	    estadiaParcial = estadia.union(estadia2)
+	    estadiaFinal = estadiaParcial.union(estadia3).all()
+	    return estadiaFinal
+	        #.filter(or_(Estadia.fecha_inicio<=fecha_ini,
+	       #  Estadia.fecha_fin>=fecha_fin )).all()
+	        #filter(tiene_ocupante.id_pasajero==id_pasajero,).
