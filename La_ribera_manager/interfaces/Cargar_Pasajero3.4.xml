@@ -271,7 +271,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="xalign">0.05000000074505806</property>
-                <property name="label" translatable="yes">Localidad</property>
+                <property name="label" translatable="yes">Pais</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -313,7 +313,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="xalign">0.05000000074505806</property>
-                <property name="label" translatable="yes">País</property>
+                <property name="label" translatable="yes">Localidad</property>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -615,7 +615,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkEventBox" id="eventbox_pais">
+              <object class="GtkEventBox" id="eventbox_localidad">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>
@@ -624,12 +624,12 @@
                     <property name="can_focus">False</property>
                     <property name="orientation">vertical</property>
                     <child>
-                      <object class="GtkComboBox" id="cPais">
+                      <object class="GtkComboBox" id="cLocalidad">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="model">lPais</property>
+                        <property name="model">lLocalidad</property>
                         <property name="row_span_column">0</property>
-                        <signal name="changed" handler="on_cPais_changed" swapped="no"/>
+                        <signal name="changed" handler="on_cLocalidad_changed" swapped="no"/>
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext"/>
                           <attributes>
@@ -692,7 +692,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkEventBox" id="eventbox_localidad">
+              <object class="GtkEventBox" id="eventbox_pais">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>
@@ -701,11 +701,11 @@
                     <property name="can_focus">False</property>
                     <property name="orientation">vertical</property>
                     <child>
-                      <object class="GtkComboBox" id="cLocalidad">
+                      <object class="GtkComboBox" id="cPais">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="model">lLocalidad</property>
-                        <signal name="changed" handler="on_cLocalidad_changed" swapped="no"/>
+                        <property name="model">lPais</property>
+                        <signal name="changed" handler="on_cPais_changed" swapped="no"/>
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext2"/>
                           <attributes>
@@ -762,57 +762,6 @@
               </object>
               <packing>
                 <property name="left_attach">0</property>
-                <property name="top_attach">13</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkEventBox" id="eventbox_iva">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <child>
-                  <object class="GtkBox" id="box8">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="spacing">5</property>
-                    <property name="homogeneous">True</property>
-                    <child>
-                      <object class="GtkEntry" id="eCUIT">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkComboBox" id="cIVA">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="model">lIVA</property>
-                        <property name="row_span_column">0</property>
-                        <signal name="changed" handler="on_cIVA_changed" swapped="no"/>
-                        <child>
-                          <object class="GtkCellRendererText" id="cellrenderertext7"/>
-                          <attributes>
-                            <attribute name="text">1</attribute>
-                          </attributes>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
                 <property name="top_attach">13</property>
                 <property name="width">1</property>
                 <property name="height">1</property>
@@ -903,6 +852,57 @@
               <packing>
                 <property name="left_attach">1</property>
                 <property name="top_attach">3</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEventBox" id="eventbox_iva">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkBox" id="box8">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="spacing">5</property>
+                    <property name="homogeneous">True</property>
+                    <child>
+                      <object class="GtkEntry" id="eCUIT">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkComboBox" id="cIVA">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="model">lIVA</property>
+                        <property name="row_span_column">0</property>
+                        <signal name="changed" handler="on_cIVA_changed" swapped="no"/>
+                        <child>
+                          <object class="GtkCellRendererText" id="cellrenderertext7"/>
+                          <attributes>
+                            <attribute name="text">1</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">13</property>
                 <property name="width">1</property>
                 <property name="height">1</property>
               </packing>

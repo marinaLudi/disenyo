@@ -22,7 +22,10 @@ VENTANA_ALTO = 735
 
 
 class InterfazEstadoHabitacion:
-    def __init__(self):
+    def __init__(self,menu):
+
+        self.menu = menu
+
         builder = Gtk.Builder()
         builder.add_from_file("estado_habitacion.xml")
 
@@ -204,7 +207,7 @@ class InterfazEstadoHabitacion:
                         self.pintarCeldas(num,path)
 
                         if self.gestorDialogos.presTecla('PRESIONE CUALQUIER TECLA Y CONTINUA...'):
-                            interfaces.interfazOcuparHabitacion.InterfazOcuparHabitacion(self.fecha_ini,self.fecha_fin,self.estados[num][1])
+                            interfaces.interfazOcuparHabitacion.InterfazOcuparHabitacion(self.menu,self.fecha_ini,self.fecha_fin,self.estados[num][1])
                             self.window.hide()
                     else:
                         respuesta = self.gestorDialogos.confirm("Ya existe una reserva nombre de {2} {3} entre la fecha {0} y {1}".\
@@ -212,7 +215,7 @@ class InterfazEstadoHabitacion:
 
                         if respuesta == True:
                             self.pintarCeldas(num,path)
-                            interfaces.interfazOcuparHabitacion.InterfazOcuparHabitacion(self.fecha_ini,self.fecha_fin,self.estados[num][1])
+                            interfaces.interfazOcuparHabitacion.InterfazOcuparHabitacion(self.menu,self.fecha_ini,self.fecha_fin,self.estados[num][1])
                             self.window.hide()
                         else:
                             self.resetearGrilla(num,path)

@@ -19,8 +19,8 @@ VENTANA_ALTO = 530
 VENTANA_ANCHO = 735
 
 class InterfazGestionarPasajero:
-	def __init__(self):
-		
+	def __init__(self,menu):
+		self.menu = menu
 		builder = Gtk.Builder()
 
 		# Dibuja ventanas desde .xml
@@ -46,7 +46,6 @@ class InterfazGestionarPasajero:
 		# Events handlers
 		handlers = {
 		"on_bSiguiente_clicked": self.on_bSiguiente_clicked,
-		"on_window1_destroy": Gtk.main_quit,
 		"on_bCancelar_clicked": self.on_bCancelar_clicked,
 		"on_cDocumento_changed": self.on_cDocumento_changed,
 		}
@@ -77,15 +76,15 @@ class InterfazGestionarPasajero:
 		gestionarPasajeros = GestorGestionarPasajeros()
 		arregloPasajeros = gestionarPasajeros.buscar(tipoDocu=self.tipo,
 				documento=codigo,
-				nombre=nombre, 
+				nombre=nombre,
 				apellido=apellido)
 
 
 
 		if not arregloPasajeros:
 			# Se genera la intefaz de dar alta pasajero
-			darAlta = InterfazDarAltaPasajero()
-			self.window1.hide()
+			darAlta = InterfazDarAltaPasajero(self.menu)
+			self.window1.destroy()
 
 		else:
 			# Se muestra en la pantalla la grilla para seleccionar al pasajero
@@ -94,7 +93,8 @@ class InterfazGestionarPasajero:
 
 			
 	def on_bCancelar_clicked(self, boton):
-		Gtk.main_quit()
+		self.menu.show_all()
+		self.window1.destroy()
 		
 
 	def on_cDocumento_changed(self, combo):
@@ -122,9 +122,9 @@ class InterfazGestionarPasajero:
 		window2.set_default_size(VENTANA_ANCHO, VENTANA_ALTO)
 				
 		for e in arregloPasajeros:
-				lPasajeros.append([e.getNombre(), 
-					e.getApellido(), 
-					e.getDocumento().getTipo().getTipo(), 
+				lPasajeros.append([e.getNombre(),
+					e.getApellido(),
+					e.getDocumento().getTipo().getTipo(),
 					e.getDocumento().getCodigo()])
 		
 		select = treeView.get_selection()
@@ -137,7 +137,7 @@ class InterfazGestionarPasajero:
 	def on_b2Siguiente_clicked(self,boton,window,treeView):
 		if self.pasajero is None:
 		# El usuario no elige ningun pasajero
-			darAlta = InterfazDarAltaPasajero()
+			darAlta = InterfazDarAltaPasajero(self.menu)
 			window.destroy()
 	
 	def on_tree_selection_changed(self,selection):

@@ -24,7 +24,9 @@ VENTANA_ALTO = 530
 VENTANA_ANCHO = 735
 
 class InterfazDarAltaPasajero:
-	def __init__(self):
+	def __init__(self,menu):
+		
+		self.menu = menu
 		
 		builder = Gtk.Builder()
 		builder.add_from_file("Cargar_Pasajero3.4.xml")
@@ -81,9 +83,9 @@ class InterfazDarAltaPasajero:
 		# Obtenemos informacion para los combos desde la db
 		self.gestorCombos = GestorCombos()
 
-		self.gestorCombos.cargarCombos(self.lPais, 
+		self.gestorCombos.cargarCombos(self.lPais,
 				self.lNacionalidad,
-				self.lOcupacion, 
+				self.lOcupacion,
 				self.lIVA,
 				self.lDocumento)
 				
@@ -110,7 +112,6 @@ class InterfazDarAltaPasajero:
 		handlers = {
 		"on_bSiguiente_clicked": self.on_bSiguiente_clicked,
 		"on_bCancelar_clicked":self.on_bCancelar_clicked,
-		"on_window1_destroy": Gtk.main_quit,
 		"on_cPais_changed": self.on_cPais_changed,
 		"on_cProvincia_changed": self.on_cProvincia_changed,
 		"on_cLocalidad_changed": self.on_cLocalidad_changed,
@@ -202,12 +203,12 @@ class InterfazDarAltaPasajero:
 	def on_bSiguiente_clicked(self,boton):
 		pasajero = DtoPasajero(nombre=self.eNombres.get_text(),
 				apellido=self.eApellidos.get_text(),
-				cuit=self.eCUIT.get_text(), 
-				email=self.eCorreo.get_text(), 
-				fecha_de_nac=self.fecha, 
-				telefono=self.eTelefono.get_text(), 
-				CP=self.ePostal.get_text(), 
-				id_iva=self.IVA, 
+				cuit=self.eCUIT.get_text(),
+				email=self.eCorreo.get_text(),
+				fecha_de_nac=self.fecha,
+				telefono=self.eTelefono.get_text(),
+				CP=self.ePostal.get_text(),
+				id_iva=self.IVA,
 				id_ocupacion=self.ocupacion,
 				id_pais=self.pais,
 				id_localidad=self.localidad,
@@ -225,31 +226,32 @@ class InterfazDarAltaPasajero:
 
 		# Corroboramos que cada entry coincida con el formato de entrada
 		errores, tipo = gestor.checkentries(pasajero)	
+		print errores
 
-		# creamos pasajero
-		crear_return = gestor.crearPasajero(pasajero)	
+	
 		
 		if not errores:
+		    	# creamos pasajero
+		    	crear_return = gestor.crearPasajero(pasajero)	
 			if crear_return == False:
 				respuesta = self.dialogo.confirm("¡CUIDADO! El tipo y número de documento ya existen en el sistema", "Aceptar Igualmente", "Corregir")
 				if respuesta == True:
-					pasajero = gestor.construirPasajero(pasajero)
-					gestor.completarCarga(pasajero)				
+					gestor.completarCarga(pasajero)
 
 			elif crear_return == True:
 				print 'true'
 
 		else:
-			if tipo:  
+			if tipo:
 				# Si se cometieron errores
 				# Obtenemos styles y widgets
 				widgets, styles = self.getEntries_Styles(errores)
 				
 				# Pintamos widgets
-				self.pintaWidgets(widgets, styles)
+				self.pintarWidgets(widgets, styles)
 				
 				# Monstramos errores
-				self.dialogo.confirm(self.crearAdvertencia,
+				self.dialogo.confirm(self.crearAdvertencia(errores),
 						"Aceptar")
 
 			else:
@@ -258,16 +260,17 @@ class InterfazDarAltaPasajero:
 				widgets, styles = self.getEntries_Styles(errores)
 				
 				# Pintamos widgets
-				self.pintaWidgets(widgets, styles)
+				self.pintarWidgets(widgets, styles)
 				
 				
 	def on_bCancelar_clicked(self,boton):
 		
 		respuesta = self.dialogo.confirm("¿Desea cancelar el alta del pasajero?","SI","NO")
 		if respuesta == True:
-			Gtk.main_quit()
+			self.menu.show_all()
+			self.window1.destroy()
 
-		 
+
 	def getEntries_Styles(self, omisiones):
 		widgets = list()
 		styles = list()
@@ -336,11 +339,11 @@ class InterfazDarAltaPasajero:
 
 
 		# retornamos widgets y style contexts
-		return widgets, styles 	
+		return widgets, styles
 		
 
 	def pintarWidgets(self, widgets, styles):
-		for style, widget in izip(reversed(widgets), reversed(styles)):
+		for widget, style in izip(reversed(widgets), reversed(styles)):
 			style.add_class('invalid')
 			widget.grab_focus()
 
@@ -379,6 +382,6 @@ class InterfazDarAltaPasajero:
 
 
 		
-if __name__ == '__main__':		
+if __name__ == '__main__':
 	InterfazDarAltaPasajero()
 	Gtk.main()

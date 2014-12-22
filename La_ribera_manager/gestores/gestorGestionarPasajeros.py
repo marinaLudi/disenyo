@@ -24,7 +24,7 @@ class GestorGestionarPasajeros:
 				nombre=nombre,
 				apellido=apellido)
 
-		# Comprobamos si la lista tiene algun pasajero 
+		# Comprobamos si la lista tiene algun pasajero
 		# En caso de que contenga al menos un pasajero se devuelve la lista
 		# Si la lista esta vacia se devuelve False
 		if self.existePasajero(arregloPasajeros):
@@ -52,7 +52,7 @@ class GestorGestionarPasajeros:
 
 
 	def correcto(self, dtoPasajero, test_func):
-		# Hacemos una lista con los errores  
+		# Hacemos una lista con los errores
 		errores=list()
 		tipo = list()
 
@@ -67,16 +67,16 @@ class GestorGestionarPasajeros:
 				dtoPasajero.getAtributosPasajero(),
 				dtoPasajero.getAtributosDireccion()]	
 
-		for atributo in contenidoDto: 
+		for atributo in contenidoDto:
 			for atrName, value in atributo.iteritems():
-				# Checkeamos los atributos que esten vacios 
+				# Checkeamos los atributos que esten vacios
 				# y no sean opcionales
 
-				if test_func(value, atrName): 
+				if test_func(value, atrName):
 					errores.append(atrName)
 					
 		
-		return errores 
+		return errores
 
 
 	def omitido(self, valor, atrName):
@@ -92,7 +92,7 @@ class GestorGestionarPasajeros:
 			return not self.checkNombre(valor)
 
 		elif atrName == 'codigo':
-			global dni_codigo 
+			global dni_codigo
 			dni_codigo = valor
 
 		elif atrName == 'cuit' and valor is not None:
@@ -242,8 +242,8 @@ class GestorGestionarPasajeros:
 		tipoDocu = gestordb.getObjetoID(TipoDocumento,dtoPasajero.id_tipo)
 
 		# Creamos objetos pertinentes
-		documento = Documento(codigo=dtoPasajero.getCodigo(), 
-				id_tipo=dtoPasajero.getIdTipo(), 
+		documento = Documento(codigo=dtoPasajero.getCodigo(),
+				id_tipo=dtoPasajero.getIdTipo(),
 				tipo=tipoDocu)
 
 		pasajero = Pasajero(
@@ -263,7 +263,7 @@ class GestorGestionarPasajeros:
 
 		if omisiones:
 			# Devolvemos omisiones
-			return omisiones, False 
+			return omisiones, False
 
 		else:
 			# Comprobamos que los campos esten correctamente ingresados

@@ -23,7 +23,9 @@ VENTANA_ALTO = 530
 VENTANA_ANCHO = 735
 
 class InterfazOcuparHabitacion:
-	def __init__(self,fecha_inicio,fecha_fin,habitacion):
+	def __init__(self,menu,fecha_inicio,fecha_fin,habitacion):
+		
+		self.menu = menu
 		
 		builder = Gtk.Builder()
 
@@ -93,8 +95,7 @@ class InterfazOcuparHabitacion:
 
 		if not arregloPasajeros:
 			# Se genera la intefaz de dar alta pasajero
-			#darAlta = InterfazDarAltaPasajero()
-			#self.window1.hide()
+
 			self.dialogos.confirm("No se ha encontrado un pasajero con los datos, intente nuevamente","Aceptar")
 
 		else:
@@ -104,8 +105,8 @@ class InterfazOcuparHabitacion:
 
 			
 	def on_bCancelar_clicked(self, boton):
-		Gtk.main_quit()
-		
+		self.menu.show_all()
+		self.window1.destroy()
 
 	def on_cDocumento_changed(self, combo):
 		treeIter = combo.get_active_iter()
@@ -173,9 +174,10 @@ class InterfazOcuparHabitacion:
 				elif not asignado:
 				    self.dialogos.confirm("Ya se habia asignado un responsable a esta habitacion","Aceptar")
 			elif respuesta == Gtk.ResponseType.CLOSE:
-				self.gestorOcuparHab.asignarPasajero(self.tipoPasajero,self.id_pasajero)	
+				self.gestorOcuparHab.asignarPasajero(self.tipoPasajero,self.id_pasajero,self.fecha_inicio,self.fecha_fin)	
 				self.gestorOcuparHab.ocuparHab(self.habitacion,self.fecha_inicio,self.fecha_fin)
-				Gtk.main_quit()
+				self.menu.show_all()
+				
 
 
 
