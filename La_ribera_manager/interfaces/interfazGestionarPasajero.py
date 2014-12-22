@@ -11,6 +11,7 @@ from gi.repository import Gtk
 from gestores.gestorGestionarPasajeros import GestorGestionarPasajeros
 from gestores.gestordireccion import GestorDireccion
 from gestores.gestorcombos import GestorCombos
+from gestores.gestordialogos import GestorDialogos
 from interfaces.interfazDarAltaPasajero import InterfazDarAltaPasajero
 
 # Globals
@@ -74,22 +75,45 @@ class InterfazGestionarPasajero:
 		
 		# Buscamos pasajero
 		gestionarPasajeros = GestorGestionarPasajeros()
-		arregloPasajeros = gestionarPasajeros.buscar(tipoDocu=self.tipo,
-				documento=codigo,
-				nombre=nombre,
-				apellido=apellido)
+
+		errores = gestionarPasajeros.correcto({'nombre': nombre,
+				'apellido': apellido,
+				'codigo': codigo},
+			gestionarPasajeros.erroneo)
+
+		if not errores:
+			# Si no se cometieron errores al ingresar los datos
+			arregloPasajeros = gestionarPasajeros.buscar(tipoDocu=self.tipo,
+					documento=codigo,
+					nombre=nombre, 
+					apellido=apellido)
 
 
+			if not arregloPasajeros:
+				# Se genera la intefaz de dar alta pasajero
+				darAlta = InterfazDarAltaPasajero()
+				self.window1.hide()
 
-		if not arregloPasajeros:
-			# Se genera la intefaz de dar alta pasajero
-			darAlta = InterfazDarAltaPasajero(self.menu)
-			self.window1.destroy()
-
+			else:
+				# Se muestra en la pantalla la grilla para seleccionar al pasajero
+				pasajero = self.seleccionarPasajero(arregloPasajeros)
+			
 		else:
-			# Se muestra en la pantalla la grilla para seleccionar al pasajero
-			pasajero = self.seleccionarPasajero(arregloPasajeros)
-		
+			# Si se cometieron errores
+			dialogo = GestorDialogos()
+			dialogo.confirm(dialogo.crearAdvertencia(errores), "Aceptar")
+
+			# Obtenemos styles y widgets
+			widgets, styles = self.getEntries_Styles(errores)
+
+			# Despintamos todos los widgets
+			self.despintarWidgets([eNombre, eApellido, eDocumento],
+					[eNombre.get_style_context(), 
+						eApellido.get_style_context(), 
+						eDocumento.get_style_context()])
+
+			# Pintamos widgets erroneos
+			self.pintarWidgets(widgets, styles)
 
 			
 	def on_bCancelar_clicked(self, boton):
@@ -104,12 +128,10 @@ class InterfazGestionarPasajero:
 			id_object = model[treeIter][0]
 			self.tipo = id_object
 			
-		
 
 	def seleccionarPasajero(self,arregloPasajeros):
 		self.window1.hide()
 		builder = Gtk.Builder()
-		
 		
 		builder.add_from_file("Lista_pasajeros.xml")
 		window2 = builder.get_object("window2")
@@ -134,12 +156,14 @@ class InterfazGestionarPasajero:
 		b2Siguiente.connect("clicked", self.on_b2Siguiente_clicked,window2,treeView)
 		window2.show_all()
 	
+
 	def on_b2Siguiente_clicked(self,boton,window,treeView):
 		if self.pasajero is None:
-		# El usuario no elige ningun pasajero
-			darAlta = InterfazDarAltaPasajero(self.menu)
+			# El usuario no elige ningun pasajero
+			darAlta = InterfazDarAltaPasajero()
 			window.destroy()
 	
+
 	def on_tree_selection_changed(self,selection):
 		model,treeiter = selection.get_selected()
 		if treeiter != None:

@@ -14,9 +14,9 @@ from itertools import izip
 
 
 # Globals
-ano_actual = date.today().year
-ANO_MIN = ano_actual - 5
-ANO_MAX = ano_actual + 1
+#ano_actual = date.today().year
+#ANO_MIN = ano_actual - 5
+#ANO_MAX = ano_actual + 1
 
 class GestorCombos:
 	def __init__(self):
@@ -69,11 +69,11 @@ class GestorCombos:
 			lLocalidad.append([e.id_localidad,e.nombreLocalidad])
 
 
-	def initDateCombo(self, combo_dia, combo_mes, combo_ano):
+	def initDateCombo(self, combo_dia, combo_mes, combo_ano, ano_min, ano_max):
 		# seteamos rango de anos y meses
-		year_range = (ANO_MIN, ANO_MAX)
+		year_range = (ano_min, ano_max)
 		month_range = (1, 12)
-		day_range = (1, calendar.monthrange(ANO_MIN, 1)[1]) 
+		day_range = (1, calendar.monthrange(ano_min, 1)[1]) 
 
 		# Cargamos los combos con los anos, meses y dias correspondientes
 		for combo, rango in izip([combo_dia, combo_mes, combo_ano],
