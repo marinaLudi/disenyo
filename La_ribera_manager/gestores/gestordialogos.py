@@ -27,6 +27,7 @@ class GestorDialogos:
 		dialog.destroy()
 		return response == Gtk.ResponseType.YES
 	
+
 	def presTecla(self,texto):
 		dialog = Gtk.MessageDialog(message_format=texto)		
 		dialog.set_modal(True)
@@ -35,9 +36,11 @@ class GestorDialogos:
 		dialog.destroy()	
 		return response == Gtk.ResponseType.OK
 	
+
 	def on_dialog_key_press_event(self,dialog,event):
 		dialog.response(Gtk.ResponseType.OK)
 		
+
 	def pregunta(self,pregunta,aceptar,cancelar=None,salir=None):
 		dialog = Gtk.MessageDialog(type=Gtk.MessageType.QUESTION,message_format=pregunta)
 
@@ -53,3 +56,37 @@ class GestorDialogos:
 		response = dialog.run()
 		dialog.destroy()
 		return response
+
+
+	def crearAdvertencia(self, errores):
+		if len(errores) == 1:
+			errorMessage = "Cometio un error al llenar el campo:"
+		else:
+			errorMessage = "Cometio un error al llenar los campos:"
+
+		for error in errores:
+			if error is 'nombre':
+				errorMessage+= "\nNombre, debe tener la forma -> <nombre>{<espacio><segundonombre>}*"
+
+			elif error is 'apellido':
+				errorMessage+= "\nApellido, debe tener la forma -> <apellido>{<espacio><segundoapellido>}*"
+
+			elif error is 'cuit':
+				errorMessage+= "\nCUIT, debe tener la forma -> <tipo>-<codigo>-<digitoverificador>"
+
+			elif error is 'email':
+				errorMessage+= "\nEmail, debe tener la forma -> <usuario>@<host>.<dominio>"
+
+			elif error is 'CP':
+				errorMessage+= "\nCodigo Postal, debe tener como minimo 3 digitos y como maximo 9"
+
+			elif error is 'dpto':
+				errorMessage+= "\nDepartamento, debe ser una letra del alfabeto"
+
+			elif error is 'piso':
+				errorMessage+= "\nPiso, el piso min es 1 y el maximo 163"
+
+		return errorMessage
+
+
+		

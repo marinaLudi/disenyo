@@ -51,23 +51,13 @@ class GestorGestionarPasajeros:
 		
 
 
-	def correcto(self, dtoPasajero, test_func):
+	def correcto(self, contenido, test_func):
 		# Hacemos una lista con los errores  
 		errores=list()
 		tipo = list()
 
-		contenidoDto = [dict(codigo = dtoPasajero.getCodigo(),
-					id_tipo = dtoPasajero.getIdTipo(),
-					id_localidad = dtoPasajero.getIdLocalidad(),
-					id_provincia = dtoPasajero.getIdProvincia(),
-					id_pais = dtoPasajero.getIdPais(),
-					id_ocupacion = dtoPasajero.getIdOcupacion(),
-					id_nacionalidad = dtoPasajero.getIdNacionalidad(),
-					id_iva = dtoPasajero.getIdIva()),
-				dtoPasajero.getAtributosPasajero(),
-				dtoPasajero.getAtributosDireccion()]	
 
-		for atributo in contenidoDto: 
+		for atributo in contenido: 
 			for atrName, value in atributo.iteritems():
 				# Checkeamos los atributos que esten vacios 
 				# y no sean opcionales
@@ -258,8 +248,20 @@ class GestorGestionarPasajeros:
 		
 
 	def checkentries(self, dtopasajero):
+		# Obtenemos contenido del dto
+		contenidoDto = [dict(codigo = dtoPasajero.getCodigo(),
+					id_tipo = dtoPasajero.getIdTipo(),
+					id_localidad = dtoPasajero.getIdLocalidad(),
+					id_provincia = dtoPasajero.getIdProvincia(),
+					id_pais = dtoPasajero.getIdPais(),
+					id_ocupacion = dtoPasajero.getIdOcupacion(),
+					id_nacionalidad = dtoPasajero.getIdNacionalidad(),
+					id_iva = dtoPasajero.getIdIva()),
+				dtoPasajero.getAtributosPasajero(),
+				dtoPasajero.getAtributosDireccion()]	
+
 		# Checkeamos que no se hayan hecho omisiones en la carga
-		omisiones = self.correcto(dtopasajero, self.omitido)
+		omisiones = self.correcto(contenidoDto, self.omitido)
 
 		if omisiones:
 			# Devolvemos omisiones
@@ -267,7 +269,7 @@ class GestorGestionarPasajeros:
 
 		else:
 			# Comprobamos que los campos esten correctamente ingresados
-			errores = self.correcto(dtopasajero, self.erroneo)
+			errores = self.correcto(contenidoDto, self.erroneo)
 
 			if errores:
 				# Devolvemos errores
@@ -278,5 +280,3 @@ class GestorGestionarPasajeros:
 				# Si no tiene errores ni omisiones
 				return [], None
 
-				
-			

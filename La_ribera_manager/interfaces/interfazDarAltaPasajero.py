@@ -251,24 +251,22 @@ class InterfazDarAltaPasajero:
 			widgets, styles = self.getEntries_Styles(errores)
 
 			# Despintamos todos los widgets
-			self.despintarWidgets(self.getallstyles())
+			self.despintarWidgets(self.getallwidgets(), self.getallstyles())
 			
-			# Pintamos widgets
-			self.pintaWidgets(widgets, styles)
+			# Pintamos widgets erroneos
+			self.pintarWidgets(widgets, styles)
 
 			if tipo:  
 				# Si se cometieron errores
-				
 				# Monstramos errores
-				self.dialogo.confirm(self.crearAdvertencia,
-						"Aceptar")
+				self.dialogo.confirm(self.dialogo.crearAdvertencia(errores), "Aceptar")
 
 			else:
 				# Si se realizaron omisiones
 				self.dialogo.confirm("Se omitieron campos obligatorios", "Aceptar")	
 				
+
 	def on_bCancelar_clicked(self,boton):
-		
 		respuesta = self.dialogo.confirm("¿Desea cancelar el alta del pasajero?","SI","NO")
 		if respuesta == True:
 			Gtk.main_quit()
@@ -346,68 +344,55 @@ class InterfazDarAltaPasajero:
 		
 
 	def pintarWidgets(self, widgets, styles):
-		for style, widget in izip(reversed(widgets), reversed(styles)):
+		for widget, style in izip(reversed(widgets), reversed(styles)):
 			style.add_class('invalid')
 			widget.grab_focus()
 
 		print "painting-finished"
 	
 
-	def despintarWidgets(self, styles):
-		for style in styles:
+	def despintarWidgets(self, widgets, styles):
+		for widget, style in izip(widgets, styles):
 			style.remove_class('invalid')
+			widget.grab_focus()
 
 
 	def getallstyles():
-		return [eNombres.get_style_context(),
-				eApellidos.get_style_context(),
-				ebDocumento.get_style_context(),
-				eDocumento.get_style_context(),
-				ebNacionalidad.get_style_context(),
-				ebFecha.get_style_context(),
-				eTelefono.get_style_context(),
-				eCalle.get_style_context(),
-				eNumero.get_style_context(),
-				ebLocalidad.get_style_context(),
-				ePostal.get_style_context(),
-				ebProvincia.get_style_context(),
-				ebPais.get_style_context(),
-				ebOcupacion.get_style_context(),
-				ebIVA.get_style_context()]
+		return [self.eNombres.get_style_context(),
+				self.eApellidos.get_style_context(),
+				self.ebDocumento.get_style_context(),
+				self.eDocumento.get_style_context(),
+				self.ebNacionalidad.get_style_context(),
+				self.ebFecha.get_style_context(),
+				self.eTelefono.get_style_context(),
+				self.eCalle.get_style_context(),
+				self.eNumero.get_style_context(),
+				self.ebLocalidad.get_style_context(),
+				self.ePostal.get_style_context(),
+				self.ebProvincia.get_style_context(),
+				self.ebPais.get_style_context(),
+				self.ebOcupacion.get_style_context(),
+				self.ebIVA.get_style_context()]
+	
+
+	def getallwidgets():
+		return [self.eNombres,
+				self.eApellidos,
+				self.ebDocumento,
+				self.eDocumento,
+				self.ebNacionalidad,
+				self.ebFecha,
+				self.eTelefono,
+				self.eCalle,
+				self.eNumero,
+				self.ebLocalidad,
+				self.ePostal,
+				self.ebProvincia,
+				self.ebPais,
+				self.ebOcupacion,
+				self.ebIVA]
 
 
-	def crearAdvertencia(self, errores):
-		if len(errores) == 1:
-			errorMessage = "Cometio un error al llenar el campo:"
-		else:
-			errorMessage = "Cometio un error al llenar los campos:"
-
-		for error in errores:
-			if error is 'nombre':
-				errorMessage+= "\nNombre, debe tener la forma -> <nombre>{<espacio><segundonombre>}*"
-
-			elif error is 'apellido':
-				errorMessage+= "\nApellido, debe tener la forma -> <apellido>{<espacio><segundoapellido>}*"
-
-			elif error is 'cuit':
-				errorMessage+= "\nCUIT, debe tener la forma -> <tipo>-<codigo>-<digitoverificador>"
-
-			elif error is 'email':
-				errorMessage+= "\nEmail, debe tener la forma -> <usuario>@<host>.<dominio>"
-
-			elif error is 'CP':
-				errorMessage+= "\nCodigo Postal, debe tener como minimo 3 digitos y como maximo 9"
-
-			elif error is 'dpto':
-				errorMessage+= "\nDepartamento, debe ser una letra del alfabeto"
-
-			elif error is 'piso':
-				errorMessage+= "\nPiso, el piso min es 1 y el maximo 163"
-
-		return errorMessage
-
-
-		
 if __name__ == '__main__':		
 	InterfazDarAltaPasajero()
 	Gtk.main()
