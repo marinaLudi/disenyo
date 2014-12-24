@@ -88,14 +88,8 @@ class InterfazDarAltaPasajero:
 				self.lOcupacion,
 				self.lIVA,
 				self.lDocumento)
-
-		# Iniciamos combo de fechas
-		self.gestorCombos.initDateCombo(self.cDia,
-				self.cMes,
-				self.cAnyo,
-				1900,
-				datetime.date.today.year())
-
+				
+		self.gestorCombos.initDateCombo(self.cDia,self.cMes,self.cAnyo,datetime.datetime.today().year-100,datetime.datetime.today().year)
 		#variables auxiliares
 		self.tipo = None
 		self.localidad = None
@@ -125,7 +119,7 @@ class InterfazDarAltaPasajero:
 		"on_cNacionalidad_changed": self.on_cNacionalidad_changed,
 		"on_cAnyo_changed": self.on_cAnyo_changed,
 		"on_cMes_changed": self.on_cMes_changed,
-		"on_cDia_changed": self.on_cDia_changed,
+		#"on_cDia_changed": self.on_cDia_changed,
 		"on_cOcupacion_changed":self.on_cOcupacion_changed,
 		"on_cIVA_changed":self.on_cIVA_changed
 		}
@@ -169,15 +163,11 @@ class InterfazDarAltaPasajero:
 	
 
 	def on_cAnyo_changed(self,combo):
-		self.fecha = self.fecha.replace(year=int(combo.get_active_text()))
-	
-	
-	def on_cDia_changed(self,combo):
-		self.fecha = self.fecha.replace(day=int(combo.get_active_text()))
+		self.gestorCombos.comboUpDate(self.cDia,self.cMes,self.cAnyo)
 	
 					
 	def on_cMes_changed(self,combo):
-		self.fecha = self.fecha.replace(month=int(combo.get_active_text()))
+		self.gestorCombos.comboUpDate(self.cDia,self.cMes,self.cAnyo)
 	
 
 	def on_cPais_changed(self,combo):
@@ -211,7 +201,7 @@ class InterfazDarAltaPasajero:
 				apellido=self.eApellidos.get_text(),
 				cuit=self.eCUIT.get_text(),
 				email=self.eCorreo.get_text(),
-				fecha_de_nac=self.fecha,
+				fecha_de_nac=self.gestorCombos.getDate(self.cDia,self.cMes,self.cAnyo),
 				telefono=self.eTelefono.get_text(),
 				CP=self.ePostal.get_text(),
 				id_iva=self.IVA,
@@ -232,7 +222,6 @@ class InterfazDarAltaPasajero:
 
 		# Corroboramos que cada entry coincida con el formato de entrada
 		errores, tipo = gestor.checkentries(pasajero)	
-		print errores
 
 	
 		
@@ -245,30 +234,35 @@ class InterfazDarAltaPasajero:
 					gestor.completarCarga(pasajero)
 
 			elif crear_return == True:
-				print 'true'
+				respuesta = self.dialogo.confirm('Pasajero Guardado',"Aceptar")
+				self.menu.show_all()
+				self.window1.hide()
 
 		else:
-
-			# Obtenemos styles y widgets
-			widgets, styles = self.getEntries_Styles(errores)
-
-			# Despintamos todos los widgets
-			self.despintarWidgets(self.getallwidgets(), self.getallstyles())
-			
-			# Pintamos widgets erroneos
-			self.pintarWidgets(widgets, styles)
-
-			if tipo:  
+			if tipo:
 				# Si se cometieron errores
+				# Obtenemos styles y widgets
+				widgets, styles = self.getEntries_Styles(errores)
+				
+				# Pintamos widgets
+				self.pintarWidgets(widgets, styles)
+				
 				# Monstramos errores
-				self.dialogo.confirm(self.dialogo.crearAdvertencia(errores), "Aceptar")
+				self.dialogo.confirm(self.crearAdvertencia(errores),
+						"Aceptar")
 
 			else:
 				# Si se realizaron omisiones
-				self.dialogo.confirm("Se omitieron campos obligatorios", "Aceptar")	
+				# Obtenemos styles y widgets
+				widgets, styles = self.getEntries_Styles(errores)
 				
-
+				self.despintarWidgets(self.getallwidgets(),self.getallstyles())
+				# Pintamos widgets
+				self.pintarWidgets(widgets, styles)
+				
+				
 	def on_bCancelar_clicked(self,boton):
+		
 		respuesta = self.dialogo.confirm("¿Desea cancelar el alta del pasajero?","SI","NO")
 		if respuesta == True:
 			self.menu.show_all()
@@ -353,14 +347,43 @@ class InterfazDarAltaPasajero:
 
 		print "painting-finished"
 	
-
 	def despintarWidgets(self, widgets, styles):
-		for widget, style in izip(widgets, styles):
+		for widget, style in izip(reversed(widgets), reversed(styles)):
 			style.remove_class('invalid')
 			widget.grab_focus()
 
 
-	def getallstyles():
+	def crearAdvertencia(self, errores):
+		if len(errores) == 1:
+			errorMessage = "Cometio un error al llenar el campo:"
+		else:
+			errorMessage = "Cometio un error al llenar los campos:"
+
+		for error in errores:
+			if error is 'nombre':
+				errorMessage+= "\nNombre, debe tener la forma -> <nombre>{<espacio><segundonombre>}*"
+
+			elif error is 'apellido':
+				errorMessage+= "\nApellido, debe tener la forma -> <apellido>{<espacio><segundoapellido>}*"
+
+			elif error is 'cuit':
+				errorMessage+= "\nCUIT, debe tener la forma -> <tipo>-<codigo>-<digitoverificador>"
+
+			elif error is 'email':
+				errorMessage+= "\nEmail, debe tener la forma -> <usuario>@<host>.<dominio>"
+
+			elif error is 'CP':
+				errorMessage+= "\nCodigo Postal, debe tener como minimo 3 digitos y como maximo 9"
+
+			elif error is 'dpto':
+				errorMessage+= "\nDepartamento, debe ser una letra del alfabeto"
+
+			elif error is 'piso':
+				errorMessage+= "\nPiso, el piso min es 1 y el maximo 163"
+
+		return errorMessage
+
+	def getallstyles(self):
 		return [self.eNombres.get_style_context(),
 				self.eApellidos.get_style_context(),
 				self.ebDocumento.get_style_context(),
@@ -378,7 +401,7 @@ class InterfazDarAltaPasajero:
 				self.ebIVA.get_style_context()]
 	
 
-	def getallwidgets():
+	def getallwidgets(self):
 		return [self.eNombres,
 				self.eApellidos,
 				self.ebDocumento,
@@ -396,6 +419,7 @@ class InterfazDarAltaPasajero:
 				self.ebIVA]
 
 
-if __name__ == '__main__':		
+		
+if __name__ == '__main__':
 	InterfazDarAltaPasajero()
 	Gtk.main()

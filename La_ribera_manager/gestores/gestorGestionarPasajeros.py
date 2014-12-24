@@ -48,15 +48,14 @@ class GestorGestionarPasajeros:
 		else:
 			self.completarCarga(pasajero)
 			return True
-		
+
 
 
 
 	def correcto(self, contenido, test_func):
-		# Hacemos una lista con los errores  
+		# Hacemos una lista con los errores
 		errores=list()
 		tipo = list()
-
 
 
 		for atributo in contenido:
@@ -80,26 +79,26 @@ class GestorGestionarPasajeros:
 	def erroneo(self, valor, atrName):
 
 		# Comprobamos que no haya errores de escritura
-		if atrName == 'nombre' or atrName == 'apellido':
+		if (atrName == 'nombre' or atrName == 'apellido') and valor is not None:
 			return not self.checkNombre(valor)
 
 		elif atrName == 'codigo':
 			global dni_codigo
 			dni_codigo = valor
 
-		elif atrName == 'cuit' and valor is not None:
+		elif atrName == 'cuit' and (valor is not None and valor is not ''):
 			return not self.checkCuit(valor, dni_codigo)
 
-		elif atrName == 'email' and valor is not None:
+		elif atrName == 'email' and (valor is not None and valor is not ''):
 			return not  self.checkEmail(valor)
 
 		elif atrName == 'CP':
 			return not self.checkCP(valor)
 
-		elif atrName == 'dpto' and valor is not None:
+		elif atrName == 'dpto' and (valor is not None and valor is not ''):
 			return not self.checkDpto(valor)
 
-		elif atrName == 'piso' and valor is not None:
+		elif atrName == 'piso' and (valor is not None and valor is not ''):
 			return not self.checkPiso(valor)
 
 		else:
@@ -249,7 +248,7 @@ class GestorGestionarPasajeros:
 		return pasajero
 		
 
-	def checkentries(self, dtopasajero):
+	def checkentries(self, dtoPasajero):
 		# Obtenemos contenido del dto
 		contenidoDto = [dict(codigo = dtoPasajero.getCodigo(),
 					id_tipo = dtoPasajero.getIdTipo(),
